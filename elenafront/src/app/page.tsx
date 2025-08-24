@@ -298,7 +298,7 @@ export default function Home() {
                     <StarRating rating={testimonio.rating} />
                   </div>
                 </div>
-                <p className="text-gray-700 italic">"{testimonio.text}"</p>
+                <p className="text-gray-700 italic">&ldquo;{testimonio.text}&rdquo;</p>
               </div>
             ))}
           </div>

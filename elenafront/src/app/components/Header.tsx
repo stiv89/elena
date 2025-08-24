@@ -1,11 +1,99 @@
 "use client";
 import Image from "next/image";
 import siteData from "../siteData.json";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import Cart from "./Cart";
+
+interface CartItem {
+  categoria: string;
+  servicio: string;
+  precio: string;
+  cantidad: number;
+  id: string;
+}
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const header = siteData.header;
+
+  // Cargar carrito del localStorage al iniciar
+  useEffect(() => {
+    const savedCart = localStorage.getItem('elenaCart');
+    if (savedCart) {
+      setCartItems(JSON.parse(savedCart));
+    }
+  }, []);
+
+  // Guardar carrito en localStorage cada vez que cambie
+  useEffect(() => {
+    localStorage.setItem('elenaCart', JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  // Funciones del carrito
+  const addToCart = useCallback((categoria: string, servicio: string, precio: string) => {
+    const itemId = `${categoria}-${servicio}`;
+    const existingItem = cartItems.find(item => item.id === itemId);
+    
+    if (existingItem) {
+      setCartItems(cartItems.map(item => 
+        item.id === itemId 
+          ? { ...item, cantidad: item.cantidad + 1 }
+          : item
+      ));
+    } else {
+      const newItem: CartItem = {
+        categoria,
+        servicio,
+        precio: precio.replace(/[^\d]/g, ''),
+        cantidad: 1,
+        id: itemId
+      };
+      setCartItems([...cartItems, newItem]);
+    }
+    
+    // Mostrar mensaje de confirmación
+    showToast('✓ Servicio agregado al carrito');
+  }, [cartItems]);
+
+  const updateCartQuantity = (id: string, cantidad: number) => {
+    if (cantidad === 0) {
+      removeFromCart(id);
+      return;
+    }
+    
+    setCartItems(cartItems.map(item => 
+      item.id === id ? { ...item, cantidad } : item
+    ));
+  };
+
+  const removeFromCart = (id: string) => {
+    setCartItems(cartItems.filter(item => item.id !== id));
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
+  const showToast = (message: string) => {
+    const toast = document.createElement('div');
+    toast.className = 'fixed top-24 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-slide-up';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      if (document.body.contains(toast)) {
+        document.body.removeChild(toast);
+      }
+    }, 3000);
+  };
+
+  // Exponer las funciones del carrito globalmente
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).addToCart = addToCart;
+  }, [addToCart]);
   
   // Función para hacer scroll suave
   const scrollToSection = (anchor: string) => {
@@ -48,7 +136,7 @@ export default function Header() {
 
         {/* Menu desktop */}
         <ul className="hidden lg:flex items-center gap-8 font-medium">
-          {header.menu.map((item: any) => (
+          {header.menu.map((item: { text: string; anchor: string }) => (
             <li key={item.text}>
               <button 
                 onClick={() => scrollToSection(item.anchor)}
@@ -63,6 +151,22 @@ export default function Header() {
 
         {/* CTA y botón móvil */}
         <div className="flex items-center gap-4">
+          {/* Botón del carrito */}
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="relative bg-gray-100 hover:bg-gray-200 text-gray-700 p-3 rounded-full transition-all duration-300 hover:scale-105"
+            title={`Ver carrito (${cartItems.length})`}
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+            {cartItems.length > 0 && (
+              <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold animate-bounce">
+                {cartItems.length}
+              </div>
+            )}
+          </button>
+
           <a 
             href={header.cta.url} 
             target="_blank" 
@@ -92,7 +196,7 @@ export default function Header() {
         menuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
       }`}>
         <div className="px-6 py-6 space-y-4">
-          {header.menu.map((item: any) => (
+          {header.menu.map((item: { text: string; anchor: string }) => (
             <button 
               key={item.text}
               onClick={() => scrollToSection(item.anchor)}
@@ -104,7 +208,7 @@ export default function Header() {
           
           {/* Información rápida móvil */}
           <div className="pt-4 space-y-3">
-            {header.quickInfo.map((info: any, i: number) => (
+            {header.quickInfo.map((info: { icon: string; text: string; url?: string }, i: number) => (
               <div key={i} className="flex items-center gap-3 text-sm text-gray-600">
                 <span className="text-lg">{info.icon}</span>
                 {info.url ? (
@@ -131,6 +235,16 @@ export default function Header() {
           </div>
         </div>
       </div>
+
+      {/* Modal del carrito */}
+      <Cart
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        items={cartItems}
+        onUpdateQuantity={updateCartQuantity}
+        onRemoveItem={removeFromCart}
+        onConfirmOrder={clearCart}
+      />
     </header>
   );
 }

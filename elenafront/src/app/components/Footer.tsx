@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import siteData from "../siteData.json";
 import ServiceIcon from "./ServiceIcon";
 
@@ -32,7 +31,7 @@ export default function Footer() {
             
             {/* Redes sociales */}
             <div className="flex gap-4">
-              {siteData.header.social.map((social: any) => (
+              {siteData.header.social.map((social: { type: string; url: string; icon: string }) => (
                 <a 
                   key={social.type}
                   href={social.url}
@@ -52,7 +51,7 @@ export default function Footer() {
               Enlaces Rápidos
             </h3>
             <ul className="space-y-2">
-              {siteData.header.menu.map((item: any) => (
+              {siteData.header.menu.map((item: { text: string; anchor: string }) => (
                 <li key={item.text}>
                   <a 
                     href={item.anchor} 
@@ -71,7 +70,7 @@ export default function Footer() {
               Contacto
             </h3>
             <div className="space-y-3">
-              {siteData.header.quickInfo.map((info: any, i: number) => (
+              {siteData.header.quickInfo.map((info: { icon: string; text: string; url?: string }, i: number) => (
                 <div key={i} className="flex items-start gap-3">
                   <span className="text-lg mt-1">{info.icon}</span>
                   <div>
@@ -98,7 +97,7 @@ export default function Footer() {
             Nuestros Servicios
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {siteData.servicios.slice(0, 3).map((categoria: any) => (
+            {siteData.servicios.slice(0, 3).map((categoria: { categoria: string; descripcion: string; icon: string }) => (
               <div key={categoria.categoria} className="text-center">
                 <div className="flex justify-center mb-2">
                   <ServiceIcon type={categoria.icon} className="w-6 h-6 text-gray-400" />

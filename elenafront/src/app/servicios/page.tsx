@@ -5,71 +5,19 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ServiceIcon from "../components/ServiceIcon";
 import WhatsAppFloat from "../components/WhatsAppFloat";
-import Cart from "../components/Cart";
-
-interface CartItem {
-  categoria: string;
-  servicio: string;
-  precio: string;
-  cantidad: number;
-  id: string;
-}
+import Link from "next/link";
 
 export default function Servicios() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const categoriaRefs = useRef<{ [key: string]: HTMLElement | null }>({});
 
   const addToCart = (categoria: string, servicio: string, precio: string) => {
-    const itemId = `${categoria}-${servicio}`;
-    const existingItem = cartItems.find(item => item.id === itemId);
-    
-    if (existingItem) {
-      setCartItems(cartItems.map(item => 
-        item.id === itemId 
-          ? { ...item, cantidad: item.cantidad + 1 }
-          : item
-      ));
-    } else {
-      const newItem: CartItem = {
-        categoria,
-        servicio,
-        precio: precio.replace(/[^\d]/g, ''),
-        cantidad: 1,
-        id: itemId
-      };
-      setCartItems([...cartItems, newItem]);
+    // Usar la función global del header
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ((window as any).addToCart) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).addToCart(categoria, servicio, precio);
     }
-    
-    // Mostrar mensaje de confirmación
-    const toast = document.createElement('div');
-    toast.className = 'fixed top-24 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fadein';
-    toast.textContent = '✓ Servicio agregado al carrito';
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-      document.body.removeChild(toast);
-    }, 3000);
-  };
-
-  const updateCartQuantity = (id: string, cantidad: number) => {
-    if (cantidad === 0) {
-      removeFromCart(id);
-      return;
-    }
-    
-    setCartItems(cartItems.map(item => 
-      item.id === id ? { ...item, cantidad } : item
-    ));
-  };
-
-  const removeFromCart = (id: string) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
-  };
-
-  const clearCart = () => {
-    setCartItems([]);
   };
 
   const scrollToCategory = (categoryName: string) => {
@@ -104,40 +52,12 @@ export default function Servicios() {
         />
       )}
 
-      {/* Carrito flotante */}
-      <div className="fixed bottom-32 left-6 z-30">
-        <button
-          onClick={() => setIsCartOpen(true)}
-          className="bg-gradient-gold text-white w-16 h-16 rounded-full shadow-elegant flex items-center justify-center transition-all duration-300 hover:scale-110 relative"
-          title={`Ver carrito (${cartItems.length})`}
-        >
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M7 4V2C7 1.45 7.45 1 8 1H16C16.55 1 17 1.45 17 2V4H20C20.55 4 21 4.45 21 5S20.55 6 20 6H19V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V6H4C3.45 6 3 5.55 3 5S3.45 4 4 4H7ZM9 3V4H15V3H9ZM7 6V19H17V6H7Z"/>
-          </svg>
-          {cartItems.length > 0 && (
-            <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold">
-              {cartItems.length}
-            </div>
-          )}
-        </button>
-      </div>
-
-      {/* Modal del carrito */}
-      <Cart
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        items={cartItems}
-        onUpdateQuantity={updateCartQuantity}
-        onRemoveItem={removeFromCart}
-        onConfirmOrder={clearCart}
-      />
-
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-rose-50 to-amber-50 py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
           {/* Botón volver */}
           <div className="mb-6">
-            <a 
+            <Link 
               href="/"
               className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
             >
@@ -145,7 +65,7 @@ export default function Servicios() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               <span className="text-sm font-medium">Volver al inicio</span>
-            </a>
+            </Link>
           </div>
           
           <h1 className="font-playfair text-5xl font-bold text-gray-900 mb-6">

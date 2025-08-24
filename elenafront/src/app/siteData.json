@@ -55,7 +55,7 @@
     ]
   },
   "inicio": {
-    "image": "/local.jpg",
+    "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
     "title": "Tu belleza en manos expertas en Luque",
     "subtitle": "Transformamos tu estilo con más de 10 años de experiencia",
     "features": [
@@ -70,7 +70,7 @@
     }
   },
   "nosotros": {
-    "image": "/elena.jpg",
+    "image": "https://images.unsplash.com/photo-1594736797933-d0b22ee5a7b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
     "title": "Sobre Elena Benítez",
     "subtitle": "Profesional con más de 10 años de experiencia",
     "description": "Con más de 10 años de experiencia, Elena y su equipo transforman tu belleza con pasión y dedicación. Su estilo combina técnica profesional y calidez humana, creando un ambiente de confianza y resultados excepcionales.",
@@ -198,12 +198,12 @@
     "title": "Galería de Trabajos",
     "subtitle": "Algunos de nuestros trabajos más destacados",
     "images": [
-      { "image": "/galeria/1.jpg", "desc": "Maquillaje de novia elegante", "category": "maquillaje" },
-      { "image": "/galeria/2.jpg", "desc": "Corte y color moderno", "category": "cabello" },
-      { "image": "/galeria/3.jpg", "desc": "Peinado para evento social", "category": "peinados" },
-      { "image": "/galeria/4.jpg", "desc": "Diseño de cejas perfecto", "category": "cejas" },
-      { "image": "/galeria/5.jpg", "desc": "Maquillaje glam para fiesta", "category": "maquillaje" },
-      { "image": "/galeria/6.jpg", "desc": "Tratamiento capilar nutritivo", "category": "cabello" }
+      { "image": "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", "desc": "Maquillaje de novia elegante", "category": "maquillaje" },
+      { "image": "https://images.unsplash.com/photo-1582095133179-bfd08e2fc6b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", "desc": "Corte y color moderno", "category": "cabello" },
+      { "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", "desc": "Peinado para evento social", "category": "peinados" },
+      { "image": "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", "desc": "Diseño de cejas perfecto", "category": "cejas" },
+      { "image": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", "desc": "Maquillaje glam para fiesta", "category": "maquillaje" },
+      { "image": "https://images.unsplash.com/photo-1595475884433-3d2bddbb8c40?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", "desc": "Tratamiento capilar nutritivo", "category": "cabello" }
     ],
     "categories": ["todos", "maquillaje", "cabello", "peinados", "cejas"]
   },
