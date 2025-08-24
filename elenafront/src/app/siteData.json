@@ -1,0 +1,116 @@
+{
+  "header": {
+  "logo": "",
+  "name": "Elena Benítez",
+    "subtitle": "Belleza Integral",
+    "cta": {
+      "text": "Reservá tu cita",
+      "url": "https://wa.me/595981234567?text=Hola%20Elena,%20quiero%20reservar%20una%20cita"
+    },
+    "menu": [
+      { "text": "Inicio", "anchor": "#inicio" },
+      { "text": "Servicios", "anchor": "#servicios" },
+      { "text": "Galería", "anchor": "#galeria" },
+      { "text": "Sobre nosotros", "anchor": "#nosotros" },
+      { "text": "Contacto", "anchor": "#contacto" }
+    ],
+    "social": [
+      { "type": "instagram", "url": "https://instagram.com/elenabenitez" },
+      { "type": "facebook", "url": "https://facebook.com/elenabenitez" }
+    ],
+    "quickInfo": [
+      { "icon": "📍", "text": "Luque – c/ Sportivo Luqueño y Moisés Bertoni" },
+      { "icon": "📞", "text": "+595 981 234567", "url": "https://wa.me/595981234567" }
+    ]
+  },
+  "inicio": {
+    "image": "/local.jpg",
+    "title": "Tu belleza en manos expertas en Luque",
+    "cta": {
+      "text": "Reservá tu cita",
+      "url": "https://wa.me/595981234567?text=Hola%20Elena,%20quiero%20reservar%20una%20cita"
+    }
+  },
+  "nosotros": {
+    "image": "/elena.jpg",
+    "title": "Sobre Elena Benítez",
+    "description": "Con más de 10 años de experiencia, Elena y su equipo transforman tu belleza con pasión y dedicación. Su estilo combina técnica profesional y calidez humana, creando un ambiente de confianza y resultados excepcionales.",
+    "message": "¡Te esperamos para que vivas la mejor experiencia de belleza en Luque!"
+  },
+  "servicios": [
+    {
+      "categoria": "Lavados",
+      "descripcion": "Servicios de lavado y tratamientos capilares.",
+      "servicios": [
+        { "nombre": "Lavado clasic", "precio": "60.000" },
+        { "nombre": "Lavado nutritivo", "precio": "75.000" },
+        { "nombre": "Lavado matizador+baño", "precio": "85.000" },
+        { "nombre": "Lavado + tto. Pos color", "precio": "85.000" },
+        { "nombre": "Secado", "precio": "20.000" },
+        { "nombre": "Brushing", "precio": "30.000" },
+        { "nombre": "Planchita", "precio": "30.000" },
+        { "nombre": "Gorro térmico (add)", "precio": "15.000" },
+        { "nombre": "Corte recto", "precio": "30.000" }
+      ],
+      "obs": "Todos los lavados incluyen brushing + planchita. El costo varía según el largo y volumen del cabello."
+    },
+    {
+      "categoria": "Maquillajes & Compañía",
+      "descripcion": "Maquillajes, peinados y tratamientos faciales.",
+      "servicios": [
+        { "nombre": "Peinados", "precio": "70.000" },
+        { "nombre": "Medio maquillaje", "precio": "75.000" },
+        { "nombre": "Maquillaje express", "precio": "90.000" },
+        { "nombre": "Maquillaje social", "precio": "110.000" },
+        { "nombre": "Maquillaje Glam", "precio": "150.000" },
+        { "nombre": "Aplicación de pestaña", "precio": "20.000" },
+        { "nombre": "Aplicación + Pestaña 3D", "precio": "35.000" },
+        { "nombre": "Limpieza facial express", "precio": "25.000" },
+        { "nombre": "Baño de luna en brazos", "precio": "45.000" },
+        { "nombre": "Baño de luna en rostro", "precio": "40.000" }
+      ],
+      "obs": "Todos los peinados incluyen lavado y brushing. Todos los maquillajes incluyen limpieza facial express. El baño de luna incluye preparación de la piel en ambas zonas, humectación y protección solar."
+    },
+    {
+      "categoria": "Cejas & Pestañas",
+      "descripcion": "Diseño y tratamientos para cejas y pestañas.",
+      "servicios": [
+        { "nombre": "Diseño de cejas + perfilado", "precio": "25.000" },
+        { "nombre": "Diseño de cejas + henna", "precio": "50.000" },
+        { "nombre": "Aplicación de henna", "precio": "30.000" },
+        { "nombre": "Lifting de pestañas", "precio": "90.000" }
+      ]
+    }
+  ],
+  "galeria": [
+    { "image": "/galeria/1.jpg", "desc": "Trabajo 1" },
+    { "image": "/galeria/2.jpg", "desc": "Trabajo 2" },
+    { "image": "/galeria/3.jpg", "desc": "Trabajo 3" },
+    { "image": "/galeria/4.jpg", "desc": "Trabajo 4" },
+    { "image": "/galeria/5.jpg", "desc": "Trabajo 5" },
+    { "image": "/galeria/6.jpg", "desc": "Trabajo 6" }
+  ],
+  "contacto": {
+    "direccion": "Luque, c/ Sportivo Luqueño y Moisés Bertoni, Código Postal 110930",
+    "whatsapp": "https://wa.me/595981234567",
+    "telefono": "+595981234567",
+    "instagram": "https://instagram.com/elenabenitez",
+    "mapa": "https://www.google.com/maps?q=-25.2677,-57.4847&z=16&output=embed"
+  },
+  "testimonios": [
+    {
+      "image": "/clienta1.jpg",
+      "name": "María G.",
+      "text": "Me encantó el trato y el resultado. Elena es súper profesional y amable. ¡Recomiendo totalmente!"
+    },
+    {
+      "image": "/clienta2.jpg",
+      "name": "Lucía P.",
+      "text": "Excelente atención y resultados. Volveré sin dudas. ¡Gracias Elena!"
+    }
+  ],
+  "reservas": {
+    "form": true,
+    "calendly": "https://calendly.com/elenabenitez/cita"
+  }
+}

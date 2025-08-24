@@ -1,0 +1,31 @@
+{
+  "footer": {
+    "logo": "", 
+    "name": "Elena Benítez",
+    "subtitle": "Belleza Integral",
+    "phrase": "Cuidamos tu belleza cada día.",
+    "quickLinks": [
+      { "text": "Inicio", "anchor": "#inicio" },
+      { "text": "Servicios", "anchor": "#servicios" },
+      { "text": "Galería", "anchor": "#galeria" },
+      { "text": "Reservas", "anchor": "#contacto" }
+    ],
+    "contact": {
+      "direccion": "Luque – c/ Sportivo Luqueño y Moisés Bertoni, CP 110930",
+      "telefono": "+595 981 234567",
+      "whatsapp": "https://wa.me/595981234567",
+      "correo": "contacto@elenabenitez.com"
+    },
+    "social": [
+      { "type": "instagram", "url": "https://instagram.com/elenabenitez" },
+      { "type": "facebook", "url": "https://facebook.com/elenabenitez" },
+      { "type": "tiktok", "url": "https://tiktok.com/@elenabenitez" }
+    ],
+    "horario": [
+      "Lunes a Sábado: 09:00 – 19:00",
+      "Domingos: cerrado."
+    ],
+    "legal": "© 2025 Elena Benítez – Belleza Integral. Todos los derechos reservados.",
+    "creditos": "Diseño web por Esteban."
+  }
+}
