@@ -5,8 +5,6 @@ import siteData from "./siteData.json";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import WhatsAppFloat from "./components/WhatsAppFloat";
-import ServiceIcon from "./components/ServiceIcon";
-import ContactForm from "./components/ContactForm";
 
 // Componente de estrellas para rating
 function StarRating({ rating }: { rating: number }) {
@@ -224,9 +222,7 @@ export default function Home() {
                 }}
               >
                 <div className="text-center mb-6">
-                  <div className="flex justify-center mb-4">
-                    <ServiceIcon type={categoria.icon} className="w-12 h-12 text-gray-600" />
-                  </div>
+                  <div className="text-4xl mb-4">{categoria.icon}</div>
                   <h3 className="font-playfair text-2xl font-bold text-gray-900 mb-2">
                     {categoria.categoria}
                   </h3>
@@ -418,10 +414,33 @@ export default function Home() {
                 <h3 className="font-playfair text-2xl font-bold text-gray-900 mb-6">
                   Formulario de Contacto
                 </h3>
-                <ContactForm 
-                  whatsappNumber={siteData.whatsapp.number}
-                  servicios={siteData.servicios}
-                />
+                <form className="space-y-4">
+                  {siteData.reservas.form.fields.map((field) => (
+                    <div key={field.name}>
+                      {field.type === 'textarea' ? (
+                        <textarea
+                          placeholder={field.placeholder}
+                          className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none transition-all"
+                          rows={3}
+                          required={field.required}
+                        />
+                      ) : (
+                        <input
+                          type={field.type}
+                          placeholder={field.placeholder}
+                          className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none transition-all"
+                          required={field.required}
+                        />
+                      )}
+                    </div>
+                  ))}
+                  <button 
+                    type="submit" 
+                    className="w-full bg-gradient-gold text-white font-semibold py-4 px-8 rounded-full shadow-elegant hover:shadow-2xl transition-all duration-300"
+                  >
+                    Enviar Mensaje
+                  </button>
+                </form>
               </div>
             )}
             
