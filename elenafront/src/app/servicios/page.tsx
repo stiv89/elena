@@ -94,7 +94,7 @@ export default function Servicios() {
           <div className="mb-6">
             <SmartSearchBar onSearchResult={handleSearchResult} />
             <p className="text-xs text-gray-500 mt-2">
-              💡 Prueba: "boda", "cabello", "maquillaje" o "verme joven"
+              💡 Prueba: &ldquo;boda&rdquo;, &ldquo;cabello&rdquo;, &ldquo;maquillaje&rdquo; o &ldquo;verme joven&rdquo;
             </p>
           </div>
 

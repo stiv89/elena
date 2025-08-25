@@ -58,25 +58,6 @@ export default function Header() {
     showToast('✓ Servicio agregado al carrito');
   }, [cartItems]);
 
-  const updateCartQuantity = (id: string, cantidad: number) => {
-    if (cantidad === 0) {
-      removeFromCart(id);
-      return;
-    }
-    
-    setCartItems(cartItems.map(item => 
-      item.id === id ? { ...item, cantidad } : item
-    ));
-  };
-
-  const removeFromCart = (id: string) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
-  };
-
-  const clearCart = () => {
-    setCartItems([]);
-  };
-
   const showToast = (message: string) => {
     const toast = document.createElement('div');
     toast.className = 'fixed top-24 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-slide-up';

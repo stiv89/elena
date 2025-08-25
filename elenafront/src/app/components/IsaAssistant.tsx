@@ -1,8 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from 'react';
 import siteData from '../siteData.json';
-import { ChatIcon, BotIcon, SparklesIcon } from './ChatIcons';
-import SvgIcon from './SvgIcon';
+import { BotIcon, SparklesIcon } from './ChatIcons';
 
 interface Message {
   id: string;

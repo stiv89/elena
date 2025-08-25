@@ -133,6 +133,7 @@ export default function SmartSearchBar({ onSearchResult }: SmartSearchBarProps) 
     const newSuggestions = generateSuggestions(query);
     setSuggestions(newSuggestions);
     setSelectedIndex(-1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
