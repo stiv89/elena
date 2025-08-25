@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ServiceIcon from "../components/ServiceIcon";
 import WhatsAppFloat from "../components/WhatsAppFloat";
+import SvgIcon from "../components/SvgIcon";
 import Link from "next/link";
 
 export default function Servicios() {
@@ -53,8 +54,8 @@ export default function Servicios() {
       )}
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-rose-50 to-amber-50 py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="bg-gradient-to-br from-gray-50 to-gray-100 py-16 container-with-margins">
+        <div className="max-w-4xl mx-auto text-center px-4">
           {/* Botón volver */}
           <div className="mb-6">
             <Link 
@@ -111,8 +112,8 @@ export default function Servicios() {
       </section>
 
       {/* Servicios */}
-      <main className="flex-1 py-16 px-4">
-        <div className="max-w-7xl mx-auto">
+      <main className="flex-1 py-16 container-with-margins">
+        <div className="max-w-7xl mx-auto px-4">
           {/* Botón scroll to top */}
           <div className="fixed bottom-32 right-6 z-30">
             <button
@@ -235,8 +236,8 @@ export default function Servicios() {
       </main>
 
       {/* CTA Section */}
-      <section className="bg-gradient-rose py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="bg-gradient-rose py-16 container-with-margins">
+        <div className="max-w-4xl mx-auto text-center px-4">
           <h2 className="font-playfair text-3xl font-bold text-gray-900 mb-4">
             ¿Lista para tu transformación?
           </h2>
@@ -248,15 +249,17 @@ export default function Servicios() {
               href={`https://wa.me/${siteData.whatsapp.number}?text=${encodeURIComponent(siteData.whatsapp.message)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block bg-green-500 hover:bg-green-600 text-white font-semibold py-4 px-8 rounded-full shadow-elegant transition-all duration-300 transform hover:scale-105"
+              className="inline-block bg-green-500 hover:bg-green-600 text-white font-semibold py-4 px-8 rounded-full shadow-elegant transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
             >
-              💬 Reservar por WhatsApp
+              <SvgIcon type="whatsapp" className="w-5 h-5" />
+              Reservar por WhatsApp
             </a>
             <a 
-              href="tel:+595981234567"
-              className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 px-8 rounded-full shadow-elegant transition-all duration-300 transform hover:scale-105"
+              href="tel:+595991743889"
+              className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 px-8 rounded-full shadow-elegant transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
             >
-              📞 Llamar Ahora
+              <SvgIcon type="phone" className="w-5 h-5" />
+              Llamar Ahora
             </a>
           </div>
         </div>

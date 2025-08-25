@@ -2,7 +2,8 @@
 import Image from "next/image";
 import siteData from "../siteData.json";
 import { useState, useEffect, useCallback } from "react";
-import Cart from "./Cart";
+import { useRouter } from "next/navigation";
+import SvgIcon from "./SvgIcon";
 
 interface CartItem {
   categoria: string;
@@ -15,7 +16,7 @@ interface CartItem {
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const router = useRouter();
   const header = siteData.header;
 
   // Cargar carrito del localStorage al iniciar
@@ -122,7 +123,7 @@ export default function Header() {
         {/* Logo y nombre */}
         <div className="flex items-center gap-3">
           {header.logo ? (
-            <Image src={header.logo} alt="Logo" width={50} height={50} className="rounded-full" />
+            <Image src={header.logo} alt="Elena Benítez Logo" width={50} height={50} className="rounded-full" />
           ) : (
             <div className="w-12 h-12 bg-gradient-gold rounded-full flex items-center justify-center">
               <span className="text-white font-bold text-xl">E</span>
@@ -153,7 +154,7 @@ export default function Header() {
         <div className="flex items-center gap-4">
           {/* Botón del carrito */}
           <button
-            onClick={() => setIsCartOpen(true)}
+            onClick={() => router.push('/carrito')}
             className="relative bg-gray-100 hover:bg-gray-200 text-gray-700 p-3 rounded-full transition-all duration-300 hover:scale-105"
             title={`Ver carrito (${cartItems.length})`}
           >
@@ -210,9 +211,9 @@ export default function Header() {
           <div className="pt-4 space-y-3">
             {header.quickInfo.map((info: { icon: string; text: string; url?: string }, i: number) => (
               <div key={i} className="flex items-center gap-3 text-sm text-gray-600">
-                <span className="text-lg">{info.icon}</span>
+                <SvgIcon type={info.icon} className="w-5 h-5" />
                 {info.url ? (
-                  <a href={info.url} className="hover:text-gray-900 transition-colors">
+                  <a href={info.url} className="hover:text-gray-900 transition-colors" target="_blank" rel="noopener noreferrer">
                     {info.text}
                   </a>
                 ) : (
@@ -235,16 +236,6 @@ export default function Header() {
           </div>
         </div>
       </div>
-
-      {/* Modal del carrito */}
-      <Cart
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        items={cartItems}
-        onUpdateQuantity={updateCartQuantity}
-        onRemoveItem={removeFromCart}
-        onConfirmOrder={clearCart}
-      />
     </header>
   );
 }

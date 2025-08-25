@@ -1,6 +1,7 @@
 "use client";
 import siteData from "../siteData.json";
 import ServiceIcon from "./ServiceIcon";
+import SvgIcon from "./SvgIcon";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -31,17 +32,30 @@ export default function Footer() {
             
             {/* Redes sociales */}
             <div className="flex gap-4">
-              {siteData.header.social.map((social: { type: string; url: string; icon: string }) => (
-                <a 
-                  key={social.type}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 bg-gray-800 hover:bg-gradient-gold rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
-                >
-                  <span className="text-lg">{social.icon}</span>
-                </a>
-              ))}
+              <a 
+                href={`https://wa.me/${siteData.whatsapp.number}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-gray-800 hover:bg-green-600 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+              >
+                <SvgIcon type="whatsapp" className="w-5 h-5" />
+              </a>
+              <a 
+                href={siteData.contacto.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-gray-800 hover:bg-pink-600 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+              >
+                <SvgIcon type="instagram" className="w-5 h-5" />
+              </a>
+              <a 
+                href={siteData.contacto.mapa.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+              >
+                <SvgIcon type="location" className="w-5 h-5" />
+              </a>
             </div>
           </div>
           
@@ -72,11 +86,13 @@ export default function Footer() {
             <div className="space-y-3">
               {siteData.header.quickInfo.map((info: { icon: string; text: string; url?: string }, i: number) => (
                 <div key={i} className="flex items-start gap-3">
-                  <span className="text-lg mt-1">{info.icon}</span>
+                  <SvgIcon type={info.icon} className="w-5 h-5 mt-1 text-gray-400" />
                   <div>
                     {info.url ? (
                       <a 
                         href={info.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="text-gray-300 hover:text-white transition-colors text-sm"
                       >
                         {info.text}
@@ -135,7 +151,8 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors flex items-center gap-2"
             >
-              💬 Reservar Cita
+              <SvgIcon type="whatsapp" className="w-4 h-4" />
+              Reservar Cita
             </a>
           </div>
         </div>

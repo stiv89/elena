@@ -10,18 +10,18 @@
   },
   "whatsapp": {
     "enabled": true,
-    "number": "595981234567",
+    "number": "595991743889",
     "message": "Hola Elena, quiero reservar una cita",
     "position": "bottom-right"
   },
   "header": {
-    "logo": "",
+    "logo": "/logoheader.png",
     "name": "Elena Benítez",
     "subtitle": "Belleza Integral",
     "tagline": "Tu belleza en manos expertas",
     "cta": {
       "text": "Reservá tu cita",
-      "url": "https://wa.me/595981234567?text=Hola%20Elena,%20quiero%20reservar%20una%20cita"
+      "url": "https://wa.me/595991743889?text=Hola%20Elena,%20quiero%20reservar%20una%20cita"
     },
     "menu": [
       { "text": "Inicio", "anchor": "#inicio" },
@@ -37,18 +37,19 @@
     ],
     "quickInfo": [
       { 
-        "icon": "📍", 
+        "icon": "location", 
         "text": "Luque – c/ Sportivo Luqueño y Moisés Bertoni",
+        "url": "https://maps.app.goo.gl/zj6ryu1VgCUjv5hY8",
         "type": "location"
       },
       { 
-        "icon": "📞", 
-        "text": "+595 981 234567", 
-        "url": "https://wa.me/595981234567",
+        "icon": "phone", 
+        "text": "+595 991 743889", 
+        "url": "https://wa.me/595991743889",
         "type": "phone"
       },
       {
-        "icon": "⏰",
+        "icon": "clock",
         "text": "Lun-Sáb 8:00-18:00",
         "type": "hours"
       }
@@ -66,7 +67,7 @@
     ],
     "cta": {
       "text": "Reservá tu cita",
-      "url": "https://wa.me/595981234567?text=Hola%20Elena,%20quiero%20reservar%20una%20cita"
+      "url": "https://wa.me/595991743889?text=Hola%20Elena,%20quiero%20reservar%20una%20cita"
     }
   },
   "nosotros": {
@@ -212,12 +213,12 @@
     "subtitle": "Visitanos en nuestro salón en Luque",
     "direccion": "Luque, c/ Sportivo Luqueño y Moisés Bertoni, Código Postal 110930",
     "horarios": "Lunes a Sábado: 8:00 - 18:00",
-    "whatsapp": "https://wa.me/595981234567",
-    "telefono": "+595981234567",
+    "whatsapp": "https://wa.me/595991743889",
+    "telefono": "+595991743889",
     "instagram": "https://instagram.com/elenabenitez",
     "mapa": {
       "embed": "https://www.google.com/maps?q=-25.2677,-57.4847&z=16&output=embed",
-      "link": "https://maps.google.com/?q=Luque,+Sportivo+Luqueño+y+Moisés+Bertoni"
+      "link": "https://maps.app.goo.gl/zj6ryu1VgCUjv5hY8"
     }
   },
   "testimonios": {
@@ -266,7 +267,7 @@
     "whatsapp": {
       "enabled": true,
       "text": "También podés reservar por WhatsApp",
-      "url": "https://wa.me/595981234567?text=Hola%20Elena,%20quiero%20reservar%20una%20cita"
+      "url": "https://wa.me/595991743889?text=Hola%20Elena,%20quiero%20reservar%20una%20cita"
     }
   }
 }

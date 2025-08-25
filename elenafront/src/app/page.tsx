@@ -7,20 +7,18 @@ import Footer from "./components/Footer";
 import WhatsAppFloat from "./components/WhatsAppFloat";
 import ServiceIcon from "./components/ServiceIcon";
 import ContactForm from "./components/ContactForm";
+import SvgIcon, { StarIcon, CheckIcon } from "./components/SvgIcon";
 
-// Componente de estrellas para rating
+// Componente de estrellas para rating usando íconos SVG
 function StarRating({ rating }: { rating: number }) {
   return (
     <div className="flex">
       {[...Array(5)].map((_, i) => (
-        <span
+        <StarIcon
           key={i}
-          className={`text-lg ${
-            i < rating ? "text-yellow-400" : "text-gray-300"
-          }`}
-        >
-          ⭐
-        </span>
+          className={`w-5 h-5 ${i < rating ? "text-yellow-400" : "text-gray-300"}`}
+          filled={i < rating}
+        />
       ))}
     </div>
   );
@@ -40,15 +38,16 @@ function GaleriaTrabajos() {
     : fotos.filter(foto => foto.category === activeCategory);
 
   return (
-    <section className="py-16 px-4 max-w-6xl mx-auto animate-fadein">
-      <div className="text-center mb-12">
-        <h2 className="font-playfair text-4xl font-bold text-gray-900 mb-4">
-          {siteData.galeria.title}
-        </h2>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          {siteData.galeria.subtitle}
-        </p>
-      </div>
+    <section id="galeria" className="py-16 animate-fadein">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="font-playfair text-4xl font-bold text-gray-900 mb-4">
+            {siteData.galeria.title}
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            {siteData.galeria.subtitle}
+          </p>
+        </div>
 
       {/* Filtros de categoría */}
       <div className="flex flex-wrap justify-center gap-3 mb-10">
@@ -90,6 +89,7 @@ function GaleriaTrabajos() {
           </div>
         ))}
       </div>
+      </div>
     </section>
   );
 }
@@ -110,10 +110,10 @@ export default function Home() {
       {/* HERO SECTION */}
       <section 
         id="inicio" 
-        className="relative min-h-[80vh] flex items-center justify-center px-4 bg-gradient-to-br from-rose-50 to-amber-50"
+        className="relative min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 container-with-margins"
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
-        <div className="relative z-10 max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+        <div className="absolute inset-0 bg-gradient-to-r from-black/10 to-transparent"></div>
+        <div className="relative z-10 max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center px-4">
           <div className="text-center lg:text-left animate-slidein">
             <h1 className="font-playfair text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
               {siteData.inicio.title}
@@ -122,7 +122,7 @@ export default function Home() {
               {siteData.inicio.subtitle}
             </p>
             
-            {/* Features */}
+            {/* Features con íconos SVG */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
               {siteData.inicio.features.map((feature, i) => (
                 <div 
@@ -130,7 +130,8 @@ export default function Home() {
                   className="flex items-center text-gray-700 animate-fadein"
                   style={{ animationDelay: `${i * 0.2}s` }}
                 >
-                  <span className="mr-2">{feature}</span>
+                  <CheckIcon className="w-5 h-5 text-black mr-2" />
+                  <span>{feature.replace(/^[^\w]+/, '')}</span>
                 </div>
               ))}
             </div>
@@ -148,7 +149,7 @@ export default function Home() {
           <div className="animate-fadein">
             <Image 
               src={siteData.inicio.image} 
-              alt="Salon Elena Benítez" 
+              alt="Salón de belleza Elena Benítez en Luque - Servicios de maquillaje, cabello, cejas y pestañas" 
               width={600} 
               height={400} 
               className="rounded-3xl shadow-2xl object-cover w-full h-[400px] image-overlay" 
@@ -158,12 +159,12 @@ export default function Home() {
       </section>
 
       {/* SOBRE NOSOTROS */}
-      <section id="nosotros" className="py-20 px-4 bg-white">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+      <section id="nosotros" className="py-20 bg-white container-with-margins">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center px-4">
           <div className="order-2 lg:order-1 animate-slidein">
             <Image 
               src={siteData.nosotros.image} 
-              alt="Elena Benítez" 
+              alt="Elena Benítez - Profesional en belleza con más de 10 años de experiencia en Luque" 
               width={500} 
               height={500} 
               className="rounded-3xl shadow-elegant object-cover w-full h-[500px] image-overlay" 
@@ -181,15 +182,16 @@ export default function Home() {
               {siteData.nosotros.description}
             </p>
             
-            {/* Logros */}
+            {/* Logros con íconos SVG */}
             <div className="grid grid-cols-2 gap-4 mb-6">
               {siteData.nosotros.achievements.map((achievement, i) => (
                 <div 
                   key={i} 
-                  className="text-gray-700 animate-fadein"
+                  className="flex items-center text-gray-700 animate-fadein"
                   style={{ animationDelay: `${i * 0.1}s` }}
                 >
-                  {achievement}
+                  <CheckIcon className="w-5 h-5 text-black mr-2 flex-shrink-0" />
+                  <span>{achievement.replace(/^[^\w]+/, '')}</span>
                 </div>
               ))}
             </div>
@@ -202,8 +204,8 @@ export default function Home() {
       </section>
 
       {/* SERVICIOS */}
-      <section id="servicios" className="py-20 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
+      <section id="servicios" className="py-20 bg-gray-50 container-with-margins">
+        <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="font-playfair text-4xl font-bold text-gray-900 mb-4">
               Nuestros Servicios
@@ -262,13 +264,13 @@ export default function Home() {
       </section>
 
       {/* GALERÍA */}
-      <div id="galeria" className="bg-white">
+      <section className="bg-white container-with-margins">
         <GaleriaTrabajos />
-      </div>
+      </section>
 
       {/* TESTIMONIOS */}
-      <section className="py-20 px-4 bg-gradient-rose">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-20 bg-gradient-rose container-with-margins">
+        <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="font-playfair text-4xl font-bold text-gray-900 mb-4">
               {siteData.testimonios.title}
@@ -288,7 +290,7 @@ export default function Home() {
                 <div className="flex items-center mb-4">
                   <Image 
                     src={testimonio.image} 
-                    alt={testimonio.name} 
+                    alt={`Testimonio de ${testimonio.name} - Cliente satisfecha de Elena Benítez`} 
                     width={60} 
                     height={60} 
                     className="rounded-full object-cover mr-4" 
@@ -306,8 +308,8 @@ export default function Home() {
       </section>
 
       {/* UBICACIÓN Y CONTACTO */}
-      <section id="contacto" className="py-20 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
+      <section id="contacto" className="py-20 bg-white container-with-margins">
+        <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="font-playfair text-4xl font-bold text-gray-900 mb-4">
               {siteData.contacto.title}
@@ -326,7 +328,7 @@ export default function Home() {
                 
                 <div className="space-y-4 mb-8">
                   <div className="flex items-start">
-                    <span className="text-2xl mr-4">📍</span>
+                    <SvgIcon type="location" className="w-6 h-6 mr-4 mt-1 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-gray-900">Dirección:</h4>
                       <p className="text-gray-700">{siteData.contacto.direccion}</p>
@@ -334,7 +336,7 @@ export default function Home() {
                   </div>
                   
                   <div className="flex items-start">
-                    <span className="text-2xl mr-4">⏰</span>
+                    <SvgIcon type="clock" className="w-6 h-6 mr-4 mt-1 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-gray-900">Horarios:</h4>
                       <p className="text-gray-700">{siteData.contacto.horarios}</p>
@@ -342,7 +344,7 @@ export default function Home() {
                   </div>
                   
                   <div className="flex items-start">
-                    <span className="text-2xl mr-4">📞</span>
+                    <SvgIcon type="phone" className="w-6 h-6 mr-4 mt-1 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-gray-900">Teléfono:</h4>
                       <p className="text-gray-700">{siteData.contacto.telefono}</p>
@@ -353,23 +355,28 @@ export default function Home() {
                 <div className="flex flex-wrap gap-4">
                   <a 
                     href={siteData.contacto.whatsapp} 
-                    target="_blank" 
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-semibold transition-colors flex items-center"
                   >
-                    💬 WhatsApp
+                    <SvgIcon type="whatsapp" className="w-5 h-5 mr-2" />
+                    WhatsApp
                   </a>
                   <a 
                     href={`tel:${siteData.contacto.telefono}`} 
                     className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full font-semibold transition-colors flex items-center"
                   >
-                    📞 Llamar
+                    <SvgIcon type="phone" className="w-5 h-5 mr-2" />
+                    Llamar
                   </a>
                   <a 
                     href={siteData.contacto.instagram} 
-                    target="_blank" 
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-full font-semibold transition-colors flex items-center"
                   >
-                    📷 Instagram
+                    <SvgIcon type="instagram" className="w-5 h-5 mr-2" />
+                    Instagram
                   </a>
                 </div>
               </div>
@@ -384,15 +391,17 @@ export default function Home() {
                   style={{ border: 0 }}
                   allowFullScreen
                   loading="lazy"
-                  title="Mapa Elena Benítez"
+                  title="Ubicación de Elena Benítez - Salón de belleza en Luque"
                 ></iframe>
               </div>
               <div className="text-center mt-4">
                 <a 
                   href={siteData.contacto.mapa.link} 
-                  target="_blank" 
-                  className="text-blue-600 hover:text-blue-800 underline font-medium"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800 underline font-medium flex items-center justify-center gap-2"
                 >
+                  <SvgIcon type="map" className="w-5 h-5" />
                   Abrir en Google Maps
                 </a>
               </div>
@@ -402,8 +411,8 @@ export default function Home() {
       </section>
 
       {/* RESERVAS */}
-      <section className="py-20 px-4 bg-gradient-to-br from-gray-50 to-rose-50">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100 container-with-margins">
+        <div className="max-w-4xl mx-auto text-center px-4">
           <h2 className="font-playfair text-4xl font-bold text-gray-900 mb-4">
             {siteData.reservas.title}
           </h2>
@@ -429,7 +438,9 @@ export default function Home() {
             <div className="space-y-6">
               {siteData.reservas.whatsapp.enabled && (
                 <div className="bg-green-50 border border-green-200 rounded-3xl p-8 text-center">
-                  <div className="text-4xl mb-4">💬</div>
+                  <div className="mb-4">
+                    <SvgIcon type="whatsapp" className="w-12 h-12 mx-auto text-green-600" />
+                  </div>
                   <h3 className="font-playfair text-xl font-bold text-gray-900 mb-2">
                     WhatsApp
                   </h3>
@@ -439,6 +450,7 @@ export default function Home() {
                   <a 
                     href={siteData.reservas.whatsapp.url}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-block bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-full transition-colors"
                   >
                     Reservar por WhatsApp
@@ -448,7 +460,9 @@ export default function Home() {
               
               {siteData.reservas.calendly.enabled && (
                 <div className="bg-blue-50 border border-blue-200 rounded-3xl p-8 text-center">
-                  <div className="text-4xl mb-4">📅</div>
+                  <div className="mb-4">
+                    <SvgIcon type="calendar" className="w-12 h-12 mx-auto text-blue-600" />
+                  </div>
                   <h3 className="font-playfair text-xl font-bold text-gray-900 mb-2">
                     Calendly
                   </h3>
@@ -458,6 +472,7 @@ export default function Home() {
                   <a 
                     href={siteData.reservas.calendly.url}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-full transition-colors"
                   >
                     Agendar en Calendly
