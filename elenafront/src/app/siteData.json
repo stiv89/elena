@@ -57,17 +57,17 @@
   },
   "inicio": {
     "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    "title": "Tu belleza en manos expertas en Luque",
-    "subtitle": "Transformamos tu estilo con más de 10 años de experiencia",
+    "title": "Belleza en manos expertas en Luque",
+    "subtitle": "Más de 10 años creando tu mejor versión",
     "features": [
-      "✨ Técnicas profesionales",
-      "💅 Productos de calidad premium",
-      "🎨 Atención personalizada",
-      "📍 Ubicación conveniente en Luque"
+      { "text": "Técnicas profesionales", "icon": "scissors" },
+      { "text": "Productos premium", "icon": "brush" },
+      { "text": "Atención personalizada", "icon": "sparkle" },
+      { "text": "En el corazón de Luque", "icon": "location" }
     ],
     "cta": {
-      "text": "Reservá tu cita",
-      "url": "https://wa.me/595991743889?text=Hola%20Elena,%20quiero%20reservar%20una%20cita"
+      "text": "Llevá el salón a tu hogar",
+      "url": "https://wa.me/595991743889?text=Hola%20Elena,%20me%20interesa%20conocer%20más%20sobre%20los%20servicios%20a%20domicilio"
     }
   },
   "nosotros": {

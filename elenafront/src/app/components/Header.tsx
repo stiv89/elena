@@ -121,19 +121,22 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-elegant border-b border-gray-200">
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo y nombre */}
-        <div className="flex items-center gap-3">
+        <button 
+          onClick={() => scrollToSection('#inicio')}
+          className="flex items-center gap-3 cursor-pointer group transition-all duration-300 hover:scale-105"
+        >
           {header.logo ? (
-            <Image src={header.logo} alt="Elena Benítez Logo" width={50} height={50} className="rounded-full" />
+            <Image src={header.logo} alt="Elena Benítez Logo" width={50} height={50} className="rounded-full group-hover:shadow-lg transition-shadow duration-300" />
           ) : (
-            <div className="w-12 h-12 bg-gradient-gold rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-gold rounded-full flex items-center justify-center group-hover:shadow-lg transition-shadow duration-300">
               <span className="text-white font-bold text-xl">E</span>
             </div>
           )}
-          <div className="flex flex-col">
-            <span className="font-playfair text-2xl font-bold text-gray-900">{header.name}</span>
+          <div className="flex flex-col text-left">
+            <span className="font-playfair text-2xl font-bold text-gray-900 group-hover:text-amber-600 transition-colors duration-300">{header.name}</span>
             <span className="text-sm text-gray-600 font-medium">{header.subtitle}</span>
           </div>
-        </div>
+        </button>
 
         {/* Menu desktop */}
         <ul className="hidden lg:flex items-center gap-8 font-medium">

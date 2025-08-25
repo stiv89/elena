@@ -8,6 +8,8 @@ import WhatsAppFloat from "./components/WhatsAppFloat";
 import ServiceIcon from "./components/ServiceIcon";
 import ContactForm from "./components/ContactForm";
 import SvgIcon, { StarIcon, CheckIcon } from "./components/SvgIcon";
+import { ScissorsIcon, BrushIcon, SparkleIcon, LocationPinIcon } from "./components/HeroIcons";
+import IsaAssistant from "./components/IsaAssistant";
 
 // Componente de estrellas para rating usando íconos SVG
 function StarRating({ rating }: { rating: number }) {
@@ -107,53 +109,126 @@ export default function Home() {
         />
       )}
 
+      {/* Asistente Virtual Isa */}
+      <IsaAssistant enabled={true} />
+
       {/* HERO SECTION */}
       <section 
         id="inicio" 
-        className="relative min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 container-with-margins"
+        className="relative min-h-screen flex items-center justify-center hero-gradient container-with-margins"
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-black/10 to-transparent"></div>
-        <div className="relative z-10 max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center px-4">
-          <div className="text-center lg:text-left animate-slidein">
-            <h1 className="font-playfair text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+        {/* Overlay sutil */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"></div>
+        
+        <div className="relative z-10 max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center px-4 py-16">
+          {/* Contenido principal */}
+          <div className="text-center lg:text-left animate-slidein order-2 lg:order-1">
+            {/* Título optimizado para móvil */}
+            <h1 className="font-playfair text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 mb-4 lg:mb-6 leading-tight">
               {siteData.inicio.title}
             </h1>
-            <p className="text-xl text-gray-700 mb-8 leading-relaxed">
+            
+            {/* Subtítulo más persuasivo */}
+            <p className="text-lg sm:text-xl text-gray-700 mb-6 lg:mb-8 leading-relaxed font-medium">
               {siteData.inicio.subtitle}
             </p>
             
-            {/* Features con íconos SVG */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
-              {siteData.inicio.features.map((feature, i) => (
-                <div 
-                  key={i} 
-                  className="flex items-center text-gray-700 animate-fadein"
-                  style={{ animationDelay: `${i * 0.2}s` }}
-                >
-                  <CheckIcon className="w-5 h-5 text-black mr-2" />
-                  <span>{feature.replace(/^[^\w]+/, '')}</span>
-                </div>
-              ))}
+            {/* Lista de beneficios con iconos SVG mejorados */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4 mb-8">
+              {siteData.inicio.features.map((feature, i) => {
+                const getIcon = (iconType: string) => {
+                  switch (iconType) {
+                    case 'scissors':
+                      return <ScissorsIcon className="w-5 h-5 text-amber-600" />;
+                    case 'brush':
+                      return <BrushIcon className="w-5 h-5 text-amber-600" />;
+                    case 'sparkle':
+                      return <SparkleIcon className="w-5 h-5 text-amber-600" />;
+                    case 'location':
+                      return <LocationPinIcon className="w-5 h-5 text-amber-600" />;
+                    default:
+                      return <CheckIcon className="w-5 h-5 text-amber-600" />;
+                  }
+                };
+
+                return (
+                  <div 
+                    key={i} 
+                    className="flex items-center text-gray-800 animate-fadein benefit-icon p-3 rounded-lg"
+                    style={{ animationDelay: `${i * 0.1}s` }}
+                  >
+                    <div className="mr-3 flex-shrink-0">
+                      {getIcon(feature.icon)}
+                    </div>
+                    <span className="text-sm sm:text-base font-medium">{feature.text}</span>
+                  </div>
+                );
+              })}
             </div>
 
-            <a
-              href={siteData.inicio.cta.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-gradient-gold text-white font-semibold py-4 px-8 rounded-full shadow-elegant transition-all duration-300 transform hover:scale-105 hover:shadow-2xl text-lg"
-            >
-              {siteData.inicio.cta.text}
-            </a>
+            {/* CTA mejorado y más prominente - DOBLE OPCIÓN */}
+            <div className="flex flex-col sm:flex-row gap-3 items-center justify-center lg:justify-start mb-6">
+              {/* CTA Principal - Agendar cita */}
+              <a
+                href="https://wa.me/595991743889?text=Hola%20Elena,%20quiero%20agendar%20una%20cita"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cta-button text-white font-semibold py-3 px-6 lg:px-8 rounded-full transition-all duration-300 transform hover:scale-105 text-sm lg:text-base shadow-lg w-full sm:w-auto text-center"
+              >
+                Agendá tu cita ahora
+              </a>
+              
+              {/* CTA Secundario - Servicio a domicilio */}
+              <a
+                href={siteData.inicio.cta.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white border-2 border-amber-600 text-amber-600 hover:bg-amber-600 hover:text-white font-semibold py-3 px-6 lg:px-8 rounded-full transition-all duration-300 transform hover:scale-105 text-sm lg:text-base shadow-md w-full sm:w-auto text-center"
+              >
+                {siteData.inicio.cta.text}
+              </a>
+            </div>
+            
+            {/* Información rápida de contacto */}
+            <div className="flex items-center justify-center lg:justify-start text-gray-600 text-sm">
+              <SvgIcon type="phone" className="w-4 h-4 mr-2 text-amber-600" />
+              <span className="font-medium">+595 991 743889</span>
+            </div>
           </div>
           
-          <div className="animate-fadein">
-            <Image 
-              src={siteData.inicio.image} 
-              alt="Salón de belleza Elena Benítez en Luque - Servicios de maquillaje, cabello, cejas y pestañas" 
-              width={600} 
-              height={400} 
-              className="rounded-3xl shadow-2xl object-cover w-full h-[400px] image-overlay" 
-            />
+          {/* Imagen optimizada */}
+          <div className="animate-fadein order-1 lg:order-2">
+            <div className="relative">
+              {/* Decoración de fondo */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-amber-100 to-rose-100 rounded-3xl opacity-30 blur-lg"></div>
+              <Image 
+                src={siteData.inicio.image} 
+                alt="Salón de belleza Elena Benítez en Luque - Servicios profesionales de maquillaje, cabello y cejas" 
+                width={600} 
+                height={400} 
+                className="relative rounded-3xl shadow-2xl object-cover w-full h-[300px] sm:h-[350px] lg:h-[450px] image-overlay" 
+                priority
+              />
+              
+              {/* Badge flotante */}
+              <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-xl p-4 animate-float">
+                <div className="flex items-center">
+                  <div className="flex -space-x-1 mr-3">
+                    {[...Array(5)].map((_, i) => (
+                      <StarIcon
+                        key={i}
+                        className="w-4 h-4 text-amber-400"
+                        filled={true}
+                      />
+                    ))}
+                  </div>
+                  <div>
+                    <p className="font-bold text-gray-900 text-sm">+1000</p>
+                    <p className="text-xs text-gray-600">Clientes felices</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
