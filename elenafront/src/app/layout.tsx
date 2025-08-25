@@ -86,6 +86,26 @@ export default function RootLayout({
         <meta name="geo.position" content="-25.2677;-57.4847" />
         <meta name="ICBM" content="-25.2677, -57.4847" />
         <link rel="canonical" href="https://elenabenitez.com" />
+        
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-4B82YMTN2P"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-4B82YMTN2P', {
+                page_title: document.title,
+                page_location: window.location.href,
+                anonymize_ip: true,
+                cookie_flags: 'SameSite=None;Secure',
+                send_page_view: true
+              });
+            `,
+          }}
+        />
+        
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

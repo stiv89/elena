@@ -2,12 +2,25 @@
 import { useState, useRef, useEffect } from 'react';
 import siteData from '../siteData.json';
 import { BotIcon, SparklesIcon } from './ChatIcons';
+import { useGoogleAnalytics } from '../hooks/useGoogleAnalytics';
 
 interface Message {
   id: string;
   text: string;
   isBot: boolean;
   timestamp: Date;
+  suggestions?: string[];
+  context?: string;
+}
+
+interface ConversationContext {
+  stage: 'greeting' | 'exploring' | 'interested' | 'booking' | 'pricing' | 'location' | 'scheduling';
+  interests: string[];
+  mentionedServices: string[];
+  budget?: string;
+  urgency?: 'low' | 'medium' | 'high';
+  customerType?: 'new' | 'returning' | 'referred';
+  previousTopic?: string;
 }
 
 interface IsaAssistantProps {
@@ -19,16 +32,401 @@ export default function IsaAssistant({ enabled = true }: IsaAssistantProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [conversationContext, setConversationContext] = useState<ConversationContext>({
+    stage: 'greeting',
+    interests: [],
+    mentionedServices: [],
+    customerType: 'new'
+  });
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Analizador de intención inteligente
+  const analyzeIntent = (message: string, context: ConversationContext) => {
+    const msgLower = message.toLowerCase();
+    const intent = {
+      type: 'general',
+      confidence: 0,
+      entities: [] as string[],
+      sentiment: 'neutral' as 'positive' | 'negative' | 'neutral',
+      urgency: 'medium' as 'low' | 'medium' | 'high'
+    };
+
+    // Detección de urgencia
+    if (msgLower.includes('urgente') || msgLower.includes('hoy') || msgLower.includes('ahora')) {
+      intent.urgency = 'high';
+    } else if (msgLower.includes('cuando pueda') || msgLower.includes('no hay apuro')) {
+      intent.urgency = 'low';
+    }
+
+    // Detección de sentimiento
+    const positiveWords = ['me gusta', 'excelente', 'perfecto', 'genial', 'maravilloso'];
+    const negativeWords = ['no me gusta', 'malo', 'terrible', 'caro', 'no puedo'];
+    
+    if (positiveWords.some(word => msgLower.includes(word))) intent.sentiment = 'positive';
+    if (negativeWords.some(word => msgLower.includes(word))) intent.sentiment = 'negative';
+
+    // Clasificación de intenciones
+    if (msgLower.includes('precio') || msgLower.includes('costo') || msgLower.includes('cuanto')) {
+      intent.type = 'pricing';
+      intent.confidence = 0.9;
+    } else if (msgLower.includes('reserva') || msgLower.includes('cita') || msgLower.includes('turno')) {
+      intent.type = 'booking';
+      intent.confidence = 0.95;
+    } else if (msgLower.includes('donde') || msgLower.includes('ubicacion') || msgLower.includes('direccion')) {
+      intent.type = 'location';
+      intent.confidence = 0.9;
+    } else if (msgLower.includes('horario') || msgLower.includes('cuando') || msgLower.includes('abierto')) {
+      intent.type = 'scheduling';
+      intent.confidence = 0.85;
+    } else if (msgLower.includes('servicio') || msgLower.includes('que hacen') || msgLower.includes('maquillaje') || msgLower.includes('cabello')) {
+      intent.type = 'services';
+      intent.confidence = 0.8;
+    }
+
+    return intent;
+  };
+
+  // Generador de respuestas contextuales inteligentes
+  const generateIntelligentResponse = (userMessage: string, context: ConversationContext): { response: string, newContext: ConversationContext, suggestions: string[] } => {
+    const intent = analyzeIntent(userMessage, context);
+    const msgLower = userMessage.toLowerCase();
+    
+    let response = '';
+    let suggestions: string[] = [];
+    // eslint-disable-next-line prefer-const
+    let newContext = { ...context };
+
+    // Actualizar contexto basado en el mensaje
+    if (msgLower.includes('boda')) {
+      newContext.interests.push('boda');
+      newContext.stage = 'interested';
+    } else if (msgLower.includes('trabajo')) {
+      newContext.interests.push('trabajo');
+      newContext.stage = 'exploring';
+    }
+
+    newContext.urgency = intent.urgency;
+    newContext.previousTopic = intent.type;
+
+    // Lógica de respuesta inteligente por intención
+    switch (intent.type) {
+      case 'greeting':
+        if (context.stage === 'greeting') {
+          response = `¡Hola! Soy Isa, tu consultora de belleza personal de Elena Benítez. 
+
+Me especializo en encontrar exactamente lo que necesitas para verte y sentirte radiante. Con más de 10 años de experiencia, Elena ha transformado la belleza de miles de mujeres en Luque.
+
+¿Para qué ocasión especial te quieres ver perfecta? 💕`;
+
+          suggestions = [
+            "Una boda muy importante",
+            "Reunión de trabajo",
+            "Cita romántica",
+            "Solo quiero consentirme",
+            "Cambiar mi look completo"
+          ];
+          newContext.stage = 'exploring';
+        }
+        break;
+
+      case 'pricing':
+        if (msgLower.includes('boda')) {
+          response = `Para bodas, Elena ofrece paquetes especiales completos:
+
+💄 **Paquete Novia Clásico**
+• Maquillaje social: ₲110.000
+• Diseño de cejas + henna: ₲50.000
+• **Total: ₲160.000**
+
+✨ **Paquete Novia Premium**
+• Maquillaje Glam: ₲150.000
+• Lifting de pestañas: ₲90.000
+• Tratamiento facial express: ₲80.000
+• **Total: ₲320.000** (Ahorro ₲40.000)
+
+¿Te interesa algún paquete específico? Puedo personalizar según tu presupuesto 💎`;
+
+          suggestions = [
+            "Me interesa el paquete clásico",
+            "Quiero el premium completo",
+            "¿Hay opciones más económicas?",
+            "¿Incluye prueba previa?",
+            "¿Hacen servicios a domicilio?"
+          ];
+        } else {
+          response = generatePricingResponse(msgLower);
+          suggestions = [
+            "¿Hay promociones disponibles?",
+            "¿Aceptan tarjetas?",
+            "¿Hay descuentos para varios servicios?",
+            "Quiero agendar una cita",
+            "¿Cuál es el más popular?"
+          ];
+        }
+        newContext.stage = 'pricing';
+        break;
+
+      case 'booking':
+        if (intent.urgency === 'high') {
+          response = `¡Entiendo que es urgente! 🚨
+
+Elena tiene disponibilidad de emergencia para casos especiales:
+
+📱 **Para hoy mismo**: Llama directo al ${siteData.contacto.telefono}
+⚡ **WhatsApp inmediato**: Te conecto ahora mismo
+🏠 **Servicio express a domicilio**: Disponible con recargo mínimo
+
+¿Es para una ocasión muy especial que no puede esperar?`;
+
+          suggestions = [
+            "¡Sí, es una emergencia!",
+            "Llámame por favor",
+            "¿Pueden venir a mi casa?",
+            "¿Qué horarios tienen hoy?",
+            "¿Cuál es el recargo por urgencia?"
+          ];
+        } else {
+          response = `¡Perfecto! Te ayudo a encontrar el mejor momento para tu cita 📅
+
+**Disponibilidad esta semana:**
+• Lunes a Viernes: ${siteData.contacto.horarios}
+• Sábados: Horarios especiales disponibles
+• Domingos: Solo servicios a domicilio
+
+**Opciones de reserva:**
+🏢 En el salón (${siteData.contacto.direccion})
+🏠 A domicilio (+30% del valor del servicio)
+
+¿Qué día y horario prefieres?`;
+
+          suggestions = [
+            "Prefiero en el salón",
+            "Me conviene a domicilio",
+            "¿Qué horarios tienen mañana?",
+            "Solo fines de semana",
+            "¿Cuánto demora cada servicio?"
+          ];
+        }
+        newContext.stage = 'booking';
+        break;
+
+      case 'services':
+        if (msgLower.includes('maquillaje')) {
+          response = generateMakeupResponse(context);
+        } else if (msgLower.includes('cabello')) {
+          response = generateHairResponse(context);
+        } else {
+          response = generateGeneralServicesResponse(context);
+        }
+        suggestions = getServiceSuggestions(intent.entities);
+        newContext.stage = 'interested';
+        break;
+
+      case 'location':
+        response = `📍 **Encontrarnos es súper fácil:**
+
+**Dirección:** ${siteData.contacto.direccion}
+🗺️ En el corazón de Luque, zona céntrica
+� Estacionamiento disponible
+🚌 Cerca de transporte público
+
+**También vamos a tu hogar:**
+🏠 Servicio a domicilio en Luque y zonas aledañas
+⏰ Mismo día con reserva previa
+💼 Llevamos todo el equipo profesional
+
+¿Prefieres venir al salón o que vayamos a tu casa?`;
+
+        suggestions = [
+          "Prefiero ir al salón",
+          "Me conviene a domicilio",
+          "¿Cómo llego en colectivo?",
+          "¿Hay estacionamiento?",
+          "¿A qué zonas van a domicilio?"
+        ];
+        break;
+
+      default:
+        response = generateContextualResponse(userMessage, context);
+        suggestions = getContextualSuggestions(context);
+    }
+
+    return { response, newContext, suggestions };
+  };
+
+  // Funciones auxiliares para respuestas especializadas
+  const generateMakeupResponse = (context: ConversationContext) => {
+    if (context.interests.includes('boda')) {
+      return `💄 **Maquillaje Nupcial - Especialidad de Elena:**
+
+Elena es reconocida en Luque por sus maquillajes de novia impecables:
+
+✨ **¿Por qué las novias eligen a Elena?**
+• +200 novias han confiado en ella
+• Técnica que dura hasta 12 horas
+• Productos resistentes al agua y emociones
+• Incluye retoque gratuito el día de la boda
+
+🎨 **Opciones disponibles:**
+• **Maquillaje Natural**: ₲110.000 (perfecto para ceremonias íntimas)
+• **Maquillaje Glam**: ₲150.000 (ideal para fiestas grandes)
+• **Paquete Completo**: Incluye prueba previa + día de la boda
+
+¿Qué estilo de novia te imaginas siendo?`;
+    }
+    
+    return `💄 **Elena es experta en maquillaje para cada ocasión:**
+
+• **Social**: ₲110.000 - Elegante y duradero
+• **Glam**: ₲150.000 - Impacto y sofisticación  
+• **Medio**: ₲75.000 - Natural pero impecable
+
+Todos incluyen limpieza facial express. ¿Para qué ocasión lo necesitas?`;
+  };
+
+  const generateHairResponse = (context: ConversationContext) => {
+    return `💇‍♀️ **Cuidado Capilar Profesional:**
+
+Elena entiende que tu cabello es tu corona:
+
+🌟 **Tratamientos disponibles:**
+• **Lavado Clásico**: ₲60.000 - Limpieza profunda + peinado
+• **Tratamiento Hidratante**: ₲85.000 - Nutrición intensa
+• **Lavado + Peinado Especial**: ₲90.000 - Para eventos
+
+💡 **¿Sabías que Elena personaliza cada tratamiento según tu tipo de cabello?**
+
+¿Qué necesita tu cabello específicamente?`;
+  };
+
+  const generateGeneralServicesResponse = (context: ConversationContext) => {
+    return `🌟 **Elena ofrece servicios integrales de belleza:**
+
+**Nuestras especialidades más populares:**
+
+💄 **Maquillaje** (desde ₲75.000)
+👁️ **Cejas y Pestañas** (desde ₲25.000)
+💇‍♀️ **Cuidado Capilar** (desde ₲60.000)
+✨ **Tratamientos Faciales** (desde ₲80.000)
+💅 **Manos y Pies** (desde ₲30.000)
+
+¿Hay algún área específica en la que quieres enfocarte?`;
+  };
+
+  const getServiceSuggestions = (entities: string[]) => {
+    return [
+      "¿Cuál es el más popular?",
+      "¿Hacen paquetes combinados?",
+      "¿Cuánto tiempo demora?",
+      "¿Hay descuentos para varios servicios?",
+      "Quiero ver ejemplos de trabajos"
+    ];
+  };
+
+  const generatePricingResponse = (message: string) => {
+    return `💰 **Precios transparentes y justos:**
+
+Elena cree en la honestidad total con sus precios:
+
+**Rangos de inversión:**
+• **Básico**: ₲30.000 - ₲70.000 (servicios esenciales)
+• **Intermedio**: ₲80.000 - ₲120.000 (tratamientos completos)
+• **Premium**: ₲130.000+ (experiencias exclusivas)
+
+**¿Por qué invertir en Elena?**
+✅ 10+ años de experiencia comprobada
+✅ Productos profesionales de primera calidad
+✅ Garantía de satisfacción total
+✅ Atención personalizada y dedicada
+
+¿Qué presupuesto tenías en mente?`;
+  };
+
+  const generateContextualResponse = (message: string, context: ConversationContext) => {
+    // Respuestas inteligentes basadas en el contexto de la conversación
+    if (context.stage === 'booking' && message.toLowerCase().includes('cuando')) {
+      return `Basándome en lo que hemos conversado, te recomiendo:
+
+📅 **Para tu ocasión especial:**
+• Reserva con 3-5 días de anticipación
+• Los viernes y sábados se llenan rápido
+• Elena prefiere dedicar tiempo completo a cada cliente
+
+¿Te conviene entre semana o necesariamente fin de semana?`;
+    }
+
+    return `Entiendo perfectamente lo que necesitas. Déjame conectarte con Elena directamente para que recibas la atención personalizada que mereces.
+
+En estos 10 años, Elena ha aprendido que cada mujer es única y merece una experiencia de belleza completamente personalizada.
+
+¿Te parece si coordinamos una breve llamada para conocerte mejor?`;
+  };
+
+  const getContextualSuggestions = (context: ConversationContext) => {
+    switch (context.stage) {
+      case 'exploring':
+        return [
+          "¿Cuáles son sus especialidades?",
+          "Quiero ver fotos de trabajos",
+          "¿Qué hace únicos sus servicios?",
+          "¿Cómo puedo reservar?",
+          "¿Tienen promociones?"
+        ];
+      case 'interested':
+        return [
+          "¿Cuánto cuesta este servicio?",
+          "¿Cuánto tiempo demora?",
+          "¿Qué incluye exactamente?",
+          "Quiero agendar una cita",
+          "¿Hay paquetes disponibles?"
+        ];
+      case 'pricing':
+        return [
+          "¿Hay formas de pago?",
+          "¿Ofrecen descuentos?",
+          "¿Vale la pena el precio?",
+          "Quiero reservar ahora",
+          "¿Hay garantía?"
+        ];
+      case 'booking':
+        return [
+          "¿Qué necesito llevar?",
+          "¿Cuánto tiempo antes llego?",
+          "¿Puedo reagendar si es necesario?",
+          "¿Confirman la cita por WhatsApp?",
+          "¿Hay alguna preparación previa?"
+        ];
+      default:
+        return [
+          "Cuéntame más sobre Elena",
+          "¿Qué servicios ofrecen?",
+          "¿Dónde están ubicados?",
+          "¿Cómo puedo contactarlos?",
+          "¿Tienen redes sociales?"
+        ];
+    }
+  };
 
   useEffect(() => {
     if (messages.length === 0) {
-      // Mensaje de bienvenida inicial
+      // Mensaje de bienvenida inicial inteligente
       const welcomeMessage: Message = {
         id: '1',
-        text: '¡Hola! Soy Isa, tu asistente virtual de Elena Benítez Belleza Integral. ¿En qué puedo ayudarte hoy? Puedo informarte sobre nuestros servicios, precios, horarios o ayudarte a reservar una cita.',
+        text: `¡Hola! Soy Isa, tu consultora personal de belleza de Elena Benítez. 
+
+Me especializo en encontrar exactamente lo que necesitas para verte y sentirte radiante. Con más de 10 años de experiencia, Elena ha transformado la belleza de miles de mujeres en Luque.
+
+¿Para qué ocasión especial te quieres ver perfecta? 💕`,
         isBot: true,
-        timestamp: new Date()
+        timestamp: new Date(),
+        suggestions: [
+          "Una boda muy importante",
+          "Reunión de trabajo", 
+          "Cita romántica",
+          "Solo quiero consentirme",
+          "Cambiar mi look completo"
+        ],
+        context: 'greeting'
       };
       setMessages([welcomeMessage]);
     }
@@ -42,106 +440,14 @@ export default function IsaAssistant({ enabled = true }: IsaAssistantProps) {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const generateBotResponse = (userMessage: string): string => {
-    const message = userMessage.toLowerCase();
-    
-    // Saludos
-    if (message.includes('hola') || message.includes('buenos') || message.includes('buenas')) {
-      return '¡Hola! Me alegra saludarte. Soy Isa, tu asistente virtual. ¿Te gustaría saber sobre nuestros servicios, precios o quizás reservar una cita?';
-    }
-    
-    // Servicios generales
-    if (message.includes('servicio') || message.includes('que hacen') || message.includes('que ofrecen')) {
-      const serviciosResumen = siteData.servicios.map(cat => cat.categoria).join(', ');
-      return `Ofrecemos una amplia gama de servicios de belleza: ${serviciosResumen}. ¿Te interesa alguna categoría en particular?`;
-    }
-    
-    // Precios
-    if (message.includes('precio') || message.includes('costo') || message.includes('cuanto')) {
-      if (message.includes('maquillaje')) {
-        const maquillaje = siteData.servicios.find(s => s.categoria.includes('Maquillaje'));
-        if (maquillaje) {
-          const ejemplos = maquillaje.servicios.slice(0, 3).map(s => `• ${s.nombre}: ₲${s.precio}`).join('\n');
-          return `Estos son algunos precios de maquillaje:\n${ejemplos}\n\n¿Te interesa algún servicio específico?`;
-        }
-      }
-      
-      if (message.includes('cabello') || message.includes('pelo') || message.includes('lavado')) {
-        const cabello = siteData.servicios.find(s => s.categoria.includes('Lavados'));
-        if (cabello) {
-          const ejemplos = cabello.servicios.slice(0, 3).map(s => `• ${s.nombre}: ₲${s.precio}`).join('\n');
-          return `Estos son algunos precios de servicios capilares:\n${ejemplos}\n\n¿Te interesa algún tratamiento específico?`;
-        }
-      }
-      
-      if (message.includes('uña') || message.includes('manicura') || message.includes('pedicura')) {
-        const unas = siteData.servicios.find(s => s.categoria.includes('Manos'));
-        if (unas) {
-          const ejemplos = unas.servicios.slice(0, 3).map(s => `• ${s.nombre}: ₲${s.precio}`).join('\n');
-          return `Estos son algunos precios de manicura y pedicura:\n${ejemplos}\n\n¿Necesitas más información sobre algún servicio?`;
-        }
-      }
-      
-      return 'Nuestros precios varían según el servicio. Por ejemplo:\n• Lavado clásico: ₲60.000\n• Maquillaje social: ₲110.000\n• Manicura tradicional: ₲30.000\n\n¿Te interesa algún servicio en particular?';
-    }
-    
-    // Horarios
-    if (message.includes('horario') || message.includes('cuando') || message.includes('abierto') || message.includes('hora')) {
-      return `Nuestros horarios son:\n📅 ${siteData.contacto.horarios}\n\n¿Te gustaría reservar una cita?`;
-    }
-    
-    // Ubicación
-    if (message.includes('donde') || message.includes('ubicacion') || message.includes('direccion') || message.includes('luque')) {
-      return `Estamos ubicados en:\n📍 ${siteData.contacto.direccion}\n\nPuedes encontrarnos fácilmente en Google Maps. ¿Necesitas ayuda para llegar?`;
-    }
-    
-    // Reservas
-    if (message.includes('reserva') || message.includes('cita') || message.includes('turno') || message.includes('agendar')) {
-      return `¡Perfecto! Puedes reservar tu cita de varias formas:\n\n📱 WhatsApp: ${siteData.contacto.telefono}\n📞 Llamada directa\n💬 Te conectaré con WhatsApp para que puedas reservar directamente.\n\n¿Prefieres que te ayude a contactar por WhatsApp?`;
-    }
-    
-    // WhatsApp
-    if (message.includes('whatsapp') || message.includes('mensaje') || message.includes('si') && messages.some(m => m.text.includes('WhatsApp'))) {
-      return '¡Excelente! Te voy a redirigir a WhatsApp para que puedas hablar directamente con Elena y reservar tu cita. 📱✨';
-    }
-    
-    // Específico sobre Elena
-    if (message.includes('elena') || message.includes('experiencia') || message.includes('profesional')) {
-      return `Elena Benítez tiene más de 10 años de experiencia en el mundo de la belleza. Su especialidad es brindar un servicio personalizado y de calidad premium. ¡Estarás en las mejores manos! ¿Te gustaría conocer más sobre algún servicio en particular?`;
-    }
-    
-    // Maquillaje específico
-    if (message.includes('maquillaje')) {
-      const maquillaje = siteData.servicios.find(s => s.categoria.includes('Maquillaje'));
-      if (maquillaje) {
-        return `¡El maquillaje es una de nuestras especialidades! Ofrecemos:\n\n• Medio maquillaje: ₲75.000\n• Maquillaje social: ₲110.000\n• Maquillaje Glam: ₲150.000\n\nTodos incluyen limpieza facial express. ¿Para qué ocasión necesitas el maquillaje?`;
-      }
-    }
-    
-    // Cejas
-    if (message.includes('ceja') || message.includes('perfilado') || message.includes('henna')) {
-      const cejas = siteData.servicios.find(s => s.categoria.includes('Cejas'));
-      if (cejas) {
-        return `¡Somos expertas en cejas perfectas! Te ofrecemos:\n\n• Diseño de cejas + perfilado: ₲25.000\n• Diseño de cejas + henna: ₲50.000\n• Lifting de pestañas: ₲90.000\n\n¿Te interesa algún tratamiento específico?`;
-      }
-    }
-    
-    // Despedidas
-    if (message.includes('gracias') || message.includes('bye') || message.includes('chau') || message.includes('adiós')) {
-      return '¡De nada! Ha sido un placer ayudarte. Recuerda que estamos aquí para hacer realidad tu transformación de belleza. ¡Te esperamos en el salón! ✨💕';
-    }
-    
-    // Respuesta por defecto
-    return `Entiendo que tienes una consulta. Te puedo ayudar con información sobre:\n\n• 💄 Servicios y precios\n• 📅 Horarios y reservas\n• 📍 Ubicación\n• 💫 Recomendaciones personalizadas\n\n¿Sobre qué te gustaría saber más?`;
-  };
-
-  const handleSendMessage = async () => {
-    if (!inputText.trim()) return;
+  const handleSendMessage = async (messageText?: string) => {
+    const textToSend = messageText || inputText;
+    if (!textToSend.trim()) return;
 
     // Agregar mensaje del usuario
     const userMessage: Message = {
       id: Date.now().toString(),
-      text: inputText,
+      text: textToSend,
       isBot: false,
       timestamp: new Date()
     };
@@ -150,25 +456,30 @@ export default function IsaAssistant({ enabled = true }: IsaAssistantProps) {
     setInputText('');
     setIsTyping(true);
 
-    // Simular delay de respuesta
+    // Simular delay de respuesta más realista
     setTimeout(() => {
+      const { response, newContext, suggestions } = generateIntelligentResponse(textToSend, conversationContext);
+      
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: generateBotResponse(inputText),
+        text: response,
         isBot: true,
-        timestamp: new Date()
+        timestamp: new Date(),
+        suggestions,
+        context: newContext.stage
       };
       
       setMessages(prev => [...prev, botResponse]);
+      setConversationContext(newContext);
       setIsTyping(false);
 
       // Si la respuesta incluye WhatsApp, abrir enlace después de un momento
-      if (botResponse.text.includes('redirigir a WhatsApp')) {
+      if (response.includes('WhatsApp') && response.includes('redirigir')) {
         setTimeout(() => {
           window.open(`https://wa.me/${siteData.whatsapp.number}?text=Hola Elena, vengo desde la web y me gustaría reservar una cita`, '_blank');
         }, 2000);
       }
-    }, 1000 + Math.random() * 2000); // Delay realista
+    }, 1500 + Math.random() * 2000); // Delay más realista
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -297,7 +608,7 @@ export default function IsaAssistant({ enabled = true }: IsaAssistantProps) {
                 disabled={isTyping}
               />
               <button
-                onClick={handleSendMessage}
+                onClick={() => handleSendMessage()}
                 disabled={!inputText.trim() || isTyping}
                 className="w-8 sm:w-10 h-8 sm:h-10 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-full flex items-center justify-center transition-colors"
               >

@@ -1,4 +1,5 @@
 "use client";
+import { useGoogleAnalytics } from '../hooks/useGoogleAnalytics';
 
 interface WhatsAppFloatProps {
   number: string;
@@ -11,9 +12,15 @@ export default function WhatsAppFloat({
   message = "Hola, quiero más información", 
   enabled = true 
 }: WhatsAppFloatProps) {
+  const { trackWhatsAppClick, trackAppointmentIntent } = useGoogleAnalytics();
+
   if (!enabled) return null;
 
   const handleClick = () => {
+    // Track the WhatsApp click event
+    trackWhatsAppClick('floating_button');
+    trackAppointmentIntent('whatsapp');
+    
     const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   };
