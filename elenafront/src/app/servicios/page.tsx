@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef } from "react";
+import { Metadata } from "next";
 import siteData from "../siteData.json";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -7,7 +8,9 @@ import ServiceIcon from "../components/ServiceIcon";
 import WhatsAppFloat from "../components/WhatsAppFloat";
 import SvgIcon from "../components/SvgIcon";
 import SmartSearchBar from "../components/SmartSearchBar";
+import Breadcrumbs from "../components/Breadcrumbs";
 import Link from "next/link";
+import Head from "next/head";
 
 export default function Servicios() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -56,10 +59,21 @@ export default function Servicios() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      <Header />
+    <>
+      <Head>
+        <title>🎯 Servicios Completos | Elena Benítez - Peluquería Luque Paraguay</title>
+        <meta name="description" content="✨ Descubre todos nuestros servicios de belleza en Luque: maquillaje profesional, tratamientos capilares, cejas perfectas, manicura, pedicura y más. Precios desde ₲15.000. ¡Reservá ahora!" />
+        <meta name="keywords" content="servicios peluquería Luque, precios belleza Paraguay, maquillaje profesional Luque, tratamientos capilares Paraguay, cejas Luque, manicura pedicura Paraguay, alisados Luque, coloración cabello Paraguay, depilación Luque, extensiones uñas Paraguay" />
+        <link rel="canonical" href="https://elenabenitez.com/servicios" />
+        <meta property="og:title" content="🎯 Servicios Completos | Elena Benítez - Peluquería Luque" />
+        <meta property="og:description" content="✨ Servicios de belleza profesionales en Luque Paraguay: maquillaje, tratamientos capilares, cejas, manicura y más. Precios desde ₲15.000" />
+        <meta property="og:url" content="https://elenabenitez.com/servicios" />
+        <meta property="og:type" content="website" />
+      </Head>
       
-      {/* WhatsApp Float */}
+      <div className="min-h-screen bg-white flex flex-col">
+        <Header />
+        <Breadcrumbs />      {/* WhatsApp Float */}
       {siteData.whatsapp.enabled && (
         <WhatsAppFloat 
           number={siteData.whatsapp.number}
@@ -84,11 +98,11 @@ export default function Servicios() {
           </div>
           
           <h1 className="font-playfair text-4xl font-bold text-gray-900 mb-4">
-            Nuestros Servicios
+            🎯 Servicios Completos de Belleza en Luque
           </h1>
-          <p className="text-lg text-gray-700 mb-6 max-w-2xl mx-auto">
-            Encuentra exactamente lo que necesitas con nuestro buscador inteligente
-          </p>
+          <h2 className="text-lg text-gray-700 mb-6 max-w-2xl mx-auto">
+            Descubre más de <strong>50 servicios profesionales</strong> con precios desde ₲15.000 - La mejor peluquería de Paraguay
+          </h2>
 
           {/* Buscador Inteligente */}
           <div className="mb-6">
@@ -286,6 +300,7 @@ export default function Servicios() {
       </section>
 
       <Footer />
-    </div>
+      </div>
+    </>
   );
 }

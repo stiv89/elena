@@ -2,16 +2,10 @@
 
 export const GA_TRACKING_ID = 'G-4B82YMTN2P';
 
-// Interfaz para gtag global
-interface GtagFunction {
-  (command: 'config', targetId: string, config?: Record<string, unknown>): void;
-  (command: 'event', eventName: string, parameters?: Record<string, unknown>): void;
-}
-
 // https://developers.google.com/analytics/devguides/collection/gtagjs/pages
 export const pageview = (url: string) => {
-  if (typeof window !== 'undefined' && (window as unknown as { gtag?: GtagFunction }).gtag) {
-    (window as unknown as { gtag: GtagFunction }).gtag('config', GA_TRACKING_ID, {
+  if (typeof window !== 'undefined' && (window as unknown as { gtag?: Function }).gtag) {
+    (window as unknown as { gtag: Function }).gtag('config', GA_TRACKING_ID, {
       page_location: url,
     });
   }
@@ -24,8 +18,8 @@ export const event = (action: string, parameters: {
   value?: number;
   [key: string]: string | number | boolean | undefined;
 }) => {
-  if (typeof window !== 'undefined' && (window as unknown as { gtag?: GtagFunction }).gtag) {
-    (window as unknown as { gtag: GtagFunction }).gtag('event', action, parameters);
+  if (typeof window !== 'undefined' && (window as unknown as { gtag?: Function }).gtag) {
+    (window as unknown as { gtag: Function }).gtag('event', action, parameters);
   }
 };
 

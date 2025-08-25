@@ -1,7 +1,8 @@
 {
   "site": {
-    "title": "Elena Benítez - Belleza Integral",
-    "description": "Salon de belleza profesional en Luque. Más de 10 años transformando tu belleza con pasión y dedicación.",
+    "title": "Elena Benítez - Peluquería Profesional Luque Paraguay",
+    "description": "Mejor peluquería en Luque Paraguay con más de 10 años transformando tu belleza. Servicios profesionales de maquillaje, tratamientos capilares, cejas perfectas, manicura y pedicura. Ubicados en c/ Sportivo Luqueño y Moisés Bertoni.",
+    "keywords": "peluquería Luque, salón de belleza Luque, peluquería Paraguay, mejor peluquería Luque, Elena Benítez peluquería, maquillaje profesional Luque, tratamientos capilares Paraguay, cejas Luque, manicura Luque, pedicura Luque, belleza integral Paraguay",
     "colors": {
       "primary": "#d4af37",
       "secondary": "#e91e63",
@@ -38,35 +39,35 @@
     "quickInfo": [
       { 
         "icon": "location", 
-        "text": "Luque – c/ Sportivo Luqueño y Moisés Bertoni",
+        "text": "📍 Luque – c/ Sportivo Luqueño y Moisés Bertoni (mejor ubicación)",
         "url": "https://maps.app.goo.gl/zj6ryu1VgCUjv5hY8",
         "type": "location"
       },
       { 
         "icon": "phone", 
-        "text": "+595 991 743889", 
+        "text": "📞 +595 991 743889 (WhatsApp disponible 24/7)", 
         "url": "https://wa.me/595991743889",
         "type": "phone"
       },
       {
         "icon": "clock",
-        "text": "Lun-Sáb 8:00-18:00",
+        "text": "🕒 Lun-Sáb 8:00-18:00 (Domingos cerrado)",
         "type": "hours"
       }
     ]
   },
   "inicio": {
     "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    "title": "Belleza en manos expertas en Luque",
-    "subtitle": "Más de 10 años creando tu mejor versión",
+    "title": "🥇 Peluquería en Luque | Elena Benítez - Mejor Salón Paraguay",
+    "subtitle": "⭐ +10 años transformando tu belleza en Luque • Maquillaje profesional • Tratamientos capilares • Cejas perfectas • Servicios a domicilio",
     "features": [
-      { "text": "Técnicas profesionales", "icon": "scissors" },
-      { "text": "Productos premium", "icon": "brush" },
-      { "text": "Atención personalizada", "icon": "sparkle" },
-      { "text": "En el corazón de Luque", "icon": "location" }
+      { "text": "Técnicas profesionales certificadas", "icon": "scissors" },
+      { "text": "Productos premium importados", "icon": "brush" },
+      { "text": "Atención personalizada 100%", "icon": "sparkle" },
+      { "text": "Mejor ubicación en Luque", "icon": "location" }
     ],
     "cta": {
-      "text": "Llevá el salón a tu hogar",
+      "text": "🏠 Servicio a Domicilio Disponible",
       "url": "https://wa.me/595991743889?text=Hola%20Elena,%20me%20interesa%20conocer%20más%20sobre%20los%20servicios%20a%20domicilio"
     }
   },

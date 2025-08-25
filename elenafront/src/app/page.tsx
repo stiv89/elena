@@ -10,6 +10,8 @@ import ContactForm from "./components/ContactForm";
 import SvgIcon, { StarIcon, CheckIcon } from "./components/SvgIcon";
 import { ScissorsIcon, BrushIcon, SparkleIcon, LocationPinIcon } from "./components/HeroIcons";
 import IsaAssistant from "./components/IsaAssistant";
+import FAQ from "./components/FAQ";
+import Breadcrumbs from "./components/Breadcrumbs";
 
 // Componente de estrellas para rating usando íconos SVG
 function StarRating({ rating }: { rating: number }) {
@@ -42,13 +44,13 @@ function GaleriaTrabajos() {
   return (
     <section id="galeria" className="py-16 animate-fadein">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="text-center mb-12">
+        <div className="text-center mb-16">
           <h2 className="font-playfair text-4xl font-bold text-gray-900 mb-4">
-            {siteData.galeria.title}
+            Galería de Trabajos - Peluquería Luque
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            {siteData.galeria.subtitle}
-          </p>
+          <h3 className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Descubre algunos de nuestros mejores trabajos realizados en nuestro salón de belleza en Luque Paraguay
+          </h3>
         </div>
 
       {/* Filtros de categoría */}
@@ -77,10 +79,12 @@ function GaleriaTrabajos() {
           >
             <Image 
               src={foto.image} 
-              alt={foto.desc} 
+              alt={`${foto.desc} - Elena Benítez Peluquería Luque | ${foto.category === 'maquillaje' ? 'Maquillaje profesional' : foto.category === 'cabello' ? 'Tratamientos capilares' : foto.category === 'cejas' ? 'Diseño de cejas' : foto.category} en Paraguay`}
               width={400} 
               height={250} 
               className="object-cover w-full h-[250px] transition-transform duration-500 group-hover:scale-105" 
+              loading="lazy"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
             <div className="p-4">
               <p className="text-sm font-medium text-gray-800">{foto.desc}</p>
@@ -100,6 +104,7 @@ export default function Home() {
   return (
     <div className="font-sans bg-white text-black min-h-screen flex flex-col">
       <Header />
+      <Breadcrumbs />
       
       {/* WhatsApp Float */}
       {siteData.whatsapp.enabled && (
@@ -123,15 +128,15 @@ export default function Home() {
         <div className="relative z-10 max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center px-4 py-16">
           {/* Contenido principal */}
           <div className="text-center lg:text-left animate-slidein order-2 lg:order-1">
-            {/* Título optimizado para móvil */}
+            {/* Título optimizado para SEO con palabras clave principales */}
             <h1 className="font-playfair text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 mb-4 lg:mb-6 leading-tight">
-              {siteData.inicio.title}
+              🥇 Peluquería en Luque | Elena Benítez<span className="block text-2xl sm:text-3xl lg:text-4xl mt-2 text-amber-600">Mejor Salón de Belleza Paraguay</span>
             </h1>
             
-            {/* Subtítulo más persuasivo */}
-            <p className="text-lg sm:text-xl text-gray-700 mb-6 lg:mb-8 leading-relaxed font-medium">
-              {siteData.inicio.subtitle}
-            </p>
+            {/* Subtítulo más persuasivo con palabras clave secundarias */}
+            <h2 className="text-lg sm:text-xl text-gray-700 mb-6 lg:mb-8 leading-relaxed font-medium">
+              ⭐ +10 años transformando tu belleza en Luque • Maquillaje profesional • Tratamientos capilares • Cejas perfectas • Servicios a domicilio disponibles
+            </h2>
             
             {/* Lista de beneficios con iconos SVG mejorados */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4 mb-8">
@@ -203,11 +208,13 @@ export default function Home() {
               <div className="absolute -inset-4 bg-gradient-to-r from-amber-100 to-rose-100 rounded-3xl opacity-30 blur-lg"></div>
               <Image 
                 src={siteData.inicio.image} 
-                alt="Salón de belleza Elena Benítez en Luque - Servicios profesionales de maquillaje, cabello y cejas" 
+                alt="Elena Benítez - Mejor peluquería en Luque Paraguay | Salón de belleza profesional con más de 10 años de experiencia | Servicios de maquillaje, tratamientos capilares, cejas, manicura y pedicura" 
                 width={600} 
                 height={400} 
                 className="relative rounded-3xl shadow-2xl object-cover w-full h-[300px] sm:h-[350px] lg:h-[450px] image-overlay" 
                 priority
+                loading="eager"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
               
               {/* Badge flotante */}
@@ -233,31 +240,33 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SOBRE NOSOTROS */}
+      {/* SOBRE NOSOTROS - Sección optimizada para SEO local */}
       <section id="nosotros" className="py-20 bg-white container-with-margins">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center px-4">
           <div className="order-2 lg:order-1 animate-slidein">
             <Image 
               src={siteData.nosotros.image} 
-              alt="Elena Benítez - Profesional en belleza con más de 10 años de experiencia en Luque" 
+              alt="Elena Benítez - Estilista profesional en Luque Paraguay con más de 10 años de experiencia en belleza integral, maquillaje y tratamientos capilares" 
               width={500} 
               height={500} 
               className="rounded-3xl shadow-elegant object-cover w-full h-[500px] image-overlay" 
+              loading="lazy"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
           
           <div className="order-1 lg:order-2 animate-fadein">
             <h2 className="font-playfair text-4xl font-bold text-gray-900 mb-4">
-              {siteData.nosotros.title}
+              Elena Benítez - Estilista Profesional en Luque
             </h2>
-            <p className="text-lg text-gray-600 mb-2">
-              {siteData.nosotros.subtitle}
-            </p>
+            <h3 className="text-lg text-gray-600 mb-2 font-medium">
+              +10 años creando belleza en el corazón de Paraguay
+            </h3>
             <p className="text-gray-700 mb-6 leading-relaxed text-lg">
-              {siteData.nosotros.description}
+              Como <strong>peluquería líder en Luque</strong>, Elena Benítez y su equipo han transformado la belleza de más de 1000 clientas. Nuestra <em>experiencia de más de 10 años</em> nos convierte en el <strong>mejor salón de belleza en Paraguay</strong>, especializado en maquillaje profesional, tratamientos capilares avanzados y diseño de cejas.
             </p>
             
-            {/* Logros con íconos SVG */}
+            {/* Logros con íconos SVG optimizados para SEO */}
             <div className="grid grid-cols-2 gap-4 mb-6">
               {siteData.nosotros.achievements.map((achievement, i) => (
                 <div 
@@ -266,28 +275,44 @@ export default function Home() {
                   style={{ animationDelay: `${i * 0.1}s` }}
                 >
                   <CheckIcon className="w-5 h-5 text-black mr-2 flex-shrink-0" />
-                  <span>{achievement.replace(/^[^\w]+/, '')}</span>
+                  <span className="text-sm"><strong>{achievement.replace(/^[^\w]+/, '')}</strong></span>
                 </div>
               ))}
             </div>
             
-            <p className="font-semibold text-lg text-gray-900 bg-gradient-rose p-4 rounded-2xl">
-              {siteData.nosotros.message}
-            </p>
+            <div className="bg-gradient-rose p-6 rounded-2xl mb-4">
+              <h4 className="font-semibold text-lg text-gray-900 mb-2">
+                ¿Por qué elegir nuestra peluquería en Luque?
+              </h4>
+              <p className="text-gray-700 text-sm leading-relaxed">
+                Somos el <strong>salón de belleza más recomendado de Luque</strong> por nuestra atención personalizada, técnicas profesionales y resultados excepcionales. Ubicados estratégicamente en el centro de Luque, ofrecemos servicios tanto en nuestro salón como a domicilio.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* SERVICIOS */}
+      {/* SERVICIOS - Sección optimizada para palabras clave */}
       <section id="servicios" className="py-20 bg-gray-50 container-with-margins">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="font-playfair text-4xl font-bold text-gray-900 mb-4">
-              Nuestros Servicios
+              Servicios de Peluquería y Belleza en Luque
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Ofrecemos una amplia gama de servicios de belleza con técnicas profesionales y productos de calidad premium
-            </p>
+            <h3 className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
+              Descubre nuestra amplia gama de servicios profesionales con más de 50 tratamientos especializados
+            </h3>
+            <div className="flex flex-wrap justify-center gap-3 mb-4">
+              <span className="bg-white px-4 py-2 rounded-full shadow-md text-sm font-medium text-gray-700 border">
+                🎨 <strong>Maquillaje Profesional Luque</strong>
+              </span>
+              <span className="bg-white px-4 py-2 rounded-full shadow-md text-sm font-medium text-gray-700 border">
+                💇‍♀️ <strong>Tratamientos Capilares Paraguay</strong>
+              </span>
+              <span className="bg-white px-4 py-2 rounded-full shadow-md text-sm font-medium text-gray-700 border">
+                ✨ <strong>Cejas Perfectas</strong>
+              </span>
+            </div>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -305,7 +330,14 @@ export default function Home() {
                     <ServiceIcon type={categoria.icon} className="w-12 h-12 text-gray-600" />
                   </div>
                   <h3 className="font-playfair text-2xl font-bold text-gray-900 mb-2">
-                    {categoria.categoria}
+                    {categoria.categoria === "Lavados" ? "Lavados y Tratamientos Capilares" :
+                     categoria.categoria === "Maquillajes & Compañía" ? "Maquillaje Profesional Luque" :
+                     categoria.categoria === "Cejas & Pestañas" ? "Cejas y Pestañas Perfectas" :
+                     categoria.categoria === "Depilaciones" ? "Depilación Profesional" :
+                     categoria.categoria === "Manos & Pies" ? "Manicura y Pedicura Luque" :
+                     categoria.categoria === "Manitas Delicadas" ? "Uñas Acrílicas y Extensiones" :
+                     categoria.categoria === "Color y Alisados" ? "Coloración y Alisados Paraguay" :
+                     categoria.categoria}
                   </h3>
                   <p className="text-gray-600">{categoria.descripcion}</p>
                 </div>
@@ -348,11 +380,11 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="font-playfair text-4xl font-bold text-gray-900 mb-4">
-              {siteData.testimonios.title}
+              Reseñas y Testimonios - Mejor Peluquería Luque
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              {siteData.testimonios.subtitle}
-            </p>
+            <h3 className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Lo que dicen nuestras clientas sobre el mejor salón de belleza de Paraguay
+            </h3>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -365,10 +397,11 @@ export default function Home() {
                 <div className="flex items-center mb-4">
                   <Image 
                     src={testimonio.image} 
-                    alt={`Testimonio de ${testimonio.name} - Cliente satisfecha de Elena Benítez`} 
+                    alt={`Testimonio de ${testimonio.name} - Cliente satisfecha de Elena Benítez, mejor peluquería en Luque Paraguay con 5 estrellas`} 
                     width={60} 
                     height={60} 
                     className="rounded-full object-cover mr-4" 
+                    loading="lazy"
                   />
                   <div>
                     <h4 className="font-semibold text-gray-900">{testimonio.name}</h4>
@@ -387,11 +420,11 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="font-playfair text-4xl font-bold text-gray-900 mb-4">
-              {siteData.contacto.title}
+              Ubicación y Contacto - Peluquería en Luque
             </h2>
-            <p className="text-lg text-gray-600">
-              {siteData.contacto.subtitle}
-            </p>
+            <h3 className="text-lg text-gray-600">
+              Visítanos en nuestro salón ubicado en el corazón de Luque, Paraguay - ¡Te esperamos!
+            </h3>
           </div>
           
           <div className="grid lg:grid-cols-2 gap-12 items-start">
@@ -466,7 +499,7 @@ export default function Home() {
                   style={{ border: 0 }}
                   allowFullScreen
                   loading="lazy"
-                  title="Ubicación de Elena Benítez - Salón de belleza en Luque"
+                  title="Ubicación Elena Benítez - Mejor peluquería en Luque Paraguay | c/ Sportivo Luqueño y Moisés Bertoni | Salón de belleza profesional"
                 ></iframe>
               </div>
               <div className="text-center mt-4">
@@ -558,6 +591,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* FAQ SECTION - Optimizada para SEO */}
+      <FAQ />
 
       <Footer />
     </div>
