@@ -1,6 +1,5 @@
 "use client";
 import { useState, useRef } from "react";
-import { Metadata } from "next";
 import siteData from "../siteData.json";
 import Header from "../components/Header";
 import Footer from "../components/Footer";

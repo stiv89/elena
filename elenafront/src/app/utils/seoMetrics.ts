@@ -108,7 +108,11 @@ export function calculateKeywordDensity(content: string, keyword: string): numbe
 // Función para validar métricas SEO
 export function validateSEOMetrics(pageContent: string) {
   const results = {
-    keywordDensity: {} as Record<string, any>,
+    keywordDensity: {} as Record<string, {
+      current: string;
+      target: string;
+      status: 'optimal' | 'low' | 'high';
+    }>,
     recommendations: [] as string[],
     score: 0
   };

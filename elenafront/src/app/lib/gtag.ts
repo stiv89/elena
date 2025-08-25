@@ -2,10 +2,19 @@
 
 export const GA_TRACKING_ID = 'G-4B82YMTN2P';
 
+// Tipos seguros para gtag
+type GtagFunction = (...args: unknown[]) => void;
+
+declare global {
+  interface Window {
+    gtag?: GtagFunction;
+  }
+}
+
 // https://developers.google.com/analytics/devguides/collection/gtagjs/pages
 export const pageview = (url: string) => {
-  if (typeof window !== 'undefined' && (window as unknown as { gtag?: Function }).gtag) {
-    (window as unknown as { gtag: Function }).gtag('config', GA_TRACKING_ID, {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('config', GA_TRACKING_ID, {
       page_location: url,
     });
   }
@@ -18,8 +27,8 @@ export const event = (action: string, parameters: {
   value?: number;
   [key: string]: string | number | boolean | undefined;
 }) => {
-  if (typeof window !== 'undefined' && (window as unknown as { gtag?: Function }).gtag) {
-    (window as unknown as { gtag: Function }).gtag('event', action, parameters);
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', action, parameters);
   }
 };
 

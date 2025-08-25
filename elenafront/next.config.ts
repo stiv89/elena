@@ -1,14 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Optimizaciones para SEO y rendimiento
-  experimental: {
-    optimizeCss: true,
-  },
-  
-  // Compresión y optimizaciones
-  compress: true,
-  
   // Configuración de imágenes optimizada
   images: {
     formats: ['image/webp', 'image/avif'],
