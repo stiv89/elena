@@ -98,6 +98,13 @@ export default function Header() {
   
   // Función para hacer scroll suave
   const scrollToSection = (anchor: string) => {
+    // Caso especial para servicios - ir a la página dedicada
+    if (anchor === '#servicios') {
+      router.push('/servicios');
+      setMenuOpen(false);
+      return;
+    }
+    
     // Si estamos en la página de servicios, ir a la página principal
     if (window.location.pathname !== '/') {
       window.location.href = `/${anchor}`;
