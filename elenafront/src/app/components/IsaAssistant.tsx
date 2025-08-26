@@ -2,7 +2,6 @@
 import { useState, useRef, useEffect } from 'react';
 import siteData from '../siteData.json';
 import { BotIcon, SparklesIcon } from './ChatIcons';
-import { useGoogleAnalytics } from '../hooks/useGoogleAnalytics';
 
 interface Message {
   id: string;
@@ -41,7 +40,7 @@ export default function IsaAssistant({ enabled = true }: IsaAssistantProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Analizador de intención inteligente
-  const analyzeIntent = (message: string, context: ConversationContext) => {
+  const analyzeIntent = (message: string) => {
     const msgLower = message.toLowerCase();
     const intent = {
       type: 'general',
@@ -88,7 +87,7 @@ export default function IsaAssistant({ enabled = true }: IsaAssistantProps) {
 
   // Generador de respuestas contextuales inteligentes
   const generateIntelligentResponse = (userMessage: string, context: ConversationContext): { response: string, newContext: ConversationContext, suggestions: string[] } => {
-    const intent = analyzeIntent(userMessage, context);
+    const intent = analyzeIntent(userMessage);
     const msgLower = userMessage.toLowerCase();
     
     let response = '';
@@ -154,7 +153,7 @@ Me especializo en encontrar exactamente lo que necesitas para verte y sentirte r
             "¿Hacen servicios a domicilio?"
           ];
         } else {
-          response = generatePricingResponse(msgLower);
+          response = generatePricingResponse();
           suggestions = [
             "¿Hay promociones disponibles?",
             "¿Aceptan tarjetas?",
@@ -214,11 +213,11 @@ Elena tiene disponibilidad de emergencia para casos especiales:
         if (msgLower.includes('maquillaje')) {
           response = generateMakeupResponse(context);
         } else if (msgLower.includes('cabello')) {
-          response = generateHairResponse(context);
+          response = generateHairResponse();
         } else {
-          response = generateGeneralServicesResponse(context);
+          response = generateGeneralServicesResponse();
         }
-        suggestions = getServiceSuggestions(intent.entities);
+        suggestions = getServiceSuggestions();
         newContext.stage = 'interested';
         break;
 
@@ -284,7 +283,7 @@ Elena es reconocida en Luque por sus maquillajes de novia impecables:
 Todos incluyen limpieza facial express. ¿Para qué ocasión lo necesitas?`;
   };
 
-  const generateHairResponse = (context: ConversationContext) => {
+  const generateHairResponse = () => {
     return `💇‍♀️ **Cuidado Capilar Profesional:**
 
 Elena entiende que tu cabello es tu corona:
@@ -299,7 +298,7 @@ Elena entiende que tu cabello es tu corona:
 ¿Qué necesita tu cabello específicamente?`;
   };
 
-  const generateGeneralServicesResponse = (context: ConversationContext) => {
+  const generateGeneralServicesResponse = () => {
     return `🌟 **Elena ofrece servicios integrales de belleza:**
 
 **Nuestras especialidades más populares:**
@@ -313,7 +312,7 @@ Elena entiende que tu cabello es tu corona:
 ¿Hay algún área específica en la que quieres enfocarte?`;
   };
 
-  const getServiceSuggestions = (entities: string[]) => {
+  const getServiceSuggestions = () => {
     return [
       "¿Cuál es el más popular?",
       "¿Hacen paquetes combinados?",
@@ -323,7 +322,7 @@ Elena entiende que tu cabello es tu corona:
     ];
   };
 
-  const generatePricingResponse = (message: string) => {
+  const generatePricingResponse = () => {
     return `💰 **Precios transparentes y justos:**
 
 Elena cree en la honestidad total con sus precios:

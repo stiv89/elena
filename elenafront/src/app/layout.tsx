@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({
@@ -140,34 +141,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//wa.me" />
         
-        {/* Google Analytics */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-4B82YMTN2P"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-4B82YMTN2P', {
-                page_title: document.title,
-                page_location: window.location.href,
-                anonymize_ip: true,
-                cookie_flags: 'SameSite=None;Secure',
-                send_page_view: true,
-                custom_map: {
-                  'custom_parameter_1': 'business_category'
-                }
-              });
-              
-              // Track business events
-              gtag('event', 'page_view', {
-                'custom_parameter_1': 'beauty_salon',
-                'business_location': 'Luque_Paraguay'
-              });
-            `,
-          }}
-        />
-        
+        {/* SEO JSON-LD Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -202,102 +176,17 @@ export default function RootLayout({
               "openingHoursSpecification": [
                 {
                   "@type": "OpeningHoursSpecification",
-                  "dayOfWeek": [
-                    "Monday",
-                    "Tuesday", 
-                    "Wednesday",
-                    "Thursday",
-                    "Friday",
-                    "Saturday"
-                  ],
+                  "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
                   "opens": "08:00",
                   "closes": "18:00"
                 }
               ],
               "priceRange": "₲₲",
-              "currenciesAccepted": "PYG",
-              "paymentAccepted": "Cash, Transfer",
-              "image": [
-                "https://elenabenitez.com/logoheader.png",
-                "https://elenabenitez.com/clienta3.jpg"
-              ],
-              "logo": "https://elenabenitez.com/logoheader.png",
-              "hasOfferCatalog": {
-                "@type": "OfferCatalog",
-                "name": "Servicios de Belleza",
-                "itemListElement": [
-                  {
-                    "@type": "Offer",
-                    "itemOffered": {
-                      "@type": "Service",
-                      "name": "Maquillaje Profesional",
-                      "description": "Maquillaje para eventos, sociales y novias"
-                    }
-                  },
-                  {
-                    "@type": "Offer",
-                    "itemOffered": {
-                      "@type": "Service",
-                      "name": "Tratamientos Capilares",
-                      "description": "Corte, color, alisado y tratamientos nutritivos"
-                    }
-                  },
-                  {
-                    "@type": "Offer",
-                    "itemOffered": {
-                      "@type": "Service",
-                      "name": "Diseño de Cejas",
-                      "description": "Perfilado y diseño profesional de cejas"
-                    }
-                  }
-                ]
-              },
-              "areaServed": [
-                {
-                  "@type": "City",
-                  "name": "Luque",
-                  "containedInPlace": {
-                    "@type": "Country",
-                    "name": "Paraguay"
-                  }
-                },
-                {
-                  "@type": "City",
-                  "name": "Asunción",
-                  "containedInPlace": {
-                    "@type": "Country",
-                    "name": "Paraguay"
-                  }
-                },
-                {
-                  "@type": "AdministrativeArea",
-                  "name": "Central",
-                  "containedInPlace": {
-                    "@type": "Country",
-                    "name": "Paraguay"
-                  }
-                }
-              ],
-              "serviceArea": {
-                "@type": "GeoCircle",
-                "geoMidpoint": {
-                  "@type": "GeoCoordinates",
-                  "latitude": "-25.2677",
-                  "longitude": "-57.4847"
-                },
-                "geoRadius": "50000"
-              },
-              "sameAs": [
-                "https://wa.me/595991743889",
-                "https://maps.app.goo.gl/zj6ryu1VgCUjv5hY8",
-                "https://instagram.com/elenabenitez"
-              ],
               "aggregateRating": {
                 "@type": "AggregateRating",
-                "ratingValue": "5.0",
-                "reviewCount": "150",
-                "bestRating": "5",
-                "worstRating": "1"
+                "ratingValue": "4.9",
+                "reviewCount": "100",
+                "bestRating": "5"
               },
               "review": [
                 {
@@ -347,9 +236,35 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body
-        className={`${inter.variable} ${playfair.variable} antialiased`}
-      >
+      <body className={`${inter.variable} ${playfair.variable} antialiased`}>
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-4B82YMTN2P"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-4B82YMTN2P', {
+              page_title: document.title,
+              page_location: window.location.href,
+              anonymize_ip: true,
+              cookie_flags: 'SameSite=None;Secure',
+              send_page_view: true,
+              custom_map: {
+                'custom_parameter_1': 'business_category'
+              }
+            });
+            
+            // Track business events
+            gtag('event', 'page_view', {
+              'custom_parameter_1': 'beauty_salon',
+              'business_location': 'Luque_Paraguay'
+            });
+          `}
+        </Script>
         {children}
       </body>
     </html>

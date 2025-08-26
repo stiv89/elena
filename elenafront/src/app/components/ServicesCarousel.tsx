@@ -14,21 +14,17 @@ export default function ServicesCarousel({ servicios }: { servicios: Servicio[] 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(true);
-  const [slidesPerView, setSlidesPerView] = useState(1);
 
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
-      if (w >= 1024) setSlidesPerView(3);
-      else if (w >= 640) setSlidesPerView(2);
-      else setSlidesPerView(1);
+      // La lógica de slidesPerView está implícita en las clases CSS responsive
       updateButtons();
     };
 
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateButtons = () => {
@@ -105,7 +101,7 @@ export default function ServicesCarousel({ servicios }: { servicios: Servicio[] 
             style={{ scrollSnapType: 'x mandatory' }}
           >
             <div className="flex gap-4 px-2" style={{ padding: '6px' }}>
-            {servicios.map((categoria, idx) => (
+            {servicios.map((categoria) => (
               <div key={categoria.categoria} className="flex-shrink-0" style={{ scrollSnapAlign: 'center' }}>
                 <div className="bg-white rounded-2xl shadow-elegant p-4 card-hover h-full" style={{ backgroundColor: categoria.color }}>
                   <div className="text-center mb-3">

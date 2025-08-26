@@ -5,7 +5,6 @@ import siteData from "./siteData.json";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import WhatsAppFloat from "./components/WhatsAppFloat";
-import ServiceIcon from "./components/ServiceIcon";
 import ServicesCarousel from "./components/ServicesCarousel";
 import ContactForm from "./components/ContactForm";
 import SvgIcon, { StarIcon, CheckIcon } from "./components/SvgIcon";
@@ -17,19 +16,19 @@ import GalleryCarousel from "./components/GalleryCarousel";
 import TestimonialsCarousel from "./components/TestimonialsCarousel";
 
 // Componente de estrellas para rating usando íconos SVG
-function StarRating({ rating }: { rating: number }) {
-  return (
-    <div className="flex">
-      {[...Array(5)].map((_, i) => (
-        <StarIcon
-          key={i}
-          className={`w-5 h-5 ${i < rating ? "text-yellow-400" : "text-gray-300"}`}
-          filled={i < rating}
-        />
-      ))}
-    </div>
-  );
-}
+// function StarRating({ rating }: { rating: number }) {
+//   return (
+//     <div className="flex">
+//       {[...Array(5)].map((_, i) => (
+//         <StarIcon
+//           key={i}
+//           className={`w-5 h-5 ${i < rating ? "text-yellow-400" : "text-gray-300"}`}
+//           filled={i < rating}
+//         />
+//       ))}
+//     </div>
+//   );
+// }
 
 // Galería dinámica mejorada
 function GaleriaTrabajos() {

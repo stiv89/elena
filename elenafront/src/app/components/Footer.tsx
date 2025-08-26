@@ -1,6 +1,5 @@
 "use client";
 import siteData from "../siteData.json";
-import ServiceIcon from "./ServiceIcon";
 import SvgIcon from "./SvgIcon";
 
 export default function Footer() {

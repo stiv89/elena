@@ -1,6 +1,7 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import TeamMemberCard from "../components/TeamMemberCard";
+import Link from "next/link";
 import siteData from "../siteData.json";
 
 export const metadata = {
@@ -8,8 +9,15 @@ export const metadata = {
   description: 'Conocé al equipo profesional de Elena Benítez en Luque. Expertos en peluquería, maquillaje y estética.'
 }
 
+interface TeamMember {
+  name: string;
+  role: string;
+  bio: string;
+  image: string;
+}
+
 export default function TeamPage() {
-  const team = (siteData as any).equipo ?? [
+  const team: TeamMember[] = (siteData as { equipo?: TeamMember[] }).equipo ?? [
     { name: 'Elena Benítez', role: 'Estilista Principal', bio: 'Fundadora y estilista con más de 10 años de experiencia.', image: '' },
     { name: 'Asistente 1', role: 'Estilista', bio: 'Especialista en colorimetría y tratamientos capilares.', image: '' },
     { name: 'Asistente 2', role: 'Maquilladora', bio: 'Profesional en maquillaje social y novias.', image: '' },
@@ -27,7 +35,7 @@ export default function TeamPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {team.map((member: any, i: number) => (
+          {team.map((member: TeamMember, i: number) => (
             <TeamMemberCard
               key={member.name + i}
               name={member.name}
@@ -43,8 +51,8 @@ export default function TeamPage() {
           <h3 className="font-playfair text-2xl font-bold text-gray-900 mb-2">¿Querés unirte a nuestro equipo?</h3>
           <p className="text-gray-700 mb-4">Si sos profesional en belleza y querés trabajar con nosotras, enviános un mensaje y te contactamos.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-3">
-            <a href="/#contacto" className="inline-block bg-amber-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-700 transition-colors">Enviar mensaje</a>
-            <a href={`https://wa.me/${(siteData as any).whatsapp.number}?text=${encodeURIComponent('Hola, quiero unirme al equipo de Elena Benítez')}`} target="_blank" rel="noopener noreferrer" className="inline-block bg-green-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-700 transition-colors">Contactar por WhatsApp</a>
+            <Link href="/#contacto" className="inline-block bg-amber-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-700 transition-colors">Enviar mensaje</Link>
+            <a href={`https://wa.me/${(siteData as { whatsapp: { number: string } }).whatsapp.number}?text=${encodeURIComponent('Hola, quiero unirme al equipo de Elena Benítez')}`} target="_blank" rel="noopener noreferrer" className="inline-block bg-green-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-700 transition-colors">Contactar por WhatsApp</a>
           </div>
         </div>
         </div>

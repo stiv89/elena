@@ -18,7 +18,7 @@ export default function Header() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const router = useRouter();
   const header = siteData.header;
-  const servicios = (siteData as any).servicios || [];
+  const servicios = (siteData as { servicios?: Array<{ categoria: string; descripcion: string }> }).servicios || [];
 
   // Cargar carrito del localStorage al iniciar
   useEffect(() => {
@@ -74,8 +74,7 @@ export default function Header() {
 
   // Exponer las funciones del carrito globalmente
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).addToCart = addToCart;
+    (window as { addToCart?: typeof addToCart }).addToCart = addToCart;
   }, [addToCart]);
   
   // Función para hacer scroll suave
@@ -167,7 +166,7 @@ export default function Header() {
                     </button>
                     {serviciosOpen && (
                       <div className="absolute left-0 mt-3 w-96 bg-white rounded-xl shadow-lg border p-4 grid grid-cols-2 gap-3 z-50">
-                        {servicios.slice(0,6).map((cat: any) => (
+                        {servicios.slice(0,6).map((cat: { categoria: string; descripcion: string }) => (
                           <div key={cat.categoria} className="flex items-start gap-3 p-3 bg-white rounded-lg hover:shadow-sm">
                             <svg className="w-8 h-8 text-gray-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.2"/></svg>
                             <div className="flex-1">
