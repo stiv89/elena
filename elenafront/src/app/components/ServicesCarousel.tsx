@@ -17,7 +17,6 @@ export default function ServicesCarousel({ servicios }: { servicios: Servicio[] 
 
   useEffect(() => {
     const update = () => {
-      const w = window.innerWidth;
       // La lógica de slidesPerView está implícita en las clases CSS responsive
       updateButtons();
     };
