@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://elenabenitez.com' // Sin www para coincidir con sitemap
+  const baseUrl = 'https://www.elenabenitez.com' // Usar www como dominio canónico
   
   return {
     rules: [
