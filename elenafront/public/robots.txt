@@ -7,4 +7,4 @@ Disallow: /api/
 Disallow: /private/
 Disallow: /_next/static/
 
-Sitemap: https://elenabenitez.com/sitemap.xml
+Sitemap: https://www.elenabenitez.com/sitemap.xml
