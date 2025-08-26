@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Evitar indexar rutas sensibles
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /_next/static/
+
+Sitemap: https://elenabenitez.com/sitemap.xml

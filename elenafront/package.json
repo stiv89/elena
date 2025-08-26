@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
-    "start": "next start",
-    "lint": "eslint"
+  "dev": "next dev --turbopack",
+  "build": "next build --turbopack",
+  "prebuild": "node ./scripts/generate-sitemap.js",
+  "generate-sitemap": "node ./scripts/generate-sitemap.js",
+  "validate-sitemap": "node ./scripts/validate-sitemap.js",
+  "start": "next start",
+  "lint": "eslint"
   },
   "dependencies": {
     "react": "19.1.0",
@@ -23,5 +26,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.5.0",
     "@eslint/eslintrc": "^3"
+  ,
+    "fast-xml-parser": "^5.0.0"
   }
 }
