@@ -72,7 +72,7 @@
     }
   },
   "nosotros": {
-    "image": "https://images.unsplash.com/photo-1594736797933-d0b22ee5a7b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+  "image": "/nosotros.jpg",
     "title": "Sobre Elena Benítez",
     "subtitle": "Profesional con más de 10 años de experiencia",
     "description": "Con más de 10 años de experiencia, Elena y su equipo transforman tu belleza con pasión y dedicación. Su estilo combina técnica profesional y calidez humana, creando un ambiente de confianza y resultados excepcionales.",

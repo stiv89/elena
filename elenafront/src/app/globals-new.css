@@ -220,6 +220,9 @@ body {
   background: rgba(0, 0, 0, 0.1);
 }
 
+/* HERO - Minimal premium subtle pattern */
+/* (removed hero pattern and gold-sep - hero is plain white) */
+
 /* Animaciones adicionales para el carrito */
 @keyframes bounce {
   0%, 20%, 53%, 80%, 100% {

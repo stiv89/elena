@@ -107,23 +107,7 @@ export default function Footer() {
           </div>
         </div>
         
-        {/* Servicios destacados */}
-        <div className="border-t border-gray-800 pt-8 mb-8">
-          <h3 className="font-playfair text-lg font-bold text-white mb-4 text-center">
-            Nuestros Servicios
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {siteData.servicios.slice(0, 3).map((categoria: { categoria: string; descripcion: string; icon: string }) => (
-              <div key={categoria.categoria} className="text-center">
-                <div className="flex justify-center mb-2">
-                  <ServiceIcon type={categoria.icon} className="w-6 h-6 text-gray-400" />
-                </div>
-                <h4 className="font-semibold text-white mb-1">{categoria.categoria}</h4>
-                <p className="text-gray-400 text-sm">{categoria.descripcion}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+  {/* Servicios destacados removed as requested */}
         
         {/* Sección inferior */}
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
