@@ -1,10 +1,9 @@
+# *
 User-agent: *
 Allow: /
 
-# Evitar indexar rutas sensibles
-Disallow: /admin/
-Disallow: /api/
-Disallow: /private/
-Disallow: /_next/static/
+# Host
+Host: https://www.elenabenitez.com
 
+# Sitemaps
 Sitemap: https://www.elenabenitez.com/sitemap.xml
