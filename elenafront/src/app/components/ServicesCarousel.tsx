@@ -10,10 +10,22 @@ type Servicio = {
   servicios: { nombre: string; precio: string | number; descripcion?: string }[];
 };
 
-export default function ServicesCarousel({ servicios }: { servicios: Servicio[] }) {
+export default function ServicesCarousel({ servicios, activeFilter = "todos" }: { servicios: Servicio[], activeFilter?: string }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(true);
+
+  // Filtrar servicios según la categoría activa
+  const filteredServicios = activeFilter === "todos" 
+    ? servicios 
+    : servicios.filter(servicio => {
+        const categoryMap: { [key: string]: string } = {
+          "maquillaje": "Maquillajes & Compañía",
+          "capilares": "Lavados",
+          "cejas": "Cejas & Pestañas"
+        };
+        return servicio.categoria === categoryMap[activeFilter];
+      });
 
   useEffect(() => {
     const update = () => {
@@ -99,44 +111,50 @@ export default function ServicesCarousel({ servicios }: { servicios: Servicio[] 
             className="w-full overflow-x-auto scroll-smooth no-scrollbar" 
             style={{ scrollSnapType: 'x mandatory' }}
           >
-            <div className="flex gap-4 px-2" style={{ padding: '6px' }}>
-            {servicios.map((categoria) => (
+            <div className="flex gap-3 md:gap-4 px-2" style={{ padding: '6px' }}>
+            {filteredServicios.map((categoria) => (
               <div key={categoria.categoria} className="flex-shrink-0" style={{ scrollSnapAlign: 'center' }}>
-                <div className="bg-white rounded-2xl shadow-elegant p-4 card-hover h-full" style={{ backgroundColor: categoria.color }}>
-                  <div className="text-center mb-3">
-                    <div className="flex justify-center mb-2">
-                      <ServiceIcon type={categoria.icon ?? ""} className="w-8 h-8 text-gray-700" />
+                <div className="bg-white rounded-2xl shadow-elegant p-3 md:p-4 card-hover h-full border border-gray-100">
+                  <div className="text-center mb-2 md:mb-3">
+                    <div className="flex justify-center mb-1 md:mb-2">
+                      <ServiceIcon type={categoria.icon ?? ""} className="w-6 h-6 md:w-8 md:h-8 text-amber-600" />
                     </div>
-                    <h3 className="font-playfair text-lg font-semibold text-gray-900 mb-1">
+                    <h3 className="font-playfair text-base md:text-lg font-semibold text-gray-900 mb-1">
                       {categoria.categoria === "Lavados" ? "Lavados y Tratamientos Capilares" :
-                       categoria.categoria === "Maquillajes & Compañía" ? "Maquillaje Profesional Luque" :
-                       categoria.categoria === "Cejas & Pestañas" ? "Cejas y Pestañas Perfectas" :
+                       categoria.categoria === "Maquillajes & Compañía" ? "Maquillaje Profesional" :
+                       categoria.categoria === "Cejas & Pestañas" ? "Cejas y Pestañas" :
                        categoria.categoria === "Depilaciones" ? "Depilación Profesional" :
-                       categoria.categoria === "Manos & Pies" ? "Manicura y Pedicura Luque" :
+                       categoria.categoria === "Manos & Pies" ? "Manicura y Pedicura" :
                        categoria.categoria === "Manitas Delicadas" ? "Uñas Acrílicas y Extensiones" :
-                       categoria.categoria === "Color y Alisados" ? "Coloración y Alisados Paraguay" :
+                       categoria.categoria === "Color y Alisados" ? "Coloración y Alisados" :
                        categoria.categoria}
                     </h3>
-                    <p className="text-gray-600 text-sm">{categoria.descripcion}</p>
+                    <p className="text-gray-600 text-xs md:text-sm">{categoria.descripcion}</p>
                   </div>
 
-                  <div className="space-y-1 mb-3">
-                    {categoria.servicios.slice(0, 3).map((servicio, i) => (
-                      <div key={i} className="flex justify-between items-center py-1">
-                        <span className="text-gray-700 text-sm truncate">{servicio.nombre}</span>
-                        <span className="font-semibold text-gray-900 text-sm">₲{typeof servicio.precio === 'number' ? servicio.precio : servicio.precio}</span>
+                  <div className="space-y-2 mb-3 md:mb-4">
+                    {categoria.servicios.length > 0 && (
+                      <div className="flex justify-between items-center py-2 px-3 bg-gray-50 rounded-lg">
+                        <span className="text-gray-700 text-sm">Desde</span>
+                        <span className="font-semibold text-amber-600 text-base md:text-lg">
+                          ₲{typeof categoria.servicios[0].precio === 'number'
+                            ? categoria.servicios[0].precio.toLocaleString()
+                            : categoria.servicios[0].precio}
+                        </span>
                       </div>
-                    ))}
-                    {categoria.servicios.length > 3 && (
-                      <div className="text-center pt-1">
-                        <span className="text-xs text-gray-500">+{categoria.servicios.length - 3} servicios más</span>
+                    )}
+                    {categoria.servicios.length > 1 && (
+                      <div className="text-center">
+                        <span className="text-xs text-gray-500">
+                          +{categoria.servicios.length - 1} servicios más
+                        </span>
                       </div>
                     )}
                   </div>
 
                   <div className="text-center">
-                    <a href="/servicios" className="inline-block bg-gradient-gold text-white px-4 py-2 rounded-full font-semibold hover:shadow-md transition-all duration-200 text-sm">
-                      Ver todos
+                    <a href="/servicios" className="inline-block bg-amber-600 hover:bg-amber-700 text-white px-4 md:px-6 py-2 md:py-2.5 rounded-full font-semibold hover:shadow-lg transition-all duration-200 text-xs md:text-sm">
+                      Explorar servicios
                     </a>
                   </div>
                 </div>

@@ -27,6 +27,7 @@
     "menu": [
       { "text": "Inicio", "anchor": "#inicio" },
       { "text": "Servicios", "anchor": "#servicios" },
+      { "text": "Consejos", "anchor": "/consejos" },
       { "text": "Galería", "anchor": "#galeria" },
       { "text": "Sobre nosotros", "anchor": "#nosotros" },
       { "text": "Contacto", "anchor": "#contacto" }
@@ -270,5 +271,31 @@
       "text": "También podés reservar por WhatsApp",
       "url": "https://wa.me/595991743889?text=Hola%20Elena,%20quiero%20reservar%20una%20cita"
     }
-  }
+  },
+  "equipo": [
+    {
+      "name": "Elena Benítez",
+      "role": "Fundadora & Estilista Principal",
+      "bio": "Con más de 10 años de experiencia transformando la belleza de las mujeres de Luque. Especialista en técnicas avanzadas de coloración y tratamientos capilares.",
+      "image": "/nosotros.jpg",
+      "specialties": ["Coloración Profesional", "Tratamientos Capilares", "Cortes Modernos", "Maquillaje Social"],
+      "experience": "10+ años"
+    },
+    {
+      "name": "Luján García",
+      "role": "Estilista Senior",
+      "bio": "Especialista en cortes modernos y tendencias. Apasionada por crear looks únicos que resalten la personalidad de cada clienta.",
+      "image": "",
+      "specialties": ["Cortes Creativos", "Coloración Fantasía", "Peinados Elegantes", "Asesoría de Imagen"],
+      "experience": "6 años"
+    },
+    {
+      "name": "Adriana López",
+      "role": "Maquilladora Profesional",
+      "bio": "Experta en maquillaje para novias y eventos especiales. Domina técnicas de maquillaje permanente y tratamientos faciales.",
+      "image": "",
+      "specialties": ["Maquillaje de Novias", "Maquillaje Permanente", "Tratamientos Faciales", "Pestañas"],
+      "experience": "8 años"
+    }
+  ]
 }

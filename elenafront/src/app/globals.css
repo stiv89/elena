@@ -5,6 +5,38 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Ocultar scrollbar para elementos scrollables */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
+/* Mejores interacciones táctiles en mobile */
+@media (max-width: 768px) {
+  .scrollbar-hide {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Mejor espaciado para mobile */
+  .container-with-margins {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* Botones más táctiles */
+  button, .card-hover {
+    min-height: 44px; /* Apple recomienda 44px para touch targets */
+  }
+
+  /* Texto más legible en mobile */
+  .font-playfair {
+    font-weight: 600; /* Ligeramente menos bold para mejor legibilidad */
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #000000;
@@ -277,32 +309,11 @@ body {
   background: rgba(0, 0, 0, 0.1);
 }
 
-/* Animaciones adicionales para el carrito */
-@keyframes bounce {
-  0%, 20%, 53%, 80%, 100% {
-    transform: translateY(0);
-  }
-  40%, 43% {
-    transform: translateY(-10px);
-  }
-  70% {
-    transform: translateY(-5px);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-}
-
-@keyframes slideInUp {
+/* Animaciones mejoradas para transiciones suaves */
+@keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(100%);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
@@ -310,16 +321,37 @@ body {
   }
 }
 
-.animate-bounce {
-  animation: bounce 2s infinite;
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
-.animate-pulse-gentle {
-  animation: pulse 2s ease-in-out infinite;
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
 }
 
-.animate-slide-up {
-  animation: slideInUp 0.3s ease-out forwards;
+.animate-fade-in-scale {
+  animation: fadeInScale 0.6s ease-out forwards;
+}
+
+/* Transiciones suaves para elementos interactivos */
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.smooth-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.smooth-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 /* Notificaciones toast */
@@ -328,11 +360,274 @@ body {
   animation: slideInUp 0.3s ease-out forwards;
 }
 
-/* Efectos especiales para el carrito */
-.cart-item-enter {
-  animation: slideInUp 0.3s ease-out forwards;
+/* Estilos para contenido de artículos */
+.article-content h2 {
+  font-family: var(--font-playfair), serif;
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #111827;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
 }
 
-.cart-badge {
-  animation: bounce 0.6s ease-out;
+.article-content h3 {
+  font-family: var(--font-playfair), serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
+
+.article-content h4 {
+  font-family: var(--font-playfair), serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.article-content p {
+  color: #374151;
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+
+.article-content ul, .article-content ol {
+  color: #374151;
+  line-height: 1.75;
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.article-content li {
+  margin-bottom: 0.5rem;
+}
+
+.article-content strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+.article-content a {
+  color: #db2777;
+  text-decoration: underline;
+}
+
+.article-content a:hover {
+  color: #be185d;
+}
+
+/* === GALERÍA OPTIMIZADA PARA MOBILE === */
+
+/* Filtros scrollables y sticky */
+.gallery-filters {
+  position: sticky;
+  top: 56px;
+  z-index: 10;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(255,255,255,0.9));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+@media (min-width: 768px) {
+  .gallery-filters {
+    position: static;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* Grid responsive para galería */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+@media (min-width: 480px) {
+  .gallery-grid {
+    gap: 12px;
+  }
+}
+
+@media (min-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .gallery-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Cards de galería con animaciones */
+.gallery-card {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.2s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.gallery-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.gallery-card.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+  .gallery-card {
+    border-radius: 16px;
+  }
+}
+
+/* Badge overlay para categorías */
+.badge-overlay {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  z-index: 2;
+}
+
+@media (min-width: 768px) {
+  .badge-overlay {
+    left: 12px;
+    bottom: 12px;
+  }
+}
+
+/* Chips de filtro optimizados */
+.chip {
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.chip:hover {
+  transform: translateY(-1px);
+}
+
+.chip:active {
+  transform: translateY(0);
+}
+
+/* Scroll suave para filtros en mobile */
+.gallery-filters {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.gallery-filters::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mejor legibilidad en títulos de galería */
+@media (max-width: 480px) {
+  .gallery-title {
+    font-size: 28px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .gallery-sub {
+    font-size: 14px;
+    color: #6B7280;
+    margin-bottom: 8px;
+  }
+}
+
+/* === FIN GALERÍA OPTIMIZADA === */
+
+/* === TESTIMONIOS OPTIMIZADOS PARA MOBILE === */
+
+/* Mejor experiencia táctil en mobile */
+@media (max-width: 768px) {
+  .arrow {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .card {
+    min-height: 130px !important;
+    padding: 10px !important;
+  }
+
+  .user-name {
+    font-size: 13px !important;
+  }
+
+  .review-text {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+  }
+
+  .verified-badge {
+    font-size: 10px !important;
+    padding: 1px 4px !important;
+  }
+
+  .google-link {
+    font-size: 10px !important;
+  }
+}
+
+/* Efectos hover mejorados para desktop */
+@media (min-width: 769px) {
+  .card:hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .arrow:hover {
+    background: #f8fafc !important;
+    transform: translateY(-50%) scale(1.08) !important;
+  }
+}
+
+/* Animaciones suaves para las estrellas */
+.stars {
+  transition: transform 0.2s ease;
+}
+
+.card:hover .stars {
+  transform: scale(1.05);
+}
+
+/* Mejor legibilidad del texto de reseñas */
+.review-text {
+  font-style: italic;
+  position: relative;
+}
+
+.review-text::before {
+  content: '"';
+  font-size: 1.2em;
+  color: #d1d5db;
+  position: absolute;
+  left: -4px;
+  top: -2px;
+}
+
+.review-text::after {
+  content: '"';
+  font-size: 1.2em;
+  color: #d1d5db;
+  position: absolute;
+  margin-left: 2px;
+}
+
+/* === FIN TESTIMONIOS OPTIMIZADOS === */

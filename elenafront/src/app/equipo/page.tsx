@@ -1,6 +1,7 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import TeamMemberCard from "../components/TeamMemberCard";
+import TeamConnectedLayout from "../components/TeamConnectedLayout";
+import JobApplicationForm from "../components/JobApplicationForm";
 import Link from "next/link";
 import siteData from "../siteData.json";
 
@@ -14,47 +15,98 @@ interface TeamMember {
   role: string;
   bio: string;
   image: string;
+  specialties: string[];
+  experience: string;
 }
 
 export default function TeamPage() {
   const team: TeamMember[] = (siteData as { equipo?: TeamMember[] }).equipo ?? [
-    { name: 'Elena Benítez', role: 'Estilista Principal', bio: 'Fundadora y estilista con más de 10 años de experiencia.', image: '' },
-    { name: 'Asistente 1', role: 'Estilista', bio: 'Especialista en colorimetría y tratamientos capilares.', image: '' },
-    { name: 'Asistente 2', role: 'Maquilladora', bio: 'Profesional en maquillaje social y novias.', image: '' },
+    {
+      name: 'Elena Benítez',
+      role: 'Fundadora & Estilista Principal',
+      bio: 'Con más de 10 años de experiencia transformando la belleza de las mujeres de Luque.',
+      image: '/nosotros.jpg',
+      specialties: ['Coloración Profesional', 'Tratamientos Capilares'],
+      experience: '10+ años'
+    },
+    {
+      name: 'Luján García',
+      role: 'Estilista Senior',
+      bio: 'Especialista en cortes modernos y tendencias.',
+      image: '',
+      specialties: ['Cortes Creativos', 'Coloración Fantasía'],
+      experience: '6 años'
+    },
+    {
+      name: 'Adriana López',
+      role: 'Maquilladora Profesional',
+      bio: 'Experta en maquillaje para novias y eventos especiales.',
+      image: '',
+      specialties: ['Maquillaje de Novias', 'Tratamientos Faciales'],
+      experience: '8 años'
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-white text-black flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-50 text-black flex flex-col">
       <Header />
 
-      <main className="py-16 flex-1">
-        <div className="max-w-6xl mx-auto px-4">
-        <div className="text-center mb-12">
-          <h1 className="font-playfair text-4xl font-bold text-gray-900">Nuestro Equipo</h1>
-          <p className="text-gray-600 mt-2">Conocé a las profesionales que transforman la belleza en nuestro salón.</p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {team.map((member: TeamMember, i: number) => (
-            <TeamMemberCard
-              key={member.name + i}
-              name={member.name}
-              role={member.role}
-              bio={member.bio}
-              image={member.image}
-            />
-          ))}
-        </div>
-
-        {/* CTA para unirse al equipo */}
-        <div className="mt-12 bg-amber-50 border border-amber-100 rounded-2xl p-6 text-center">
-          <h3 className="font-playfair text-2xl font-bold text-gray-900 mb-2">¿Querés unirte a nuestro equipo?</h3>
-          <p className="text-gray-700 mb-4">Si sos profesional en belleza y querés trabajar con nosotras, enviános un mensaje y te contactamos.</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-3">
-            <Link href="/#contacto" className="inline-block bg-amber-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-amber-700 transition-colors">Enviar mensaje</Link>
-            <a href={`https://wa.me/${(siteData as { whatsapp: { number: string } }).whatsapp.number}?text=${encodeURIComponent('Hola, quiero unirme al equipo de Elena Benítez')}`} target="_blank" rel="noopener noreferrer" className="inline-block bg-green-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-700 transition-colors">Contactar por WhatsApp</a>
+      <main className="flex-1">
+        {/* Hero section del equipo */}
+        <div className="bg-gradient-to-r from-amber-100 to-amber-200 py-16">
+          <div className="max-w-4xl mx-auto text-center px-4">
+            <h1 className="font-playfair text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Nuestro Equipo Profesional
+            </h1>
+            <p className="text-lg md:text-xl text-gray-700 max-w-2xl mx-auto">
+              Tres profesionales apasionadas unidas por la pasión de realzar tu belleza natural
+            </p>
           </div>
         </div>
+
+        {/* Layout conectado del equipo */}
+        <TeamConnectedLayout team={team} />
+
+        {/* CTA para unirse al equipo */}
+        <div className="bg-white border-t border-amber-100">
+          <div className="max-w-4xl mx-auto px-4 py-16">
+            <div className="bg-gradient-to-r from-amber-50 to-amber-100 border border-amber-200 rounded-2xl p-8 md:p-12">
+              <div className="text-center mb-8">
+                <h3 className="font-playfair text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+                  ¿Querés unirte a nuestro equipo?
+                </h3>
+                <p className="text-gray-700 text-lg mb-6 max-w-2xl mx-auto">
+                  Si sos profesional en belleza y querés trabajar con nosotras, completá el formulario o enviános un mensaje.
+                </p>
+              </div>
+
+              {/* Formulario de aplicación */}
+              <div className="mb-8">
+                <JobApplicationForm whatsappNumber={(siteData as { whatsapp: { number: string } }).whatsapp.number} />
+              </div>
+
+              {/* Enlaces alternativos */}
+              <div className="border-t border-amber-200 pt-6">
+                <p className="text-sm text-gray-600 text-center mb-4">¿Preferís contactarnos de otra forma?</p>
+                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                  <Link
+                    href="/#contacto"
+                    className="inline-block bg-amber-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-amber-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  >
+                    Enviar mensaje
+                  </Link>
+                  <a
+                    href={`https://wa.me/${(siteData as { whatsapp: { number: string } }).whatsapp.number}?text=${encodeURIComponent('Hola, quiero unirme al equipo de Elena Benítez')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block bg-green-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-green-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  >
+                    Contactar por WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
 

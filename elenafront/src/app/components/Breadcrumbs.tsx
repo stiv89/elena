@@ -28,7 +28,8 @@ export default function Breadcrumbs() {
       'contacto': '📍 Contacto',
       'carrito': '🛒 Carrito',
       'galeria': '🖼️ Galería',
-      'nosotros': '👥 Nosotros'
+      'nosotros': '👥 Nosotros',
+      'consejos': '💡 Consejos'
     };
 
     pathSegments.forEach((segment, index) => {
