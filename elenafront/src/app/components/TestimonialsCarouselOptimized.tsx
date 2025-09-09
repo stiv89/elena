@@ -146,7 +146,7 @@ export default function TestimonialsCarousel({ reviews }: TestimonialsCarouselPr
                   </div>
                 </div>
 
-                <p className="review-text">"{review.text}"</p>
+                <p className="review-text">&quot;{review.text}&quot;</p>
 
                 <div className="review-meta">
                   <span className="verified-badge">✓ Reseña verificada</span>

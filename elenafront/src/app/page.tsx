@@ -20,6 +20,15 @@ import TestimonialsCarousel from "./components/TestimonialsCarouselOptimized";
 import TeamPreview from "./components/TeamPreview";
 import CombinedLauncher from "./components/CombinedLauncher";
 
+interface Servicio {
+  nombre: string;
+}
+
+interface Categoria {
+  categoria: string;
+  servicios: Servicio[];
+}
+
 // Componente de estrellas para rating usando íconos SVG
 // function StarRating({ rating }: { rating: number }) {
 //   return (
@@ -51,7 +60,7 @@ function BookingTabs({ whatsappNumber, whatsappUrl, calendlyUrl, servicios }: {
   whatsappNumber: string;
   whatsappUrl: string;
   calendlyUrl: string;
-  servicios: any[];
+  servicios: Categoria[];
 }) {
   const [activeTab, setActiveTab] = useState<'form' | 'whatsapp' | 'calendly'>('form');
   const [formData, setFormData] = useState({
@@ -76,7 +85,7 @@ function BookingTabs({ whatsappNumber, whatsappUrl, calendlyUrl, servicios }: {
   };
 
   const serviceOptions = servicios.flatMap(cat =>
-    cat.servicios.map((serv: any) => ({
+    cat.servicios.map((serv: Servicio) => ({
       value: `${cat.categoria} - ${serv.nombre}`,
       label: `${cat.categoria} - ${serv.nombre}`
     }))

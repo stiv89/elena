@@ -6,7 +6,24 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Breadcrumbs from '../../components/Breadcrumbs';
 
-export default function ArticuloClient({ articulo, related }:{ articulo: any; related: any[] }) {
+interface Articulo {
+  title: string;
+  category: string;
+  date: string;
+  readTime: string;
+  excerpt: string;
+  image: string;
+  content: string;
+}
+
+interface RelatedItem {
+  id: string;
+  image: string;
+  title: string;
+  excerpt: string;
+}
+
+export default function ArticuloClient({ articulo, related }:{ articulo: Articulo; related: RelatedItem[] }) {
   const [currentUrl, setCurrentUrl] = useState('');
 
   useEffect(() => {
