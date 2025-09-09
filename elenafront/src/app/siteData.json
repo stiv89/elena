@@ -285,7 +285,7 @@
       "name": "Luján García",
       "role": "Estilista Senior",
       "bio": "Especialista en cortes modernos y tendencias. Apasionada por crear looks únicos que resalten la personalidad de cada clienta.",
-      "image": "",
+      "image": "/lujan.jpeg",
       "specialties": ["Cortes Creativos", "Coloración Fantasía", "Peinados Elegantes", "Asesoría de Imagen"],
       "experience": "6 años"
     },
@@ -293,7 +293,7 @@
       "name": "Adriana López",
       "role": "Maquilladora Profesional",
       "bio": "Experta en maquillaje para novias y eventos especiales. Domina técnicas de maquillaje permanente y tratamientos faciales.",
-      "image": "",
+      "image": "/adriana.jpeg",
       "specialties": ["Maquillaje de Novias", "Maquillaje Permanente", "Tratamientos Faciales", "Pestañas"],
       "experience": "8 años"
     }

@@ -285,7 +285,7 @@ export default function Home() {
         className="relative min-h-[60vh] flex items-center justify-center bg-gradient-to-b from-white to-amber-50/30 container-with-margins py-12 lg:py-16"
       >
         {/* Overlay sutil con degradado */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/10 to-amber-50/20"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-amber-50/10"></div>
 
         <div className="relative z-10 max-w-5xl mx-auto grid lg:grid-cols-2 gap-6 lg:gap-8 items-center px-4">
           {/* Contenido principal */}
@@ -295,8 +295,16 @@ export default function Home() {
               Transformá tu look en Luque
             </h1>
             
+            {/* Badge de confianza */}
+            <div className="flex items-center justify-center lg:justify-start mb-4">
+              <div className="flex items-center bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm">
+                <StarIcon className="w-4 h-4 text-amber-400 mr-2" filled={true} />
+                <span className="font-semibold text-gray-900 text-sm">1000+ clientes felices</span>
+              </div>
+            </div>
+            
             {/* Subtítulo conciso */}
-            <h2 className="text-lg sm:text-xl text-gray-700 mb-8 leading-relaxed font-medium max-w-xl mx-auto lg:mx-0">
+            <h2 className="text-base sm:text-lg text-gray-600 mb-8 leading-relaxed font-normal max-w-xl mx-auto lg:mx-0">
               10+ años de experiencia en belleza y cuidado profesional
             </h2>
             
@@ -306,21 +314,15 @@ export default function Home() {
                 href="https://wa.me/595991743889?text=Hola%20Elena,%20quiero%20agendar%20una%20cita"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="cta-button text-white font-semibold py-4 px-8 lg:px-10 rounded-full transition-transform duration-200 hover:scale-105 text-base shadow-xl w-full sm:w-auto text-center inline-block"
+                className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-semibold py-4 px-8 lg:px-10 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl text-base shadow-xl w-full sm:w-auto text-center inline-block"
               >
                 Agendá tu cita ahora
               </a>
             </div>
             
             {/* Señales de confianza - Ligeras y concisas */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-sm text-gray-600">
-              <div className="flex items-center">
-                <StarIcon className="w-4 h-4 text-amber-400 mr-1" filled={true} />
-                <span className="font-medium">1000+ clientes felices</span>
-              </div>
-              <span className="hidden sm:inline text-gray-400">|</span>
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-gray-600">
               <span className="font-medium">Técnicas certificadas</span>
-              <span className="hidden sm:inline text-gray-400">|</span>
               <span className="font-medium">Productos premium</span>
             </div>
           </div>
@@ -329,17 +331,19 @@ export default function Home() {
       <div className="animate-fadein order-1 lg:order-2 flex justify-center lg:justify-end">
             <div className="relative">
               {/* Decoración de fondo */}
-              <div className="absolute -inset-4 bg-gradient-to-r from-amber-100 to-rose-100 rounded-3xl opacity-30 blur-lg"></div>
+              <div className="absolute -inset-4 bg-gradient-to-r from-amber-100 to-rose-100 rounded-3xl opacity-20 blur-lg"></div>
               <Image 
                 src={siteData.inicio.image} 
                 alt="Elena Benítez - Mejor peluquería en Luque Paraguay | Salón de belleza profesional con más de 10 años de experiencia | Servicios de maquillaje, tratamientos capilares, cejas, manicura y pedicura" 
                 width={600} 
                 height={400} 
-        className="relative rounded-3xl shadow-2xl object-cover w-full h-[220px] sm:h-[260px] lg:h-[320px] image-overlay" 
+        className="relative rounded-3xl shadow-2xl object-cover w-full h-[220px] sm:h-[260px] lg:h-[320px]" 
                 priority
                 loading="eager"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
+              {/* Overlay leve para mejor integración */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent rounded-3xl"></div>
               
               {/* Badge flotante */}
         <div className="absolute -bottom-3 -left-3 bg-white rounded-xl shadow-lg p-3 animate-float">
