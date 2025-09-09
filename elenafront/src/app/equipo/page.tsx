@@ -4,10 +4,24 @@ import TeamConnectedLayout from "../components/TeamConnectedLayout";
 import JobApplicationForm from "../components/JobApplicationForm";
 import Link from "next/link";
 import siteData from "../siteData.json";
+import { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Nuestro Equipo - Elena Benítez',
-  description: 'Conocé al equipo profesional de Elena Benítez en Luque. Expertos en peluquería, maquillaje y estética.'
+  description: 'Conocé al equipo profesional de Elena Benítez en Luque. Expertos en peluquería, maquillaje y estética.',
+  keywords: 'equipo Elena Benítez, peluqueras Luque, estilistas Paraguay, maquilladoras profesionales Luque',
+  openGraph: {
+    title: 'Nuestro Equipo - Elena Benítez Peluquería',
+    description: 'Conocé a Elena, Luján y Adriana - profesionales expertas en belleza en Luque Paraguay',
+    images: [
+      {
+        url: '/nosotros.jpg',
+        width: 800,
+        height: 600,
+        alt: 'Equipo Elena Benítez - Profesionales de la belleza en Luque'
+      }
+    ]
+  }
 }
 
 interface TeamMember {
@@ -47,8 +61,57 @@ export default function TeamPage() {
     },
   ];
 
+  // Structured Data para SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Elena Benítez Peluquería",
+    "description": "Peluquería profesional en Luque Paraguay especializada en belleza integral",
+    "url": "https://elenabenitez.com",
+    "logo": "https://elenabenitez.com/logoheader.png",
+    "image": "https://elenabenitez.com/nosotros.jpg",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "c/ Sportivo Luqueño y Moisés Bertoni",
+      "addressLocality": "Luque",
+      "addressRegion": "Central",
+      "addressCountry": "PY"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+595-991-743889",
+      "contactType": "customer service",
+      "availableLanguage": "Spanish"
+    },
+    "employee": team.map(member => ({
+      "@type": "Person",
+      "name": member.name,
+      "jobTitle": member.role,
+      "description": member.bio,
+      "image": member.image ? `https://elenabenitez.com${member.image}` : undefined,
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Elena Benítez Peluquería"
+      },
+      "knowsAbout": member.specialties,
+      "hasOccupation": {
+        "@type": "Occupation",
+        "name": member.role,
+        "experienceRequirements": member.experience
+      }
+    }))
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-50 text-black flex flex-col">
+      {/* Structured Data JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData)
+        }}
+      />
+
       <Header />
 
       <main className="flex-1">

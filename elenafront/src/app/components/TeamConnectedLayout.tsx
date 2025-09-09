@@ -53,10 +53,11 @@ export default function TeamConnectedLayout({ team }: TeamConnectedLayoutProps) 
                   {otherMembers[0].image ? (
                     <Image
                       src={otherMembers[0].image}
-                      alt={otherMembers[0].name}
+                      alt={`${otherMembers[0].name} - ${otherMembers[0].role} en Elena Benítez Peluquería Luque`}
                       width={160}
                       height={160}
                       className="object-cover w-full h-full"
+                      priority={true}
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
@@ -117,10 +118,11 @@ export default function TeamConnectedLayout({ team }: TeamConnectedLayoutProps) 
                 {elena.image ? (
                   <Image
                     src={elena.image}
-                    alt={elena.name}
+                    alt={`${elena.name} - Fundadora y Estilista Principal de Elena Benítez Peluquería en Luque Paraguay`}
                     width={192}
                     height={192}
                     className="object-cover w-full h-full"
+                    priority={true}
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-amber-200 to-amber-300 flex items-center justify-center">
@@ -188,10 +190,11 @@ export default function TeamConnectedLayout({ team }: TeamConnectedLayoutProps) 
                   {otherMembers[1].image ? (
                     <Image
                       src={otherMembers[1].image}
-                      alt={otherMembers[1].name}
+                      alt={`${otherMembers[1].name} - ${otherMembers[1].role} en Elena Benítez Peluquería Luque`}
                       width={160}
                       height={160}
                       className="object-cover w-full h-full"
+                      priority={true}
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
