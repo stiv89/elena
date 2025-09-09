@@ -276,25 +276,25 @@
     {
       "name": "Elena Benítez",
       "role": "Fundadora & Estilista Principal",
-      "bio": "Con más de 10 años de experiencia transformando la belleza de las mujeres de Luque. Especialista en técnicas avanzadas de coloración y tratamientos capilares.",
+      "bio": "Hola soy Elena! Propietaria de Elena Benítez Belleza Integral. Conmigo podrás realizarte los servicios de maquillaje, diseño de cejas, henna, tratamientos capilares y corte. ✨️Te espero por el salón para disfrutar de un momento de desconexión y relax ✨",
       "image": "/nosotros.jpg",
-      "specialties": ["Coloración Profesional", "Tratamientos Capilares", "Cortes Modernos", "Maquillaje Social"],
+      "specialties": ["Maquillaje", "Diseño de Cejas", "Henna", "Tratamientos Capilares", "Cortes"],
       "experience": "10+ años"
     },
     {
       "name": "Luján García",
       "role": "Estilista Senior",
-      "bio": "Especialista en cortes modernos y tendencias. Apasionada por crear looks únicos que resalten la personalidad de cada clienta.",
+      "bio": "Soy maquillista profesional. Puedo realizarte un medio maquillaje, maquillaje express, social o glam. Diseño de cejas y henna. Tratamientos capilares. Manicura y pedicura tradicional. Nos vemos pronto 💞",
       "image": "/lujan.jpeg",
-      "specialties": ["Cortes Creativos", "Coloración Fantasía", "Peinados Elegantes", "Asesoría de Imagen"],
+      "specialties": ["Maquillaje Profesional", "Diseño de Cejas", "Henna", "Tratamientos Capilares", "Manicura y Pedicura"],
       "experience": "6 años"
     },
     {
       "name": "Adriana López",
       "role": "Maquilladora Profesional",
-      "bio": "Experta en maquillaje para novias y eventos especiales. Domina técnicas de maquillaje permanente y tratamientos faciales.",
+      "bio": "Encargada del cuidado de tus manos y pies. Realizo los servicios de esmaltado semipermanente, soft gel, esculpídas en acrílico, pedicura tradicional, semipermanente y acripie. Trenzas y tratamientos! Te espero por la pelu 💖",
       "image": "/adriana.jpeg",
-      "specialties": ["Maquillaje de Novias", "Maquillaje Permanente", "Tratamientos Faciales", "Pestañas"],
+      "specialties": ["Esmaltado Semipermanente", "Soft Gel", "Esculpidas en Acrílico", "Pedicura Completa", "Trenzas", "Tratamientos Faciales"],
       "experience": "8 años"
     }
   ]
