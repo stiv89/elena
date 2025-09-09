@@ -487,7 +487,7 @@ export default function Home() {
           {/* Mapa embebido sin API */}
           <div className="map-embed">
             <iframe
-              src="https://www.google.com/maps?q=-25.2678,-57.4847&z=16&output=embed"
+              src="https://www.google.com/maps?q=-25.27296217089778,-57.48840106035379&z=16&output=embed"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               allowFullScreen
