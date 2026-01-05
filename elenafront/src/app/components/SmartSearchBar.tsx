@@ -1,6 +1,22 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import siteData from "../siteData.json";
+
+interface Servicio {
+  id: string;
+  nombre: string;
+  precio: string;
+  descripcion: string;
+}
+
+interface Categoria {
+  id: string;
+  nombre: string;
+  descripcion: string;
+  icon: string;
+  color: string;
+  obs: string;
+  servicios: Servicio[];
+}
 
 interface SearchSuggestion {
   text: string;
@@ -8,13 +24,15 @@ interface SearchSuggestion {
   servicio?: string;
   precio?: string;
   type: 'service' | 'category' | 'suggestion';
+  score?: number; // Añadir score opcional para ordenamiento
 }
 
 interface SmartSearchBarProps {
   onSearchResult: (categoria: string, servicio?: string) => void;
+  servicios?: Categoria[];
 }
 
-export default function SmartSearchBar({ onSearchResult }: SmartSearchBarProps) {
+export default function SmartSearchBar({ onSearchResult, servicios = [] }: SmartSearchBarProps) {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -22,26 +40,73 @@ export default function SmartSearchBar({ onSearchResult }: SmartSearchBarProps) 
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
-  // Sugerencias predefinidas basadas en intenciones comunes
+  // Sugerencias de intención para mostrar cuando no hay query
   const intentSuggestions = [
-    "verme más joven",
-    "prepararme para una boda",
-    "cuidar mi cabello",
-    "arreglar mis uñas",
-    "depilar mis cejas",
-    "maquillarme para una fiesta",
-    "relajarme y consentirme",
-    "cambiar mi look",
-    "cuidar mi piel",
-    "lucir radiante"
+    "¿Cuánto cuesta un maquillaje social?",
+    "Diseño de cejas",
+    "Corte de cabello",
+    "Manicure y pedicure",
+    "Tratamientos capilares"
   ];
+
+  // Función para normalizar texto (quitar acentos, convertir a minúsculas)
+  const normalizeText = (text: string): string => {
+    return text
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // Quitar acentos
+      .replace(/[^a-z0-9\s]/g, ' ') // Reemplazar caracteres especiales por espacios
+      .replace(/\s+/g, ' ') // Normalizar espacios
+      .trim();
+  };
+
+  // Función para calcular similitud entre palabras
+  const getWordSimilarity = (word1: string, word2: string): number => {
+    const longer = word1.length > word2.length ? word1 : word2;
+    const shorter = word1.length > word2.length ? word2 : word1;
+    
+    if (longer.length === 0) return 1.0;
+    
+    const distance = levenshteinDistance(longer, shorter);
+    return (longer.length - distance) / longer.length;
+  };
+
+  // Distancia de Levenshtein para similitud de palabras
+  const levenshteinDistance = (str1: string, str2: string): number => {
+    const matrix = [];
+    
+    for (let i = 0; i <= str2.length; i++) {
+      matrix[i] = [i];
+    }
+    
+    for (let j = 0; j <= str1.length; j++) {
+      matrix[0][j] = j;
+    }
+    
+    for (let i = 1; i <= str2.length; i++) {
+      for (let j = 1; j <= str1.length; j++) {
+        if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1,
+            matrix[i][j - 1] + 1,
+            matrix[i - 1][j] + 1
+          );
+        }
+      }
+    }
+    
+    return matrix[str2.length][str1.length];
+  };
 
   // Generar sugerencias inteligentes
   const generateSuggestions = (searchQuery: string): SearchSuggestion[] => {
     const results: SearchSuggestion[] = [];
-    const queryLower = searchQuery.toLowerCase().trim();
+    const queryNormalized = normalizeText(searchQuery);
+    const queryWords = queryNormalized.split(' ').filter(word => word.length > 0);
     
-    if (!queryLower) {
+    if (!queryNormalized) {
       // Mostrar sugerencias de intención cuando no hay query
       return intentSuggestions.slice(0, 5).map(suggestion => ({
         text: suggestion,
@@ -50,54 +115,103 @@ export default function SmartSearchBar({ onSearchResult }: SmartSearchBarProps) 
       }));
     }
 
-    // Buscar servicios específicos
-    siteData.servicios.forEach(categoria => {
+    // Buscar servicios específicos con búsqueda inteligente
+    servicios.forEach(categoria => {
       categoria.servicios.forEach(servicio => {
-        const servicioLower = servicio.nombre.toLowerCase();
-        const categoriaLower = categoria.categoria.toLowerCase();
+        const servicioNormalized = normalizeText(servicio.nombre);
+        const descripcionNormalized = normalizeText(servicio.descripcion || '');
+        const categoriaNormalized = normalizeText(categoria.nombre);
         
-        if (servicioLower.includes(queryLower) || 
-            categoriaLower.includes(queryLower) ||
-            servicio.descripcion?.toLowerCase().includes(queryLower)) {
+        let score = 0;
+        let matchedWords = 0;
+        
+        // Verificar coincidencias exactas o parciales
+        queryWords.forEach(queryWord => {
+          // Coincidencia exacta en nombre del servicio
+          if (servicioNormalized.includes(queryWord)) {
+            score += 10;
+            matchedWords++;
+          }
+          // Coincidencia en descripción
+          else if (descripcionNormalized.includes(queryWord)) {
+            score += 5;
+            matchedWords++;
+          }
+          // Coincidencia en categoría
+          else if (categoriaNormalized.includes(queryWord)) {
+            score += 3;
+            matchedWords++;
+          }
+          // Similitud de palabras (para errores tipográficos)
+          else {
+            const servicioWords = servicioNormalized.split(' ');
+            const categoriaWords = categoriaNormalized.split(' ');
+            const descripcionWords = descripcionNormalized.split(' ');
+            
+            [...servicioWords, ...categoriaWords, ...descripcionWords].forEach(word => {
+              if (getWordSimilarity(queryWord, word) > 0.8) {
+                score += 2;
+                matchedWords++;
+              }
+            });
+          }
+        });
+        
+        // Solo incluir si hay coincidencias significativas
+        if (score > 0 && matchedWords > 0) {
           results.push({
             text: servicio.nombre,
-            categoria: categoria.categoria,
+            categoria: categoria.nombre,
             servicio: servicio.nombre,
             precio: servicio.precio,
-            type: 'service'
-          });
+            type: 'service',
+            score // Añadir score para ordenar
+          } as SearchSuggestion & { score: number });
         }
       });
     });
 
     // Buscar por categorías
-    siteData.servicios.forEach(categoria => {
-      const categoriaLower = categoria.categoria.toLowerCase();
-      const descripcionLower = categoria.descripcion.toLowerCase();
+    servicios.forEach(categoria => {
+      const categoriaNormalized = normalizeText(categoria.nombre);
+      const descripcionNormalized = normalizeText(categoria.descripcion);
       
-      if (categoriaLower.includes(queryLower) || 
-          descripcionLower.includes(queryLower)) {
+      let score = 0;
+      let matchedWords = 0;
+      
+      queryWords.forEach(queryWord => {
+        if (categoriaNormalized.includes(queryWord)) {
+          score += 8;
+          matchedWords++;
+        } else if (descripcionNormalized.includes(queryWord)) {
+          score += 4;
+          matchedWords++;
+        }
+      });
+      
+      if (score > 0 && matchedWords > 0) {
         results.push({
-          text: categoria.categoria,
-          categoria: categoria.categoria,
-          type: 'category'
-        });
+          text: categoria.nombre,
+          categoria: categoria.nombre,
+          type: 'category',
+          score
+        } as SearchSuggestion & { score: number });
       }
     });
 
     // Buscar sugerencias por palabras clave
     const keywordMap: { [key: string]: string[] } = {
-      "joven": ["Tratamientos Faciales", "Maquillaje"],
-      "boda": ["Maquillaje", "Cejas y Pestañas"],
-      "cabello": ["Lavados y Cuidado Capilar"],
-      "uñas": ["Manos y Pies"],
-      "cejas": ["Cejas y Pestañas"],
-      "maquillaje": ["Maquillaje"],
-      "relax": ["Tratamientos Faciales"],
-      "look": ["Maquillaje", "Cejas y Pestañas"],
-      "piel": ["Tratamientos Faciales"],
-      "fiesta": ["Maquillaje", "Cejas y Pestañas"],
-      "radiante": ["Tratamientos Faciales", "Maquillaje"]
+      "joven": servicios.filter(c => c.nombre.toLowerCase().includes('facial') || c.nombre.toLowerCase().includes('tratamiento')).map(c => c.nombre),
+      "boda": servicios.filter(c => c.nombre.toLowerCase().includes('maquillaje') || c.nombre.toLowerCase().includes('cejas')).map(c => c.nombre),
+      "cabello": servicios.filter(c => c.nombre.toLowerCase().includes('lavado') || c.nombre.toLowerCase().includes('capilar')).map(c => c.nombre),
+      "uñas": servicios.filter(c => c.nombre.toLowerCase().includes('mano') || c.nombre.toLowerCase().includes('pie')).map(c => c.nombre),
+      "cejas": servicios.filter(c => c.nombre.toLowerCase().includes('cejas')).map(c => c.nombre),
+      "maquillaje": servicios.filter(c => c.nombre.toLowerCase().includes('maquillaje')).map(c => c.nombre),
+      "relax": servicios.filter(c => c.nombre.toLowerCase().includes('facial') || c.nombre.toLowerCase().includes('tratamiento')).map(c => c.nombre),
+      "look": servicios.filter(c => c.nombre.toLowerCase().includes('maquillaje') || c.nombre.toLowerCase().includes('cejas')).map(c => c.nombre),
+      "piel": servicios.filter(c => c.nombre.toLowerCase().includes('facial') || c.nombre.toLowerCase().includes('tratamiento')).map(c => c.nombre),
+      "fiesta": servicios.filter(c => c.nombre.toLowerCase().includes('maquillaje') || c.nombre.toLowerCase().includes('cejas')).map(c => c.nombre),
+      "radiante": servicios.filter(c => c.nombre.toLowerCase().includes('facial') || c.nombre.toLowerCase().includes('maquillaje')).map(c => c.nombre)
     };
 
     Object.entries(keywordMap).forEach(([keyword, categorias]) => {
@@ -116,17 +230,29 @@ export default function SmartSearchBar({ onSearchResult }: SmartSearchBarProps) 
 
     // Filtrar sugerencias de intención que coincidan
     intentSuggestions.forEach(suggestion => {
-      if (suggestion.toLowerCase().includes(queryLower) || 
-          queryLower.split(' ').some(word => suggestion.toLowerCase().includes(word))) {
+      const suggestionNormalized = normalizeText(suggestion);
+      let score = 0;
+      
+      queryWords.forEach(queryWord => {
+        if (suggestionNormalized.includes(queryWord)) {
+          score += 1;
+        }
+      });
+      
+      if (score > 0) {
         results.push({
           text: suggestion,
           categoria: "",
-          type: 'suggestion'
-        });
+          type: 'suggestion',
+          score
+        } as SearchSuggestion & { score: number });
       }
     });
 
-    return results.slice(0, 8); // Limitar a 8 sugerencias
+    // Ordenar por score (relevancia) y limitar a 8 sugerencias
+    return results
+      .sort((a, b) => (b.score || 0) - (a.score || 0))
+      .slice(0, 8);
   };
 
   useEffect(() => {
@@ -134,7 +260,7 @@ export default function SmartSearchBar({ onSearchResult }: SmartSearchBarProps) 
     setSuggestions(newSuggestions);
     setSelectedIndex(-1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query]);
+  }, [query, servicios]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);

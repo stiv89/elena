@@ -332,12 +332,41 @@ body {
   }
 }
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.8s ease-out forwards;
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s ease-out forwards;
 }
 
 .animate-fade-in-scale {
   animation: fadeInScale 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Actualizar la duración de fade-in-up para que sea más rápida */
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease-out forwards;
 }
 
 /* Transiciones suaves para elementos interactivos */

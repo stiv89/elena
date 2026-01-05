@@ -290,44 +290,69 @@ export default function Home() {
         <div className="relative z-10 max-w-5xl mx-auto grid lg:grid-cols-2 gap-6 lg:gap-8 items-center px-4">
           {/* Contenido principal */}
           <div className="text-center lg:text-left animate-slidein order-2 lg:order-1">
-            {/* Título simplificado y directo */}
-            <h1 className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight max-w-xl mx-auto lg:mx-0">
+            {/* Badge de experiencia destacado */}
+            <div className="flex items-center justify-center lg:justify-start mb-4">
+              <div className="flex items-center gap-2 text-sm text-amber-700">
+                <CheckIcon className="w-4 h-4" />
+                <span className="font-medium">10+ años cuidando tu imagen</span>
+              </div>
+            </div>
+
+            {/* Título con beneficio concreto */}
+            <h1 className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 leading-tight max-w-xl mx-auto lg:mx-0">
               Transformá tu look en Luque
             </h1>
             
-            {/* Badge de confianza */}
-            <div className="flex items-center justify-center lg:justify-start mb-4">
-              <div className="flex items-center bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm">
-                <StarIcon className="w-4 h-4 text-amber-400 mr-2" filled={true} />
-                <span className="font-semibold text-gray-900 text-sm">1000+ clientes felices</span>
+            {/* Segunda línea más humana */}
+            <p className="text-lg sm:text-xl text-gray-700 mb-6 font-medium max-w-xl mx-auto lg:mx-0">
+              Cortes, color y tratamientos que sí se notan.
+            </p>
+            
+            {/* Prueba social única y creíble */}
+            <div className="flex items-center justify-center lg:justify-start gap-3 mb-8">
+              <div className="flex items-center bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm border border-gray-100">
+                <div className="flex -space-x-0.5 mr-2">
+                  {[...Array(5)].map((_, i) => (
+                    <StarIcon key={i} className="w-4 h-4 text-amber-400" filled={true} />
+                  ))}
+                </div>
+                <span className="font-semibold text-gray-900 text-sm">4.9/5 en Google</span>
+                <span className="text-gray-400 mx-2">·</span>
+                <span className="text-gray-600 text-sm">+1000 clientes</span>
               </div>
             </div>
             
-            {/* Subtítulo conciso */}
-            <h2 className="text-base sm:text-lg text-gray-600 mb-8 leading-relaxed font-normal max-w-xl mx-auto lg:mx-0">
-              10+ años de experiencia en belleza y cuidado profesional
-            </h2>
-            
-            {/* CTA Principal - Más prominente */}
-            <div className="mb-6">
+            {/* CTA Principal mejorado */}
+            <div className="mb-4">
               <a
                 href="https://wa.me/595991743889?text=Hola%20Elena,%20quiero%20agendar%20una%20cita"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-semibold py-4 px-8 lg:px-10 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl text-base shadow-xl w-full sm:w-auto text-center inline-block"
               >
-                Agendá tu cita ahora
+                Reservá tu turno por WhatsApp
               </a>
             </div>
             
-            {/* Señales de confianza - Ligeras y concisas */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-gray-600">
-              <span className="font-medium">Técnicas certificadas</span>
-              <span className="font-medium">Productos premium</span>
+            {/* Microtexto de baja fricción */}
+            <p className="text-xs text-gray-500 mb-6 text-center lg:text-left">
+              Sin compromiso · Respuesta rápida
+            </p>
+            
+            {/* Señales de confianza como garantía silenciosa */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-gray-500">
+              <span className="flex items-center gap-1">
+                <CheckIcon className="w-3 h-3 text-green-500" />
+                Técnicas certificadas
+              </span>
+              <span className="flex items-center gap-1">
+                <CheckIcon className="w-3 h-3 text-green-500" />
+                Productos premium
+              </span>
             </div>
           </div>
           
-          {/* Imagen optimizada */}
+          {/* Imagen optimizada con leyenda */}
       <div className="animate-fadein order-1 lg:order-2 flex justify-center lg:justify-end">
             <div className="relative">
               {/* Decoración de fondo */}
@@ -343,23 +368,25 @@ export default function Home() {
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
               {/* Overlay leve para mejor integración */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent rounded-3xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent rounded-3xl"></div>
               
-              {/* Badge flotante */}
-        <div className="absolute -bottom-3 -left-3 bg-white rounded-xl shadow-lg p-3 animate-float">
-                <div className="flex items-center">
-                  <div className="flex -space-x-1 mr-3">
-                    {[...Array(5)].map((_, i) => (
-                      <StarIcon
-                        key={i}
-            className="w-3.5 h-3.5 text-amber-400"
-                        filled={true}
-                      />
-                    ))}
+              {/* Leyenda de ubicación sobre la imagen */}
+              <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-md">
+                <div className="flex items-center gap-2 text-sm">
+                  <LocationPinIcon className="w-4 h-4 text-amber-600" />
+                  <span className="text-gray-700 font-medium">Nuestro espacio en Luque</span>
+                </div>
+              </div>
+              
+              {/* Badge flotante - clientes que vuelven */}
+        <div className="absolute -bottom-3 -right-3 bg-white rounded-xl shadow-lg p-3 animate-float">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">
+                    <span className="text-amber-600 text-sm">♻️</span>
                   </div>
                   <div>
-          <p className="font-bold text-gray-900 text-xs">+1000</p>
-          <p className="text-[10px] text-gray-600">Clientes felices</p>
+          <p className="font-bold text-gray-900 text-xs">Clientes que vuelven</p>
+          <p className="text-[10px] text-gray-500">Confianza garantizada</p>
                   </div>
                 </div>
               </div>

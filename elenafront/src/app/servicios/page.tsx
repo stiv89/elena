@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef } from "react";
-import siteData from "../siteData.json";
+import { useServicios } from "../../hooks/useServicios";
+import { whatsappConfig } from "../../lib/whatsapp-config";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ServiceIcon from "../components/ServiceIcon";
@@ -13,6 +14,7 @@ import Head from "next/head";
 import { useRouter } from "next/navigation";
 
 export default function Servicios() {
+  const { servicios, loading, error } = useServicios();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [highlightedService, setHighlightedService] = useState<string | null>(null);
   const categoriaRefs = useRef<{ [key: string]: HTMLElement | null }>({});
@@ -75,6 +77,41 @@ export default function Servicios() {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col">
+        <Header />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-gray-600">Cargando servicios...</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col">
+        <Header />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-red-600 mb-4">Error al cargar servicios: {error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90"
+            >
+              Reintentar
+            </button>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -91,10 +128,10 @@ export default function Servicios() {
       <div className="min-h-screen bg-white flex flex-col">
         <Header />
         <Breadcrumbs />      {/* WhatsApp Float */}
-      {siteData.whatsapp.enabled && (
+      {whatsappConfig.whatsapp.enabled && (
         <WhatsAppFloat 
-          number={siteData.whatsapp.number}
-          message={siteData.whatsapp.message}
+          number={whatsappConfig.whatsapp.number}
+          message={whatsappConfig.whatsapp.message}
         />
       )}
 
@@ -158,7 +195,7 @@ export default function Servicios() {
 
           {/* Buscador Inteligente */}
           <div className="mb-6">
-            <SmartSearchBar onSearchResult={handleSearchResult} />
+            <SmartSearchBar onSearchResult={handleSearchResult} servicios={servicios} />
             <p className="text-xs text-gray-500 mt-2">
               💡 Ej: maquillaje social, corte, cejas...
             </p>
@@ -166,7 +203,7 @@ export default function Servicios() {
 
           <div className="flex flex-wrap justify-center gap-2">
             <div className="bg-white px-3 py-1 rounded-full shadow-md text-xs font-medium text-gray-700">
-              +{siteData.servicios.length} Categorías
+              +{servicios.length} Categorías
             </div>
             <div className="bg-white px-3 py-1 rounded-full shadow-md text-xs font-medium text-gray-700">
               Técnicas Profesionales
@@ -179,7 +216,7 @@ export default function Servicios() {
       <section className="sticky top-20 bg-white/95 backdrop-blur-md z-40 border-b border-gray-200 py-4">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-            {siteData.servicios.map((categoria) => (
+            {servicios.map((categoria) => (
               <button
                 key={categoria.categoria}
                 onClick={() => scrollToCategory(categoria.categoria)}
@@ -231,7 +268,7 @@ export default function Servicios() {
             </button>
           </div>
 
-          {siteData.servicios.map((categoria, idx) => (
+          {servicios.map((categoria, idx) => (
             <section 
               key={categoria.categoria} 
               ref={(el) => {
@@ -271,14 +308,24 @@ export default function Servicios() {
                 {categoria.servicios.map((servicio, i) => (
                   <div 
                     key={servicio.nombre}
-                    className={`bg-white rounded-xl shadow-sm p-4 border transition-all duration-300 hover:shadow-md ${
+                    className={`bg-white rounded-xl shadow-sm overflow-hidden border transition-all duration-300 hover:shadow-md flex flex-col ${
                       highlightedService === servicio.nombre 
                         ? "border-amber-400 bg-amber-50 ring-2 ring-amber-200 ring-opacity-50 scale-105" 
                         : "border-gray-100 hover:border-gray-200"
                     }`}
                     style={{ animationDelay: `${i * 0.05}s` }}
                   >
-                    <div className="flex flex-col h-full">
+                    {/* Imagen del servicio */}
+                    {servicio.imagen_url && (
+                      <div className="relative h-32 w-full overflow-hidden flex-shrink-0">
+                        <img 
+                          src={servicio.imagen_url} 
+                          alt={servicio.nombre}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <div className="p-4 flex flex-col flex-grow">
                       {/* Badge para servicios populares */}
                       {i < 2 && (
                         <div className="flex justify-between items-start mb-2">
@@ -378,7 +425,7 @@ export default function Servicios() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a 
-              href={`https://wa.me/${siteData.whatsapp.number}?text=${encodeURIComponent(siteData.whatsapp.message)}`}
+              href={`https://wa.me/${whatsappConfig.whatsapp.number}?text=${encodeURIComponent(whatsappConfig.whatsapp.message)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-full shadow-elegant transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
@@ -400,7 +447,7 @@ export default function Servicios() {
       {/* CTA Sticky Mobile */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 md:hidden z-50">
         <a 
-          href={`https://wa.me/${siteData.whatsapp.number}?text=${encodeURIComponent(siteData.whatsapp.message)}`}
+          href={`https://wa.me/${whatsappConfig.whatsapp.number}?text=${encodeURIComponent(whatsappConfig.whatsapp.message)}`}
           target="_blank"
           rel="noopener noreferrer"
           className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center gap-2"

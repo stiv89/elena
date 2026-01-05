@@ -3,6 +3,7 @@ import Image from "next/image";
 import siteData from "../siteData.json";
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { useConfiguracion } from "../../hooks/useConfiguracion";
 
 interface CartItem {
   categoria: string;
@@ -19,6 +20,7 @@ export default function Header() {
   const router = useRouter();
   const header = siteData.header;
   const servicios = (siteData as { servicios?: Array<{ categoria: string; descripcion: string }> }).servicios || [];
+  const { config } = useConfiguracion();
 
   // Cargar carrito del localStorage al iniciar
   useEffect(() => {
@@ -108,6 +110,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100">
       {/* Barra superior informativa */}
+      {config.topbar_visible && (
       <div className="hidden md:flex items-center justify-between px-6 py-2 bg-gradient-to-r from-amber-50 to-rose-50 border-b border-amber-100 relative">
         {/* Indicador decorativo */}
         <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-px bg-gradient-to-r from-transparent via-amber-300 to-transparent"></div>
@@ -116,19 +119,19 @@ export default function Header() {
             <svg className="w-4 h-4 text-amber-600" viewBox="0 0 24 24" fill="none">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            <span className="text-sm font-medium text-gray-700">Luque, Paraguay</span>
+            <span className="text-sm font-medium text-gray-700">{config.topbar_ubicacion}</span>
           </div>
           <div className="flex items-center gap-2">
             <svg className="w-4 h-4 text-amber-600" viewBox="0 0 24 24" fill="none">
               <path d="M12 7v5l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5"/>
             </svg>
-            <span className="text-sm font-medium text-gray-700">Lun–Sáb: 9:00–19:00</span>
+            <span className="text-sm font-medium text-gray-700">{config.topbar_horario}</span>
           </div>
-          <a className="flex items-center gap-2 hover:text-amber-700 transition-colors" href={`tel:${siteData.contacto?.telefono || '+595991743889'}`}>
+          <a className="flex items-center gap-2 hover:text-amber-700 transition-colors" href={`tel:${config.whatsapp_numero}`}>
             <svg className="w-4 h-4 text-amber-600" viewBox="0 0 24 24" fill="none">
               <path d="M22 16.92V21a1 1 0 01-1.11 1A19 19 0 013 5.11 1 1 0 014 4h4.09a1 1 0 01.95.68c.12.38.37 1.17.52 1.64a1 1 0 01-.24 1l-1.2 1.2a12 12 0 005.2 5.2l1.2-1.2a1 1 0 011-.24c.47.15 1.26.4 1.64.52a1 1 0 01.68.95V21z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            <span className="text-sm font-medium text-gray-700">+595 991 743889</span>
+            <span className="text-sm font-medium text-gray-700">{config.topbar_telefono}</span>
           </a>
         </div>
         <div className="flex items-center gap-4">
@@ -136,12 +139,13 @@ export default function Header() {
             <svg className="w-4 h-4 text-amber-500" viewBox="0 0 24 24" fill="none">
               <path d="M12 17.3l6.18 3.73-1.64-7.03L21 9.24l-7.19-.62L12 2 10.19 8.62 3 9.24l4.46 4.76L5.82 21z" stroke="currentColor" strokeWidth="1.5"/>
             </svg>
-            <span className="text-sm font-semibold text-gray-800">1000+ clientes felices</span>
+            <span className="text-sm font-semibold text-gray-800">{config.topbar_eslogan}</span>
           </div>
           <div className="w-px h-4 bg-amber-200"></div>
-          <span className="text-xs font-medium text-amber-700 bg-amber-100 px-2 py-1 rounded-full">#1 en Luque</span>
+          <span className="text-xs font-medium text-amber-700 bg-amber-100 px-2 py-1 rounded-full">{config.topbar_badge}</span>
         </div>
       </div>
+      )}
 
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         {/* Indicador decorativo sutil */}
@@ -298,14 +302,14 @@ export default function Header() {
                 <svg className="w-3 h-3 text-amber-600" viewBox="0 0 24 24" fill="none">
                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="currentColor" strokeWidth="1.5"/>
                 </svg>
-                <span>Luque</span>
+                <span>{config.topbar_ubicacion}</span>
               </div>
               <div className="flex items-center gap-2">
                 <svg className="w-3 h-3 text-amber-600" viewBox="0 0 24 24" fill="none">
                   <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5"/>
                   <path d="M12 7v5l3 3" stroke="currentColor" strokeWidth="1.5"/>
                 </svg>
-                <span>Lun–Sáb 9–19</span>
+                <span>{config.topbar_horario}</span>
               </div>
             </div>
           </div>
