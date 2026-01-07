@@ -105,9 +105,19 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="icon" type="image/png" href="/logoheader.png" />
+        <link rel="apple-touch-icon" sizes="57x57" href="/logoheader.png" />
+        <link rel="apple-touch-icon" sizes="60x60" href="/logoheader.png" />
+        <link rel="apple-touch-icon" sizes="72x72" href="/logoheader.png" />
+        <link rel="apple-touch-icon" sizes="76x76" href="/logoheader.png" />
+        <link rel="apple-touch-icon" sizes="114x114" href="/logoheader.png" />
+        <link rel="apple-touch-icon" sizes="120x120" href="/logoheader.png" />
+        <link rel="apple-touch-icon" sizes="144x144" href="/logoheader.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/logoheader.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/logoheader.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/logoheader.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/logoheader.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/logoheader.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/logoheader.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="theme-color" content="#d4af37" />
         <meta name="msapplication-TileColor" content="#d4af37" />

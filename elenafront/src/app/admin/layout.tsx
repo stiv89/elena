@@ -50,9 +50,39 @@ export default function AdminLayout({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Cambiar el título del documento
+  // Cambiar el título del documento y agregar meta tags PWA
   useEffect(() => {
     document.title = 'Admin - Elena Benítez';
+    
+    // Agregar meta tags para PWA
+    const addMetaTag = (name: string, content: string, attribute: string = 'name') => {
+      let meta = document.querySelector(`meta[${attribute}="${name}"]`);
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute(attribute, name);
+        document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', content);
+    };
+
+    // Meta tags para PWA iOS
+    addMetaTag('apple-mobile-web-app-capable', 'yes');
+    addMetaTag('apple-mobile-web-app-status-bar-style', 'black-translucent');
+    addMetaTag('apple-mobile-web-app-title', 'Elena Admin');
+    
+    // Meta tags para PWA Android
+    addMetaTag('mobile-web-app-capable', 'yes');
+    addMetaTag('theme-color', '#008060');
+    addMetaTag('application-name', 'Elena Admin');
+    
+    // Viewport optimizado para PWA
+    let viewport = document.querySelector('meta[name="viewport"]');
+    if (!viewport) {
+      viewport = document.createElement('meta');
+      viewport.setAttribute('name', 'viewport');
+      document.head.appendChild(viewport);
+    }
+    viewport.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover');
   }, []);
 
   useEffect(() => {
@@ -124,12 +154,19 @@ export default function AdminLayout({
     // { href: '/admin/estadisticas', icon: BarChart3, label: 'Estadísticas' },
   ];
 
+  // Función para cerrar sidebar en mobile
+  const handleLinkClick = () => {
+    if (window.innerWidth < 768) {
+      setSidebarOpen(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#f6f6f7] flex">
-      {/* Overlay para mobile con blur */}
+      {/* Overlay para mobile con blur transparente */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300"
+          className="fixed inset-0 bg-white/10 backdrop-blur-md z-40 md:hidden transition-opacity duration-300"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -172,6 +209,7 @@ export default function AdminLayout({
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={handleLinkClick}
                 className={`flex items-center rounded-md font-medium transition-colors group ${
                   sidebarOpen ? 'gap-2.5 px-2.5 py-2 text-sm' : 'justify-center px-2 py-2.5'
                 } ${

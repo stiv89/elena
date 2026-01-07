@@ -318,13 +318,13 @@ export default function ServiciosPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6 px-2 md:px-0 overflow-x-hidden max-w-full">
       {/* Toast notifications */}
-      <div className="fixed top-4 right-4 z-50 space-y-2">
+      <div className="fixed top-4 right-2 md:right-4 z-50 space-y-2 max-w-[calc(100vw-1rem)] md:max-w-none">
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg text-sm font-medium min-w-[300px] animate-slide-in-right ${
+            className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg shadow-lg text-xs md:text-sm font-medium min-w-[200px] md:min-w-[300px] animate-slide-in-right ${
               toast.type === 'success'
                 ? 'bg-[#f0fdf4] border border-[#008060] text-[#008060]'
                 : toast.type === 'error'
@@ -332,50 +332,50 @@ export default function ServiciosPage() {
                 : 'bg-blue-50 border border-blue-200 text-blue-700'
             }`}
           >
-            {toast.type === 'success' && <CheckCircle size={20} />}
-            {toast.type === 'error' && <XCircle size={20} />}
-            {toast.type === 'info' && <AlertCircle size={20} />}
-            <span>{toast.message}</span>
+            {toast.type === 'success' && <CheckCircle size={16} className="md:w-5 md:h-5 flex-shrink-0" />}
+            {toast.type === 'error' && <XCircle size={16} className="md:w-5 md:h-5 flex-shrink-0" />}
+            {toast.type === 'info' && <AlertCircle size={16} className="md:w-5 md:h-5 flex-shrink-0" />}
+            <span className="truncate">{toast.message}</span>
           </div>
         ))}
       </div>
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3 md:gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">Servicios</h1>
-          <p className="text-sm text-gray-600 mt-1">Gestiona tus servicios y precios</p>
+          <h1 className="text-xl md:text-3xl font-semibold text-gray-900">Servicios</h1>
+          <p className="text-xs md:text-sm text-gray-600 mt-0.5 md:mt-1">Gestiona tus servicios y precios</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="w-full md:w-auto px-4 py-2 bg-[#008060] text-white text-sm font-medium rounded-md hover:bg-[#006e52] transition-all duration-200 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
+          className="w-full md:w-auto px-3 md:px-4 py-1.5 md:py-2 bg-[#008060] text-white text-xs md:text-sm font-medium rounded-md hover:bg-[#006e52] transition-all duration-200 flex items-center justify-center gap-1.5 md:gap-2 shadow-sm hover:shadow-md"
         >
-          <Plus size={18} />
+          <Plus size={16} className="md:w-[18px] md:h-[18px]" />
           <span>Agregar servicio</span>
         </button>
       </div>
 
       {/* Filtros */}
-      <div className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 space-y-4 animate-fade-in">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="bg-white border border-gray-200 rounded-lg p-3 md:p-6 space-y-3 md:space-y-4 animate-fade-in">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
           {/* Barra de búsqueda */}
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-gray-400" />
+            <div className="absolute inset-y-0 left-0 pl-2.5 md:pl-3 flex items-center pointer-events-none">
+              <Search className="h-4 w-4 md:h-5 md:w-5 text-gray-400" />
             </div>
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Buscar por nombre, descripción, precio o categoría..."
-              className="block w-full pl-10 pr-10 py-2.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#008060] focus:border-[#008060] transition-all"
+              className="block w-full pl-8 md:pl-10 pr-8 md:pr-10 py-2 md:py-2.5 text-xs md:text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#008060] focus:border-[#008060] transition-all"
             />
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm('')}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                className="absolute inset-y-0 right-0 pr-2.5 md:pr-3 flex items-center"
               >
-                <X className="h-5 w-5 text-gray-400 hover:text-gray-600 transition-colors" />
+                <X className="h-4 w-4 md:h-5 md:w-5 text-gray-400 hover:text-gray-600 transition-colors" />
               </button>
             )}
           </div>
@@ -385,7 +385,7 @@ export default function ServiciosPage() {
             <select
               value={selectedCategoria}
               onChange={(e) => setSelectedCategoria(e.target.value)}
-              className="block w-full px-3 py-2.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#008060] focus:border-[#008060] transition-all"
+              className="block w-full px-2.5 md:px-3 py-2 md:py-2.5 text-xs md:text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#008060] focus:border-[#008060] transition-all"
             >
               <option value="all">Todas las categorías</option>
               {categorias.map((categoria) => (
@@ -399,7 +399,7 @@ export default function ServiciosPage() {
 
         {/* Contador de resultados */}
         {searchTerm || selectedCategoria !== 'all' ? (
-          <div className="text-sm text-gray-600 flex items-center gap-2">
+          <div className="text-xs md:text-sm text-gray-600 flex items-center gap-2 flex-wrap">
             <span>
               {filteredServicios.length} {filteredServicios.length === 1 ? 'servicio encontrado' : 'servicios encontrados'}
             </span>
@@ -419,19 +419,19 @@ export default function ServiciosPage() {
       </div>
 
       {showForm && (
-        <div className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 animate-fade-in">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-gray-900">
+        <div className="bg-white border border-gray-200 rounded-lg p-3 md:p-6 animate-fade-in overflow-x-hidden">
+          <div className="flex items-center justify-between mb-4 md:mb-6">
+            <h2 className="text-base md:text-lg font-semibold text-gray-900">
               {editingServicio ? 'Editar servicio' : 'Nuevo servicio'}
             </h2>
             <button
               onClick={resetForm}
-              className="text-sm text-gray-600 hover:text-gray-900"
+              className="text-xs md:text-sm text-gray-600 hover:text-gray-900"
             >
               Cancelar
             </button>
           </div>
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-5">
             <div>
               <label className="block text-sm font-medium text-gray-900 mb-2">
                 Categoría
@@ -553,27 +553,27 @@ export default function ServiciosPage() {
 
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden animate-fade-in">
         {servicios.length === 0 ? (
-          <div className="p-12 text-center">
-            <ShoppingBag className="w-12 h-12 text-gray-400 mx-auto mb-4 animate-bounce" />
-            <p className="text-sm text-gray-600">No hay servicios todavía</p>
+          <div className="p-6 md:p-12 text-center">
+            <ShoppingBag className="w-10 h-10 md:w-12 md:h-12 text-gray-400 mx-auto mb-3 md:mb-4 animate-bounce" />
+            <p className="text-xs md:text-sm text-gray-600">No hay servicios todavía</p>
             <button
               onClick={() => setShowForm(true)}
-              className="mt-4 px-4 py-2 bg-[#008060] text-white text-sm font-medium rounded-md hover:bg-[#006e52] transition-all duration-200 shadow-sm hover:shadow-md"
+              className="mt-3 md:mt-4 px-3 md:px-4 py-1.5 md:py-2 bg-[#008060] text-white text-xs md:text-sm font-medium rounded-md hover:bg-[#006e52] transition-all duration-200 shadow-sm hover:shadow-md"
             >
               Agregar primer servicio
             </button>
           </div>
         ) : filteredServicios.length === 0 ? (
-          <div className="p-12 text-center">
-            <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-sm text-gray-600 mb-2">No se encontraron servicios</p>
+          <div className="p-6 md:p-12 text-center">
+            <Search className="w-10 h-10 md:w-12 md:h-12 text-gray-400 mx-auto mb-3 md:mb-4" />
+            <p className="text-xs md:text-sm text-gray-600 mb-1 md:mb-2">No se encontraron servicios</p>
             <p className="text-xs text-gray-500">Intenta ajustar los filtros de búsqueda</p>
             <button
               onClick={() => {
                 setSearchTerm('');
                 setSelectedCategoria('all');
               }}
-              className="mt-4 px-4 py-2 bg-[#008060] text-white text-sm font-medium rounded-md hover:bg-[#006e52] transition-all duration-200"
+              className="mt-3 md:mt-4 px-3 md:px-4 py-1.5 md:py-2 bg-[#008060] text-white text-xs md:text-sm font-medium rounded-md hover:bg-[#006e52] transition-all duration-200"
             >
               Limpiar filtros
             </button>
@@ -650,49 +650,49 @@ export default function ServiciosPage() {
               </table>
             </div>
 
-            {/* Mobile Cards */}
+            {/* Mobile Cards - Más compacto */}
             <div className="md:hidden divide-y divide-gray-200">
               {paginatedServicios.map((servicio, index) => (
                 <div
                   key={servicio.id}
-                  className="p-4 hover:bg-gray-50 transition-all duration-200 animate-fade-in-up"
+                  className="p-3 hover:bg-gray-50 transition-all duration-200 animate-fade-in-up"
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
-                  <div className="flex justify-between items-start mb-3">
-                    <div className="flex-1">
-                      <h3 className="text-sm font-semibold text-gray-900 mb-1">
+                  <div className="flex justify-between items-start gap-2 mb-2">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xs font-semibold text-gray-900 mb-1 line-clamp-2">
                         {servicio.nombre}
                       </h3>
                       {servicio.descripcion && (
-                        <p className="text-xs text-gray-600 mb-2 line-clamp-2">
+                        <p className="text-[10px] text-gray-600 mb-1.5 line-clamp-1">
                           {servicio.descripcion}
                         </p>
                       )}
                     </div>
-                    <div className="flex gap-2 ml-2">
+                    <div className="flex gap-1.5 flex-shrink-0">
                       <button
                         onClick={() => handleEdit(servicio)}
-                        className="p-2 text-gray-600 hover:text-[#008060] hover:bg-gray-100 rounded transition-colors"
+                        className="p-1.5 text-gray-600 hover:text-[#008060] hover:bg-gray-100 rounded transition-colors"
                         title="Editar"
                       >
-                        <Edit size={18} />
+                        <Edit size={14} />
                       </button>
                       <button
                         onClick={() => handleDelete(servicio.id, servicio.nombre)}
-                        className="p-2 text-gray-600 hover:text-red-600 hover:bg-gray-100 rounded transition-colors"
+                        className="p-1.5 text-gray-600 hover:text-red-600 hover:bg-gray-100 rounded transition-colors"
                         title="Eliminar"
                       >
-                        <Trash2 size={18} />
+                        <Trash2 size={14} />
                       </button>
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-3 text-xs">
-                    <div className="flex items-center gap-1">
-                      <span className="text-gray-500">Categoría:</span>
-                      <span className="text-gray-700 font-medium">{servicio.categoria?.nombre || '-'}</span>
+                  <div className="flex flex-wrap gap-2 text-[10px]">
+                    <div className="flex items-center gap-1 min-w-0">
+                      <span className="text-gray-500 whitespace-nowrap">Categoría:</span>
+                      <span className="text-gray-700 font-medium truncate">{servicio.categoria?.nombre || '-'}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <span className="text-gray-500">Precio:</span>
+                      <span className="text-gray-500 whitespace-nowrap">Precio:</span>
                       <span className="text-gray-900 font-semibold">₲ {servicio.precio || '0'}</span>
                     </div>
                   </div>
@@ -704,56 +704,58 @@ export default function ServiciosPage() {
 
         {/* Paginación */}
         {totalPages > 1 && (
-          <div className="mt-6 flex items-center justify-between">
-            <div className="text-sm text-gray-700">
-              Mostrando {startIndex + 1} a {Math.min(endIndex, filteredServicios.length)} de {filteredServicios.length} servicios
-            </div>
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}
-                className="px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Anterior
-              </button>
-              
-              {/* Números de página */}
-              <div className="flex space-x-1">
-                {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
-                  let pageNum;
-                  if (totalPages <= 5) {
-                    pageNum = i + 1;
-                  } else if (currentPage <= 3) {
-                    pageNum = i + 1;
-                  } else if (currentPage >= totalPages - 2) {
-                    pageNum = totalPages - 4 + i;
-                  } else {
-                    pageNum = currentPage - 2 + i;
-                  }
-                  
-                  return (
-                    <button
-                      key={pageNum}
-                      onClick={() => setCurrentPage(pageNum)}
-                      className={`px-3 py-1 text-sm border rounded-md ${
-                        currentPage === pageNum
-                          ? 'bg-[#008060] text-white border-[#008060]'
-                          : 'border-gray-300 hover:bg-gray-50'
-                      }`}
-                    >
-                      {pageNum}
-                    </button>
-                  );
-                })}
+          <div className="mt-4 md:mt-6 px-3 md:px-0">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+              <div className="text-xs md:text-sm text-gray-700 text-center md:text-left">
+                Mostrando {startIndex + 1} a {Math.min(endIndex, filteredServicios.length)} de {filteredServicios.length} servicios
               </div>
+              <div className="flex items-center justify-center space-x-1 md:space-x-2">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="px-2 md:px-3 py-1 text-xs md:text-sm border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Anterior
+                </button>
+                
+                {/* Números de página */}
+                <div className="flex space-x-1">
+                  {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                    let pageNum;
+                    if (totalPages <= 5) {
+                      pageNum = i + 1;
+                    } else if (currentPage <= 3) {
+                      pageNum = i + 1;
+                    } else if (currentPage >= totalPages - 2) {
+                      pageNum = totalPages - 4 + i;
+                    } else {
+                      pageNum = currentPage - 2 + i;
+                    }
+                    
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => setCurrentPage(pageNum)}
+                        className={`px-2 md:px-3 py-1 text-xs md:text-sm border rounded-md ${
+                          currentPage === pageNum
+                            ? 'bg-[#008060] text-white border-[#008060]'
+                            : 'border-gray-300 hover:bg-gray-50'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
+                </div>
 
-              <button
-                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                disabled={currentPage === totalPages}
-                className="px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Siguiente
-              </button>
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="px-2 md:px-3 py-1 text-xs md:text-sm border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Siguiente
+                </button>
+              </div>
             </div>
           </div>
         )}
