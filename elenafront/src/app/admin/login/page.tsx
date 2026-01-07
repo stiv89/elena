@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase-admin';
 import { useRouter } from 'next/navigation';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Download, Smartphone, Share2 } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminLogin() {
@@ -12,6 +12,11 @@ export default function AdminLogin() {
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showInstallBanner, setShowInstallBanner] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+  const [isAndroid, setIsAndroid] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const router = useRouter();
 
   // Cargar credenciales guardadas al cargar la página
@@ -41,6 +46,43 @@ export default function AdminLogin() {
     };
     checkAuth();
   }, [router]);
+
+  // Detectar plataforma y si la app está instalada
+  useEffect(() => {
+    // Detectar iOS
+    const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    
+    // Detectar Android
+    const android = /Android/.test(navigator.userAgent);
+    
+    // Detectar si está en modo standalone (ya instalado)
+    const standalone = window.matchMedia('(display-mode: standalone)').matches || 
+                       (window.navigator as any).standalone === true ||
+                       document.referrer.includes('android-app://');
+    
+    setIsIOS(iOS);
+    setIsAndroid(android);
+    setIsStandalone(standalone);
+    
+    // Mostrar banner si no está instalado y es mobile
+    if ((iOS || android) && !standalone) {
+      setShowInstallBanner(true);
+    }
+
+    // Escuchar evento beforeinstallprompt para Android
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallBanner(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,6 +117,19 @@ export default function AdminLogin() {
     }
   };
 
+  const handleInstallClick = async () => {
+    // Android: usar el prompt nativo
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setShowInstallBanner(false);
+        setDeferredPrompt(null);
+      }
+    }
+    // iOS: mostrar instrucciones (no hay API nativa)
+  };
+
   return (
     <div className="min-h-screen bg-[#f6f6f7] flex flex-col">
       {/* Header minimalista */}
@@ -86,6 +141,52 @@ export default function AdminLogin() {
           </Link>
         </div>
       </header>
+
+      {/* Banner de instalación PWA */}
+      {showInstallBanner && !isStandalone && (
+        <div className="bg-gradient-to-r from-[#008060] to-[#006e52] text-white px-4 py-3 shadow-lg">
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3 flex-1">
+              <Smartphone size={20} className="flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium">
+                  {isIOS ? 'Instala la app para acceso rápido' : 'Instala la app en tu dispositivo'}
+                </p>
+                {isIOS && (
+                  <p className="text-xs opacity-90 mt-0.5">
+                    Toca el botón Compartir → "Agregar a pantalla de inicio"
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {isAndroid && deferredPrompt ? (
+                <button
+                  onClick={handleInstallClick}
+                  className="px-4 py-2 bg-white text-[#008060] rounded-md text-sm font-medium hover:bg-gray-100 transition-colors flex items-center gap-2"
+                >
+                  <Download size={16} />
+                  Instalar
+                </button>
+              ) : isIOS ? (
+                <div className="flex items-center gap-2 text-xs opacity-90">
+                  <Share2 size={16} />
+                  <span>Usa el botón Compartir</span>
+                </div>
+              ) : null}
+              <button
+                onClick={() => setShowInstallBanner(false)}
+                className="text-white/80 hover:text-white transition-colors p-1"
+                aria-label="Cerrar"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Contenido principal */}
       <div className="flex-1 flex items-center justify-center p-4">
