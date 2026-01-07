@@ -75,14 +75,62 @@ export default function AdminLayout({
     addMetaTag('theme-color', '#008060');
     addMetaTag('application-name', 'Elena Admin');
     
-    // Viewport optimizado para PWA
+    // Viewport optimizado para PWA - Deshabilitar zoom en mobile
     let viewport = document.querySelector('meta[name="viewport"]');
     if (!viewport) {
       viewport = document.createElement('meta');
       viewport.setAttribute('name', 'viewport');
       document.head.appendChild(viewport);
     }
-    viewport.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover');
+    viewport.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover');
+    
+    // Agregar estilos CSS para prevenir zoom
+    let style = document.getElementById('admin-no-zoom-style');
+    if (!style) {
+      style = document.createElement('style');
+      style.id = 'admin-no-zoom-style';
+      style.textContent = `
+        * {
+          touch-action: manipulation;
+          -webkit-touch-callout: none;
+          -webkit-user-select: none;
+          user-select: none;
+        }
+        input, textarea, select {
+          -webkit-user-select: text;
+          user-select: text;
+          touch-action: auto;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+    
+    // Prevenir zoom con gestos táctiles adicionales
+    const preventZoom = (e: TouchEvent) => {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    };
+    
+    // Prevenir zoom con doble toque
+    let lastTouchEnd = 0;
+    const preventDoubleTapZoom = (e: TouchEvent) => {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+      }
+      lastTouchEnd = now;
+    };
+    
+    document.addEventListener('touchstart', preventZoom, { passive: false });
+    document.addEventListener('touchmove', preventZoom, { passive: false });
+    document.addEventListener('touchend', preventDoubleTapZoom, { passive: false });
+    
+    return () => {
+      document.removeEventListener('touchstart', preventZoom);
+      document.removeEventListener('touchmove', preventZoom);
+      document.removeEventListener('touchend', preventDoubleTapZoom);
+    };
   }, []);
 
   useEffect(() => {
