@@ -5,13 +5,10 @@ import siteData from "./siteData.json";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ServicesCarousel from "./components/ServicesCarousel";
-import ContactForm from "./components/ContactForm";
-import SvgIcon, { StarIcon, CheckIcon } from "./components/SvgIcon";
-import { ScissorsIcon, BrushIcon, SparkleIcon, LocationPinIcon } from "./components/HeroIcons";
+import SvgIcon, { StarIcon } from "./components/SvgIcon";
 import IsaAssistant from "./components/IsaAssistant";
 import FAQ from "./components/FAQ";
 import Breadcrumbs from "./components/Breadcrumbs";
-import GalleryCarousel from "./components/GalleryCarousel";
 import GalleryGrid from "./components/GalleryGrid";
 import WaveSeparator from "./components/WaveSeparator";
 import { useFadeInOnScroll } from "./hooks/useFadeInOnScroll";
@@ -221,7 +218,7 @@ function BookingTabs({ whatsappNumber, whatsappUrl, servicios }: {
 export default function Home() {
   const [activeServiceFilter, setActiveServiceFilter] = useState<string>("todos");
   const { ref: servicesRef, isVisible: servicesVisible } = useFadeInOnScroll(0.2);
-  const { servicios: serviciosDB, loading: serviciosLoading } = useServicios();
+  const { servicios: serviciosDB } = useServicios();
 
   // Definir categorías para los chips scrollables
   const serviceCategories = [

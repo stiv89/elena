@@ -15,7 +15,6 @@ import { useRouter } from "next/navigation";
 export default function Servicios() {
   const { servicios, loading, error } = useServicios();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [highlightedService, setHighlightedService] = useState<string | null>(null);
   const categoriaRefs = useRef<{ [key: string]: HTMLElement | null }>({});
   const router = useRouter();
 
@@ -300,11 +299,7 @@ export default function Servicios() {
                 {categoria.servicios.map((servicio, i) => (
                   <div 
                     key={servicio.nombre}
-                    className={`bg-white rounded-xl shadow-sm overflow-hidden border transition-all duration-300 hover:shadow-md flex flex-col ${
-                      highlightedService === servicio.nombre 
-                        ? "border-amber-400 bg-amber-50 ring-2 ring-amber-200 ring-opacity-50 scale-105" 
-                        : "border-gray-100 hover:border-gray-200"
-                    }`}
+                    className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-md flex flex-col"
                     style={{ animationDelay: `${i * 0.05}s` }}
                   >
                     {/* Imagen del servicio */}

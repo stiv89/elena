@@ -5,6 +5,12 @@ import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Download, Smartphone, Share2 } from 'lucide-react';
 import Link from 'next/link';
 
+// Tipo para el evento beforeinstallprompt
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
+
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,7 +22,7 @@ export default function AdminLogin() {
   const [isIOS, setIsIOS] = useState(false);
   const [isAndroid, setIsAndroid] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const router = useRouter();
 
   // Cargar credenciales guardadas al cargar la página
@@ -57,8 +63,9 @@ export default function AdminLogin() {
     const android = /Android/.test(navigator.userAgent);
     
     // Detectar si está en modo standalone (ya instalado)
+    const navigatorStandalone = (window.navigator as { standalone?: boolean }).standalone;
     const standalone = window.matchMedia('(display-mode: standalone)').matches || 
-                       (window.navigator as any).standalone === true ||
+                       navigatorStandalone === true ||
                        document.referrer.includes('android-app://');
     
     setIsIOS(iOS);
@@ -73,7 +80,7 @@ export default function AdminLogin() {
     // Escuchar evento beforeinstallprompt para Android
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
-      setDeferredPrompt(e);
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
       setShowInstallBanner(true);
     };
 
@@ -154,7 +161,7 @@ export default function AdminLogin() {
                 </p>
                 {isIOS && (
                   <p className="text-xs opacity-90 mt-0.5">
-                    Toca el botón Compartir → "Agregar a pantalla de inicio"
+                    Toca el botón Compartir → &quot;Agregar a pantalla de inicio&quot;
                   </p>
                 )}
               </div>
