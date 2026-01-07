@@ -59,9 +59,9 @@ export function useConfiguracion() {
             const key = item.clave as keyof ConfiguracionSitio;
             if (key in configObj) {
               if (key === 'topbar_visible') {
-                (configObj as any)[key] = item.valor === 'true';
+                (configObj as Record<string, string | boolean>)[key] = item.valor === 'true';
               } else {
-                (configObj as any)[key] = item.valor || defaultConfig[key];
+                (configObj as Record<string, string | boolean>)[key] = item.valor || defaultConfig[key];
               }
             }
           });

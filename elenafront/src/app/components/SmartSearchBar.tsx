@@ -104,6 +104,7 @@ export default function SmartSearchBar({ onSearchResult, servicios = [] }: Smart
   const generateSuggestions = (searchQuery: string): SearchSuggestion[] => {
     const results: SearchSuggestion[] = [];
     const queryNormalized = normalizeText(searchQuery);
+    const queryLower = searchQuery.toLowerCase();
     const queryWords = queryNormalized.split(' ').filter(word => word.length > 0);
     
     if (!queryNormalized) {

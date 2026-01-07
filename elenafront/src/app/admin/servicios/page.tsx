@@ -30,13 +30,17 @@ interface CategoriaDB {
   updated_at: string;
 }
 
+interface ServicioConCategoria extends ServicioDB {
+  categoria?: { id: string; nombre: string };
+}
+
 export default function ServiciosPage() {
-  const [servicios, setServicios] = useState<Servicio[]>([]);
+  const [servicios, setServicios] = useState<ServicioConCategoria[]>([]);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
-  const [editingServicio, setEditingServicio] = useState<Servicio | null>(null);
+  const [editingServicio, setEditingServicio] = useState<ServicioConCategoria | null>(null);
   const [toasts, setToasts] = useState<Array<{ id: string; message: string; type: 'success' | 'error' | 'info' }>>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -89,7 +93,7 @@ export default function ServiciosPage() {
 
       // Combinar servicios con sus categorías
       const serviciosConCategoria = (serviciosData || []).map((servicio: ServicioDB) => {
-        const categoria = categoriasData?.find((cat: CategoriaDB) => cat.id === servicio.categoria_id);
+        const categoria = categoriasData?.find((cat: { id: string; nombre: string }) => cat.id === servicio.categoria_id);
         return {
           ...servicio,
           // El precio ya viene como string desde la BD
@@ -216,7 +220,7 @@ export default function ServiciosPage() {
     }
   };
 
-  const handleEdit = (servicio: Servicio) => {
+  const handleEdit = (servicio: ServicioConCategoria) => {
     setEditingServicio(servicio);
     setFormData({
       categoria_id: servicio.categoria_id || '',

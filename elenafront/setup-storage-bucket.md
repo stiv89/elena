@@ -50,3 +50,4 @@ USING (bucket_id = 'galeria');
 El bucket debe estar configurado como **público** para que las imágenes sean accesibles desde la web. Si no lo marcas como público, necesitarás usar URLs firmadas que expiran.
 
 
+

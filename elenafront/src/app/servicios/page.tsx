@@ -7,7 +7,6 @@ import Footer from "../components/Footer";
 import ServiceIcon from "../components/ServiceIcon";
 import WhatsAppFloat from "../components/WhatsAppFloat";
 import SvgIcon from "../components/SvgIcon";
-import SmartSearchBar from "../components/SmartSearchBar";
 import Breadcrumbs from "../components/Breadcrumbs";
 import Link from "next/link";
 import Head from "next/head";
@@ -19,6 +18,11 @@ export default function Servicios() {
   const [highlightedService, setHighlightedService] = useState<string | null>(null);
   const categoriaRefs = useRef<{ [key: string]: HTMLElement | null }>({});
   const router = useRouter();
+
+  // Filtrar servicios según la categoría seleccionada
+  const filteredServicios = selectedCategory 
+    ? servicios.filter(cat => (cat as { categoria?: string; nombre: string }).categoria === selectedCategory || cat.nombre === selectedCategory)
+    : servicios;
 
   const addToCart = (categoria: string, servicio: string, precio: string) => {
     // Usar la función global del header
@@ -46,36 +50,15 @@ export default function Servicios() {
   };
 
   const scrollToCategory = (categoryName: string) => {
-    const element = categoriaRefs.current[categoryName];
-    if (element) {
-      const headerHeight = 120; // Un poco más de espacio para el header
-      const elementPosition = element.offsetTop - headerHeight;
-      
-      window.scrollTo({
-        top: elementPosition,
-        behavior: 'smooth'
-      });
-      
+    // Si ya está seleccionada, limpiar el filtro (mostrar todos)
+    if (selectedCategory === categoryName) {
+      setSelectedCategory(null);
+    } else {
+      // Filtrar por la categoría seleccionada
       setSelectedCategory(categoryName);
-      
-      // Remover la selección después de 3 segundos
-      setTimeout(() => {
-        setSelectedCategory(null);
-      }, 3000);
     }
   };
 
-  // Función para manejar resultados del buscador
-  const handleSearchResult = (categoria: string, servicio?: string) => {
-    scrollToCategory(categoria);
-    
-    if (servicio) {
-      setHighlightedService(servicio);
-      setTimeout(() => {
-        setHighlightedService(null);
-      }, 5000);
-    }
-  };
 
   if (loading) {
     return (
@@ -170,38 +153,30 @@ export default function Servicios() {
         }
       `}</style>
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-gray-50 to-gray-100 py-12 container-with-margins">
+      {/* Hero Section - Fijo en la parte superior */}
+      <section className="sticky top-0 z-50 bg-gradient-to-br from-gray-50 to-gray-100 border-b border-gray-200 py-4 container-with-margins">
         <div className="max-w-4xl mx-auto text-center px-4">
           {/* Botón volver */}
-          <div className="mb-4">
+          <div className="mb-2">
             <Link 
               href="/"
-              className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+              className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors text-sm"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              <span className="text-sm font-medium">Volver al inicio</span>
+              <span>Volver al inicio</span>
             </Link>
           </div>
           
-          <h1 className="font-playfair text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="font-playfair text-2xl font-bold text-gray-900 mb-1">
             Nuestros servicios
           </h1>
-          <h2 className="text-lg text-gray-700 mb-6 max-w-2xl mx-auto">
+          <h2 className="text-sm text-gray-700 mb-3 max-w-2xl mx-auto">
             Más de 50 opciones desde ₲15.000. Elegí la tuya y reservá al instante.
           </h2>
 
-          {/* Buscador Inteligente */}
-          <div className="mb-6">
-            <SmartSearchBar onSearchResult={handleSearchResult} servicios={servicios} />
-            <p className="text-xs text-gray-500 mt-2">
-              💡 Ej: maquillaje social, corte, cejas...
-            </p>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-2">
+          <div className="flex flex-wrap justify-center gap-2 mb-3">
             <div className="bg-white px-3 py-1 rounded-full shadow-md text-xs font-medium text-gray-700">
               +{servicios.length} Categorías
             </div>
@@ -212,30 +187,45 @@ export default function Servicios() {
         </div>
       </section>
 
-      {/* Navegación rápida por categorías */}
-      <section className="sticky top-20 bg-white/95 backdrop-blur-md z-40 border-b border-gray-200 py-4">
+      {/* Navegación rápida por categorías - Fija debajo del hero */}
+      <section className="sticky top-[140px] z-40 bg-white border-b border-gray-200 py-2 shadow-sm">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-            {servicios.map((categoria) => (
+          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+            {/* Botón para mostrar todos */}
+            <button
+              onClick={() => setSelectedCategory(null)}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-full font-medium transition-all duration-300 text-xs whitespace-nowrap flex-shrink-0 ${
+                selectedCategory === null
+                  ? "bg-amber-500 text-white shadow-md scale-105"
+                  : "bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 hover:text-gray-900"
+              }`}
+            >
+              <span>✨</span>
+              <span>Todos</span>
+            </button>
+            {servicios.map((categoria) => {
+              const categoriaNombre = (categoria as { categoria?: string; nombre: string }).categoria || categoria.nombre;
+              return (
               <button
-                key={categoria.categoria}
-                onClick={() => scrollToCategory(categoria.categoria)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full font-medium transition-all duration-300 text-sm whitespace-nowrap flex-shrink-0 ${
-                  selectedCategory === categoria.categoria
-                    ? "bg-gradient-gold text-white shadow-lg scale-105"
-                    : "bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 hover:text-gray-900"
+                key={categoriaNombre}
+                onClick={() => scrollToCategory(categoriaNombre)}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-full font-medium transition-all duration-300 text-xs whitespace-nowrap flex-shrink-0 ${
+                  selectedCategory === categoriaNombre
+                    ? "bg-amber-500 text-white shadow-md scale-105"
+                    : "bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 hover:text-gray-900"
                 }`}
               >
-                <ServiceIcon type={categoria.icon} className="w-4 h-4" />
-                <span>{categoria.categoria.split(' ')[0]}</span>
+                <ServiceIcon type={categoria.icon} className="w-3.5 h-3.5" />
+                <span>{categoriaNombre.split(' ')[0]}</span>
               </button>
-            ))}
+            );
+            })}
           </div>
         </div>
       </section>
 
       {/* Servicios */}
-      <main className="flex-1 py-8 container-with-margins pb-24 md:pb-8">
+      <main className="flex-1 py-4 container-with-margins pb-24 md:pb-8">
         <div className="max-w-7xl mx-auto px-4">
           {/* Botón scroll to top y carrito */}
           <div className="fixed bottom-32 right-6 z-30 flex flex-col gap-3">
@@ -268,43 +258,45 @@ export default function Servicios() {
             </button>
           </div>
 
-          {servicios.map((categoria, idx) => (
+          {filteredServicios.map((categoria, idx) => {
+            const categoriaNombre = (categoria as { categoria?: string; nombre: string }).categoria || categoria.nombre;
+            return (
             <section 
-              key={categoria.categoria} 
+              key={categoriaNombre} 
               ref={(el) => {
-                categoriaRefs.current[categoria.categoria] = el;
+                categoriaRefs.current[categoriaNombre] = el;
               }}
-              className={`mb-12 animate-fadein transition-all duration-500 ${
-                selectedCategory === categoria.categoria 
+              className={`mb-6 animate-fadein transition-all duration-500 ${
+                selectedCategory === categoriaNombre 
                   ? "ring-4 ring-yellow-400 ring-opacity-50 rounded-2xl p-4 bg-yellow-50" 
                   : ""
               }`}
               style={{ animationDelay: `${idx * 0.1}s` }}
-              id={`categoria-${categoria.categoria.replace(/\s+/g, '-').toLowerCase()}`}
+              id={`categoria-${categoriaNombre.replace(/\s+/g, '-').toLowerCase()}`}
             >
               {/* Header de la categoría - MÁS COMPACTO */}
-              <div className="text-center mb-6">
-                <div className="flex justify-center items-center gap-3 mb-3">
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-md" 
+              <div className="text-center mb-4">
+                <div className="flex justify-center items-center gap-2 mb-2">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-sm" 
                        style={{ backgroundColor: categoria.color }}>
-                    <ServiceIcon type={categoria.icon} className="w-6 h-6 text-gray-600" />
+                    <ServiceIcon type={categoria.icon} className="w-5 h-5 text-gray-600" />
                   </div>
                   <div className="text-left">
-                    <h2 className="font-playfair text-2xl font-bold text-gray-900">
-                      {categoria.categoria}
+                    <h2 className="font-playfair text-xl font-bold text-gray-900">
+                      {categoriaNombre}
                     </h2>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-xs text-gray-500">
                       {categoria.servicios.length} servicios
                     </span>
                   </div>
                 </div>
-                <p className="text-sm text-gray-600 max-w-xl mx-auto">
+                <p className="text-xs text-gray-600 max-w-xl mx-auto">
                   {categoria.descripcion}
                 </p>
               </div>
 
               {/* Grid de servicios - MÁS COMPACTO */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 mb-4">
                 {categoria.servicios.map((servicio, i) => (
                   <div 
                     key={servicio.nombre}
@@ -317,7 +309,7 @@ export default function Servicios() {
                   >
                     {/* Imagen del servicio */}
                     {servicio.imagen_url && (
-                      <div className="relative h-32 w-full overflow-hidden flex-shrink-0">
+                      <div className="relative h-24 w-full overflow-hidden flex-shrink-0">
                         <img 
                           src={servicio.imagen_url} 
                           alt={servicio.nombre}
@@ -325,34 +317,34 @@ export default function Servicios() {
                         />
                       </div>
                     )}
-                    <div className="p-4 flex flex-col flex-grow">
+                    <div className="p-3 flex flex-col flex-grow">
                       {/* Badge para servicios populares */}
                       {i < 2 && (
-                        <div className="flex justify-between items-start mb-2">
-                          <span className="bg-amber-100 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">
+                        <div className="flex justify-between items-start mb-1.5">
+                          <span className="bg-amber-100 text-amber-800 text-[10px] font-medium px-1.5 py-0.5 rounded-full">
                             ⭐ Más pedido
                           </span>
                         </div>
                       )}
 
-                      <h4 className="font-semibold text-gray-900 mb-2 leading-tight line-clamp-2 text-sm">
+                      <h4 className="font-semibold text-gray-900 mb-1.5 leading-tight line-clamp-2 text-xs">
                         {servicio.nombre}
                       </h4>
                       
                       {/* Descripción corta */}
-                      <p className="text-xs text-gray-600 mb-3 flex-grow">
+                      <p className="text-[10px] text-gray-600 mb-2 flex-grow line-clamp-2">
                         {servicio.descripcion || "Servicio profesional de alta calidad"}
                       </p>
                       
-                      <div className="mt-auto space-y-2">
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="text-lg font-bold text-gray-900">₲{servicio.precio}</span>
+                      <div className="mt-auto space-y-1.5">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-base font-bold text-gray-900">₲{servicio.precio}</span>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="grid grid-cols-2 gap-1.5">
                           <button
-                            onClick={() => addToCart(categoria.categoria, servicio.nombre, servicio.precio)}
-                            className="bg-amber-500 hover:bg-amber-600 text-white font-medium py-2 px-3 rounded-lg transition-all duration-300 text-xs flex items-center justify-center gap-1"
+                            onClick={() => addToCart(categoriaNombre, servicio.nombre, servicio.precio)}
+                            className="bg-amber-500 hover:bg-amber-600 text-white font-medium py-1.5 px-2 rounded-md transition-all duration-300 text-[10px] flex items-center justify-center gap-1"
                             title="Agregar al carrito"
                           >
                             <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
@@ -365,7 +357,7 @@ export default function Servicios() {
                             href={`https://wa.me/595991743889?text=Hola Elena, quiero reservar ${encodeURIComponent(servicio.nombre)} por ₲${servicio.precio}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-3 rounded-lg transition-all duration-300 text-xs flex items-center justify-center gap-1"
+                            className="bg-green-500 hover:bg-green-600 text-white font-medium py-1.5 px-2 rounded-md transition-all duration-300 text-[10px] flex items-center justify-center gap-1"
                             title="Reservar por WhatsApp"
                           >
                             <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
@@ -385,7 +377,7 @@ export default function Servicios() {
                 <div className="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
                   <button
                     onClick={() => {
-                      const content = document.getElementById(`obs-${categoria.categoria.replace(/\s+/g, '-')}`);
+                      const content = document.getElementById(`obs-${categoriaNombre.replace(/\s+/g, '-')}`);
                       if (content) {
                         content.classList.toggle('hidden');
                       }
@@ -402,7 +394,7 @@ export default function Servicios() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </button>
-                  <div id={`obs-${categoria.categoria.replace(/\s+/g, '-')}`} className="hidden px-3 pb-3">
+                  <div id={`obs-${categoriaNombre.replace(/\s+/g, '-')}`} className="hidden px-3 pb-3">
                     <p className="text-xs text-gray-700">
                       {categoria.obs}
                     </p>
@@ -410,7 +402,8 @@ export default function Servicios() {
                 </div>
               )}
             </section>
-          ))}
+          );
+          })}
         </div>
       </main>
 

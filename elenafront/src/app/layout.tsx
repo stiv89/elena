@@ -235,6 +235,33 @@ export default function RootLayout({
             })
           }}
         />
+        
+        {/* WebSite Schema para Sitelinks */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "Elena Benítez - Peluquería Profesional Luque",
+              "url": "https://elenabenitez.com",
+              "description": "Mejor peluquería en Luque Paraguay. Servicios profesionales de maquillaje, tratamientos capilares, cejas, manicura y pedicura.",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://elenabenitez.com/servicios?q={search_term_string}"
+                },
+                "query-input": "required name=search_term_string"
+              },
+              "mainEntity": {
+                "@type": "Organization",
+                "name": "Elena Benítez Peluquería",
+                "url": "https://elenabenitez.com"
+              }
+            })
+          }}
+        />
       </head>
       <body className={`${inter.variable} ${playfair.variable} antialiased`}>
         {/* Google Analytics */}

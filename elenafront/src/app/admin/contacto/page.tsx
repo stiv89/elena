@@ -404,7 +404,11 @@ export default function ContactoPage() {
                 <input
                   type="text"
                   value={formData[`horario_${dia}` as keyof typeof formData] as string}
-                  onChange={(e) => setFormData({ ...formData, [`horario_${dia}`]: e.target.value } as any)}
+                  onChange={(e) => {
+                    const newData = { ...formData };
+                    (newData as Record<string, string>)[`horario_${dia}`] = e.target.value;
+                    setFormData(newData);
+                  }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#008060] focus:border-[#008060] text-sm"
                   placeholder="Ej: 8:00 - 18:00 o Cerrado"
                 />
@@ -428,5 +432,6 @@ export default function ContactoPage() {
     </div>
   );
 }
+
 
 

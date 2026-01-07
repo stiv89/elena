@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import ServiceIcon from "./ServiceIcon";
 
 type Servicio = {
@@ -7,7 +8,8 @@ type Servicio = {
   descripcion?: string;
   icon?: string;
   color?: string;
-  servicios: { nombre: string; precio: string | number; descripcion?: string }[];
+  imagen_url?: string;
+  servicios: { nombre: string; precio: string | number; descripcion?: string; imagen_url?: string }[];
 };
 
 export default function ServicesCarousel({ servicios, activeFilter = "todos" }: { servicios: Servicio[], activeFilter?: string }) {
@@ -112,25 +114,47 @@ export default function ServicesCarousel({ servicios, activeFilter = "todos" }: 
             style={{ scrollSnapType: 'x mandatory' }}
           >
             <div className="flex gap-3 md:gap-4 px-2" style={{ padding: '6px' }}>
-            {filteredServicios.map((categoria) => (
+            {filteredServicios.map((categoria) => {
+              // Buscar la primera imagen disponible: primero en la categoría, luego en los servicios
+              const categoriaImagen = categoria.imagen_url;
+              const servicioConImagen = categoria.servicios.find(s => s.imagen_url);
+              const imagenMostrar = categoriaImagen || servicioConImagen?.imagen_url;
+              
+              return (
               <div key={categoria.categoria} className="flex-shrink-0" style={{ scrollSnapAlign: 'center' }}>
-                <div className="bg-white rounded-2xl shadow-elegant p-3 md:p-4 card-hover h-full border border-gray-100">
-                  <div className="text-center mb-2 md:mb-3">
-                    <div className="flex justify-center mb-1 md:mb-2">
-                      <ServiceIcon type={categoria.icon ?? ""} className="w-6 h-6 md:w-8 md:h-8 text-amber-600" />
+                <div className="bg-white rounded-2xl shadow-elegant overflow-hidden card-hover h-full border border-gray-100">
+                  {/* Imagen del servicio si existe */}
+                  {imagenMostrar && (
+                    <div className="relative w-full h-40 md:h-48 overflow-hidden">
+                      <Image
+                        src={imagenMostrar}
+                        alt={categoria.categoria}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 300px, 400px"
+                      />
                     </div>
-                    <h3 className="font-playfair text-base md:text-lg font-semibold text-gray-900 mb-1">
-                      {categoria.categoria === "Lavados" ? "Lavados y Tratamientos Capilares" :
-                       categoria.categoria === "Maquillajes & Compañía" ? "Maquillaje Profesional" :
-                       categoria.categoria === "Cejas & Pestañas" ? "Cejas y Pestañas" :
-                       categoria.categoria === "Depilaciones" ? "Depilación Profesional" :
-                       categoria.categoria === "Manos & Pies" ? "Manicura y Pedicura" :
-                       categoria.categoria === "Manitas Delicadas" ? "Uñas Acrílicas y Extensiones" :
-                       categoria.categoria === "Color y Alisados" ? "Coloración y Alisados" :
-                       categoria.categoria}
-                    </h3>
-                    <p className="text-gray-600 text-xs md:text-sm">{categoria.descripcion}</p>
-                  </div>
+                  )}
+                  
+                  <div className="p-3 md:p-4">
+                    <div className="text-center mb-2 md:mb-3">
+                      {!imagenMostrar && (
+                        <div className="flex justify-center mb-1 md:mb-2">
+                          <ServiceIcon type={categoria.icon ?? ""} className="w-6 h-6 md:w-8 md:h-8 text-amber-600" />
+                        </div>
+                      )}
+                      <h3 className="font-playfair text-base md:text-lg font-semibold text-gray-900 mb-1">
+                        {categoria.categoria === "Lavados" ? "Lavados y Tratamientos Capilares" :
+                         categoria.categoria === "Maquillajes & Compañía" ? "Maquillaje Profesional" :
+                         categoria.categoria === "Cejas & Pestañas" ? "Cejas y Pestañas" :
+                         categoria.categoria === "Depilaciones" ? "Depilación Profesional" :
+                         categoria.categoria === "Manos & Pies" ? "Manicura y Pedicura" :
+                         categoria.categoria === "Manitas Delicadas" ? "Uñas Acrílicas y Extensiones" :
+                         categoria.categoria === "Color y Alisados" ? "Coloración y Alisados" :
+                         categoria.categoria}
+                      </h3>
+                      <p className="text-gray-600 text-xs md:text-sm">{categoria.descripcion}</p>
+                    </div>
 
                   <div className="space-y-2 mb-3 md:mb-4">
                     {categoria.servicios.length > 0 && (
@@ -152,14 +176,19 @@ export default function ServicesCarousel({ servicios, activeFilter = "todos" }: 
                     )}
                   </div>
 
-                  <div className="text-center">
-                    <a href="/servicios" className="inline-block bg-amber-600 hover:bg-amber-700 text-white px-4 md:px-6 py-2 md:py-2.5 rounded-full font-semibold hover:shadow-lg transition-all duration-200 text-xs md:text-sm">
-                      Explorar servicios
-                    </a>
+                    <div className="text-center">
+                      <a
+                        href="/servicios"
+                        className="inline-block bg-amber-600 hover:bg-amber-700 text-white px-4 md:px-6 py-2 md:py-2.5 rounded-full font-semibold hover:shadow-lg transition-all duration-200 text-xs md:text-sm"
+                      >
+                        Explorar servicios
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
-            ))}
+            );
+            })}
             </div>
           </div>
         </div>

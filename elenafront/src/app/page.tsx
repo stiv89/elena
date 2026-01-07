@@ -19,6 +19,7 @@ import ScrollableChips from "./components/ScrollableChips";
 import TestimonialsCarousel from "./components/TestimonialsCarouselOptimized";
 import TeamPreview from "./components/TeamPreview";
 import CombinedLauncher from "./components/CombinedLauncher";
+import { useServicios } from "../hooks/useServicios";
 
 interface Servicio {
   nombre: string;
@@ -56,13 +57,12 @@ function GaleriaTrabajos() {
 }
 
 // Componente de reservas con pestañas optimizado para mobile
-function BookingTabs({ whatsappNumber, whatsappUrl, calendlyUrl, servicios }: {
+function BookingTabs({ whatsappNumber, whatsappUrl, servicios }: {
   whatsappNumber: string;
   whatsappUrl: string;
-  calendlyUrl: string;
   servicios: Categoria[];
 }) {
-  const [activeTab, setActiveTab] = useState<'form' | 'whatsapp' | 'calendly'>('form');
+  const [activeTab, setActiveTab] = useState<'form' | 'whatsapp'>('form');
   const [formData, setFormData] = useState({
     nombre: '',
     telefono: '',
@@ -114,16 +114,6 @@ function BookingTabs({ whatsappNumber, whatsappUrl, calendlyUrl, servicios }: {
           }`}
         >
           WhatsApp
-        </button>
-        <button
-          onClick={() => setActiveTab('calendly')}
-          className={`flex-1 py-2.5 px-4 rounded-lg font-semibold text-sm transition-all ${
-            activeTab === 'calendly'
-              ? 'bg-white text-gray-900 shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
-          }`}
-        >
-          Calendly
         </button>
       </div>
 
@@ -224,23 +214,6 @@ function BookingTabs({ whatsappNumber, whatsappUrl, calendlyUrl, servicios }: {
           </a>
         </div>
       )}
-
-      {/* Panel de Calendly */}
-      {activeTab === 'calendly' && (
-        <div className="bg-white border border-gray-200 rounded-2xl p-6 text-center">
-          <p className="text-gray-600 mb-4 text-sm">
-            Agenda directa en nuestro calendario
-          </p>
-          <a
-            href={calendlyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-xl transition-colors text-sm"
-          >
-            Agendar en Calendly
-          </a>
-        </div>
-      )}
     </div>
   );
 }
@@ -248,6 +221,7 @@ function BookingTabs({ whatsappNumber, whatsappUrl, calendlyUrl, servicios }: {
 export default function Home() {
   const [activeServiceFilter, setActiveServiceFilter] = useState<string>("todos");
   const { ref: servicesRef, isVisible: servicesVisible } = useFadeInOnScroll(0.2);
+  const { servicios: serviciosDB, loading: serviciosLoading } = useServicios();
 
   // Definir categorías para los chips scrollables
   const serviceCategories = [
@@ -282,114 +256,57 @@ export default function Home() {
       {/* HERO SECTION */}
       <section
         id="inicio"
-        className="relative min-h-[60vh] flex items-center justify-center bg-gradient-to-b from-white to-amber-50/30 container-with-margins py-12 lg:py-16"
+        className="relative min-h-[65vh] sm:min-h-[70vh] lg:min-h-[75vh] flex items-center justify-center bg-gradient-to-b from-white to-amber-50/20 container-with-margins py-16 lg:py-24"
       >
-        {/* Overlay sutil con degradado */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-amber-50/10"></div>
-
-        <div className="relative z-10 max-w-5xl mx-auto grid lg:grid-cols-2 gap-6 lg:gap-8 items-center px-4">
+        <div className="relative z-10 max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center px-4">
           {/* Contenido principal */}
           <div className="text-center lg:text-left animate-slidein order-2 lg:order-1">
-            {/* Badge de experiencia destacado */}
-            <div className="flex items-center justify-center lg:justify-start mb-4">
-              <div className="flex items-center gap-2 text-sm text-amber-700">
-                <CheckIcon className="w-4 h-4" />
-                <span className="font-medium">10+ años cuidando tu imagen</span>
-              </div>
-            </div>
-
-            {/* Título con beneficio concreto */}
-            <h1 className="font-playfair text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 leading-tight max-w-xl mx-auto lg:mx-0">
+            {/* Título principal - El que grita */}
+            <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 lg:mb-8 leading-tight max-w-xl mx-auto lg:mx-0">
               Transformá tu look en Luque
             </h1>
             
-            {/* Segunda línea más humana */}
-            <p className="text-lg sm:text-xl text-gray-700 mb-6 font-medium max-w-xl mx-auto lg:mx-0">
+            {/* Subtítulo - Voz baja */}
+            <p className="text-lg sm:text-xl text-gray-600 mb-8 lg:mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed">
               Cortes, color y tratamientos que sí se notan.
             </p>
             
-            {/* Prueba social única y creíble */}
-            <div className="flex items-center justify-center lg:justify-start gap-3 mb-8">
-              <div className="flex items-center bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm border border-gray-100">
-                <div className="flex -space-x-0.5 mr-2">
-                  {[...Array(5)].map((_, i) => (
-                    <StarIcon key={i} className="w-4 h-4 text-amber-400" filled={true} />
-                  ))}
-                </div>
-                <span className="font-semibold text-gray-900 text-sm">4.9/5 en Google</span>
-                <span className="text-gray-400 mx-2">·</span>
-                <span className="text-gray-600 text-sm">+1000 clientes</span>
+            {/* Confianza unificada - Un solo bloque */}
+            <div className="flex items-center justify-center lg:justify-start mb-10 lg:mb-12">
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <StarIcon className="w-4 h-4 text-amber-400" filled={true} />
+                <span className="font-medium">4.9 en Google</span>
+                <span className="text-gray-400 mx-1">·</span>
+                <span className="text-gray-600">+1000 clientes reales</span>
               </div>
             </div>
             
-            {/* CTA Principal mejorado */}
-            <div className="mb-4">
+            {/* CTA más liviano */}
+            <div className="mb-6">
               <a
                 href="https://wa.me/595991743889?text=Hola%20Elena,%20quiero%20agendar%20una%20cita"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-semibold py-4 px-8 lg:px-10 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl text-base shadow-xl w-full sm:w-auto text-center inline-block"
+                className="bg-amber-500 hover:bg-amber-600 text-white font-medium py-3 px-8 rounded-full transition-all duration-200 hover:shadow-md text-base shadow-sm w-full sm:w-auto text-center inline-block"
               >
-                Reservá tu turno por WhatsApp
+                Reservar por WhatsApp
               </a>
-            </div>
-            
-            {/* Microtexto de baja fricción */}
-            <p className="text-xs text-gray-500 mb-6 text-center lg:text-left">
-              Sin compromiso · Respuesta rápida
-            </p>
-            
-            {/* Señales de confianza como garantía silenciosa */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-gray-500">
-              <span className="flex items-center gap-1">
-                <CheckIcon className="w-3 h-3 text-green-500" />
-                Técnicas certificadas
-              </span>
-              <span className="flex items-center gap-1">
-                <CheckIcon className="w-3 h-3 text-green-500" />
-                Productos premium
-              </span>
             </div>
           </div>
           
-          {/* Imagen optimizada con leyenda */}
-      <div className="animate-fadein order-1 lg:order-2 flex justify-center lg:justify-end">
-            <div className="relative">
-              {/* Decoración de fondo */}
-              <div className="absolute -inset-4 bg-gradient-to-r from-amber-100 to-rose-100 rounded-3xl opacity-20 blur-lg"></div>
+          {/* Imagen protagonista - Sin decoraciones */}
+          <div className="animate-fadein order-1 lg:order-2 flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-md lg:max-w-lg">
               <Image 
                 src={siteData.inicio.image} 
                 alt="Elena Benítez - Mejor peluquería en Luque Paraguay | Salón de belleza profesional con más de 10 años de experiencia | Servicios de maquillaje, tratamientos capilares, cejas, manicura y pedicura" 
                 width={600} 
                 height={400} 
-        className="relative rounded-3xl shadow-2xl object-cover w-full h-[220px] sm:h-[260px] lg:h-[320px]" 
+                className="rounded-2xl shadow-lg object-cover w-full h-[280px] sm:h-[340px] md:h-[400px] lg:h-[450px]" 
                 priority
                 loading="eager"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 500px"
               />
-              {/* Overlay leve para mejor integración */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent rounded-3xl"></div>
-              
-              {/* Leyenda de ubicación sobre la imagen */}
-              <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-md">
-                <div className="flex items-center gap-2 text-sm">
-                  <LocationPinIcon className="w-4 h-4 text-amber-600" />
-                  <span className="text-gray-700 font-medium">Nuestro espacio en Luque</span>
-                </div>
-              </div>
-              
-              {/* Badge flotante - clientes que vuelven */}
-        <div className="absolute -bottom-3 -right-3 bg-white rounded-xl shadow-lg p-3 animate-float">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">
-                    <span className="text-amber-600 text-sm">♻️</span>
-                  </div>
-                  <div>
-          <p className="font-bold text-gray-900 text-xs">Clientes que vuelven</p>
-          <p className="text-[10px] text-gray-500">Confianza garantizada</p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -434,7 +351,7 @@ export default function Home() {
             {/* CTA Principal - Solo uno */}
             <div className="mb-6 md:mb-8">
               <a
-                href="#servicios"
+                href="/servicios"
                 className="inline-block bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2.5 px-6 md:py-3 md:px-8 rounded-full transition-all duration-200 hover:shadow-lg text-sm md:text-base"
               >
                 Explorar servicios
@@ -452,7 +369,22 @@ export default function Home() {
           </div>
 
           <div className="">
-            <ServicesCarousel servicios={siteData.servicios} activeFilter={activeServiceFilter} />
+            <ServicesCarousel 
+              servicios={serviciosDB.length > 0 ? serviciosDB.map(cat => ({
+                categoria: cat.nombre,
+                descripcion: cat.descripcion,
+                icon: cat.icon,
+                color: cat.color,
+                imagen_url: (cat as { imagen_url?: string }).imagen_url, // Puede que las categorías tengan imagen_url
+                servicios: cat.servicios.map(s => ({
+                  nombre: s.nombre,
+                  precio: s.precio,
+                  descripcion: s.descripcion,
+                  imagen_url: s.imagen_url
+                }))
+              })) : siteData.servicios} 
+              activeFilter={activeServiceFilter} 
+            />
           </div>
         </div>
       </section>
@@ -626,7 +558,6 @@ export default function Home() {
           <BookingTabs
             whatsappNumber={siteData.whatsapp.number}
             whatsappUrl={siteData.reservas.whatsapp.url}
-            calendlyUrl={siteData.reservas.calendly.url}
             servicios={siteData.servicios}
           />
         </div>

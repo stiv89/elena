@@ -92,20 +92,20 @@ export default function Footer() {
               Enlaces
             </h5>
             <nav className="space-y-2">
-              <a href="#servicios" className="block text-gray-300 hover:text-white transition-colors text-sm">
+              <a href="/servicios" className="block text-gray-300 hover:text-white transition-colors text-sm">
                 Servicios
               </a>
-              <a href="#reservar" className="block text-gray-300 hover:text-white transition-colors text-sm">
-                Reservá tu cita
-              </a>
-              <a href="#galeria" className="block text-gray-300 hover:text-white transition-colors text-sm">
-                Galería
-              </a>
-              <a href="#equipo" className="block text-gray-300 hover:text-white transition-colors text-sm">
+              <a href="/equipo" className="block text-gray-300 hover:text-white transition-colors text-sm">
                 Equipo
               </a>
-              <a href="#contacto" className="block text-gray-300 hover:text-white transition-colors text-sm">
+              <a href="/contacto" className="block text-gray-300 hover:text-white transition-colors text-sm">
                 Contacto
+              </a>
+              <a href="/carrito" className="block text-gray-300 hover:text-white transition-colors text-sm">
+                Carrito
+              </a>
+              <a href="/terminos" className="block text-gray-300 hover:text-white transition-colors text-sm">
+                Términos y Condiciones
               </a>
             </nav>
           </div>
