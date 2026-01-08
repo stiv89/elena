@@ -95,9 +95,9 @@ export default function Footer() {
               <a href="/servicios" className="block text-gray-300 hover:text-white transition-colors text-sm">
                 Servicios
               </a>
-              <a href="/equipo" className="block text-gray-300 hover:text-white transition-colors text-sm">
+              {/* <a href="/equipo" className="block text-gray-300 hover:text-white transition-colors text-sm">
                 Equipo
-              </a>
+              </a> */}
               <a href="/contacto" className="block text-gray-300 hover:text-white transition-colors text-sm">
                 Contacto
               </a>
