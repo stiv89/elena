@@ -6,7 +6,6 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ServicesCarousel from "./components/ServicesCarousel";
 import SvgIcon, { StarIcon } from "./components/SvgIcon";
-import IsaAssistant from "./components/IsaAssistant";
 import FAQ from "./components/FAQ";
 import Breadcrumbs from "./components/Breadcrumbs";
 import GalleryGrid from "./components/GalleryGrid";
@@ -349,8 +348,6 @@ export default function Home() {
           enabled={true}
         />
       )}
-
-      <IsaAssistant enabled={false} />
 
       {/* ═══ HERO ══════════════════════════════════════════════════════ */}
       <section

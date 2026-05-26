@@ -1,7 +1,8 @@
 "use client";
 import { useState, useRef, useEffect } from 'react';
 import { useGoogleAnalytics } from '../hooks/useGoogleAnalytics';
-import { BotIcon, SparklesIcon } from './ChatIcons';
+import { SparklesIcon } from './ChatIcons';
+import IsaAssistant from './IsaAssistant';
 
 interface CombinedLauncherProps {
   whatsappNumber: string;
@@ -123,71 +124,12 @@ export default function CombinedLauncher({
         </div>
       </div>
 
-      {/* Chat Window de Isa */}
-      {isIsaOpen && (
-        <div className="fixed bottom-20 sm:bottom-24 right-4 sm:right-6 left-4 sm:left-auto sm:w-96 h-[450px] sm:h-[500px] z-40 transition-all duration-300 opacity-100 scale-100">
-          {/* Chat Container */}
-          <div className="bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden h-full backdrop-blur-sm border border-gray-200">
-            {/* Header */}
-            <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-3 sm:p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-8 sm:w-10 h-8 sm:h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                  <BotIcon className="w-4 sm:w-5 h-4 sm:w-5" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-sm sm:text-base">Isa</h3>
-                  <p className="text-xs opacity-90">Asistente Virtual</p>
-                </div>
-              </div>
-              <button
-                onClick={closeIsa}
-                className="w-7 sm:w-8 h-7 sm:h-8 rounded-full bg-black bg-opacity-25 hover:bg-opacity-40 text-white flex items-center justify-center transition-all duration-200 hover:scale-105"
-                title="Cerrar chat"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Messages Area */}
-            <div className="flex-1 p-3 sm:p-4">
-              <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                <p className="text-sm text-gray-700">
-                  ¡Hola! Soy Isa, tu consultora de belleza personal de Elena Benítez.
-                  <br /><br />
-                  ¿En qué te puedo ayudar hoy? Puedo contarte sobre nuestros servicios,
-                  precios, horarios o ayudarte a reservar una cita.
-                </p>
-              </div>
-            </div>
-
-            {/* Quick Actions */}
-            <div className="p-3 sm:p-4 border-t border-gray-200">
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  onClick={() => {
-                    handleWhatsAppClick();
-                    closeIsa();
-                  }}
-                  className="bg-green-500 hover:bg-green-600 text-white py-2 px-3 rounded-lg font-medium text-xs sm:text-sm transition-colors"
-                >
-                  📱 Reservar cita
-                </button>
-                <button
-                  onClick={() => {
-                    window.open(`tel:+595991743889`, '_self');
-                    closeIsa();
-                  }}
-                  className="bg-gray-900 hover:bg-gray-800 text-white py-2 px-3 rounded-lg font-medium text-xs sm:text-sm transition-colors"
-                >
-                  📞 Llamar ahora
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <IsaAssistant
+        embedded
+        isOpen={isIsaOpen}
+        onClose={closeIsa}
+        position="right"
+      />
     </>
   );
 }
