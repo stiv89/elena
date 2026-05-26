@@ -8,60 +8,82 @@ interface FAQItem {
 }
 
 const faqData: FAQItem[] = [
-  // Turnos - Mostrar inicialmente
+  // Turnos
   {
-    question: "¿Cómo reservo un turno?",
-    answer: "Podés reservar por WhatsApp o usando el formulario en 'Reservá tu cita'. Te recomendamos reservar con anticipación.",
+    question: "¿Cómo reservo un turno en la peluquería de Luque?",
+    answer: "Podés reservar por WhatsApp al +595 991 743889 o usando el formulario de nuestra página web. Te recomendamos reservar con al menos 24 hs de anticipación, especialmente los fines de semana.",
     category: "turnos"
   },
   {
-    question: "¿Cuáles son los horarios?",
-    answer: "Lunes a sábado de 08:00 a 18:00. Los domingos permanecemos cerrados.",
+    question: "¿Cuáles son los horarios del salón?",
+    answer: "Atendemos de lunes a sábado de 08:00 a 18:00 hs. Los domingos permanecemos cerrados. Para turnos fuera de horario en ocasiones especiales (bodas, quinces), consultanos por WhatsApp.",
     category: "turnos"
   },
   {
     question: "¿Qué formas de pago aceptan?",
-    answer: "Efectivo y transferencias. Consultá por otros medios por WhatsApp.",
+    answer: "Aceptamos efectivo y transferencias bancarias. Para más opciones de pago, consultanos directamente por WhatsApp antes de tu visita.",
+    category: "turnos"
+  },
+  {
+    question: "¿Con cuánta anticipación debo reservar?",
+    answer: "Para servicios del día (lavado, brushing, cejas) suele haber lugar con poca anticipación. Para maquillaje de novia, quinceañera o eventos especiales, recomendamos reservar con al menos 1 semana de anticipación.",
     category: "turnos"
   },
 
-  // Servicios - Mostrar inicialmente
+  // Servicios
   {
-    question: "¿Hacen maquillaje para bodas?",
-    answer: "Sí. Social, glam y novia. Recomendamos reservar con anticipación.",
+    question: "¿Hacen maquillaje para bodas y eventos en Luque?",
+    answer: "Sí, ofrecemos maquillaje social, glam y de novia para todo tipo de eventos en Luque y alrededores. Incluye limpieza facial previa. Recomendamos reservar con anticipación para eventos importantes.",
     category: "servicios"
   },
   {
     question: "¿Desde cuánto sale el tratamiento capilar?",
-    answer: "Desde 60.000 PYG. El precio final depende del diagnóstico.",
+    answer: "Los lavados y tratamientos capilares arrancan desde 60.000 PYG. El precio final depende del largo, volumen del cabello y el tipo de tratamiento. Podés consultar la lista completa de precios en la sección de servicios.",
     category: "servicios"
   },
-
-  // Más preguntas - Ocultas inicialmente
   {
-    question: "¿Dónde está ubicada la peluquería?",
-    answer: "En c/ Sportivo Luqueño y Moisés Bertoni, corazón de Luque. Fácil acceso con transporte público.",
-    category: "ubicacion"
-  },
-  {
-    question: "¿Ofrecen servicios a domicilio?",
-    answer: "Sí, en radio de 15km. Incluye maquillaje y peinados. Consultá costos adicionales.",
+    question: "¿Hacen alisado y keratina en Luque?",
+    answer: "Sí. Ofrecemos shock de keratina desde 130.000 PYG, ideal para alisar y nutrir el cabello al mismo tiempo. El resultado varía según el tipo de cabello. Consultanos para una evaluación personalizada.",
     category: "servicios"
   },
   {
     question: "¿Cuánto cuesta el diseño de cejas?",
-    answer: "25.000 PYG básico, 50.000 PYG con henna. Incluye asesoramiento personalizado.",
+    answer: "El diseño de cejas con perfilado sale desde 25.000 PYG. Con henna natural desde 50.000 PYG. Todos incluyen asesoramiento personalizado para encontrar la forma ideal para tu rostro.",
     category: "servicios"
   },
   {
-    question: "¿Qué productos usan?",
-    answer: "Productos profesionales de marcas reconocidas internacionalmente. Alta calidad y seguros.",
+    question: "¿Ofrecen servicios a domicilio en Luque?",
+    answer: "Sí, ofrecemos servicio a domicilio en Luque y zona aledaña (radio aproximado de 15 km). Incluye maquillaje y peinados para eventos. Consultanos disponibilidad y costos adicionales por WhatsApp.",
+    category: "servicios"
+  },
+  {
+    question: "¿Hacen uñas acrílicas y esmalte semipermanente?",
+    answer: "Sí. Contamos con manicura y pedicura tradicional, esmalte semipermanente, uñas acrílicas, kapping y diseños personalizados. Podés ver todos los precios en nuestra sección de servicios.",
+    category: "servicios"
+  },
+
+  // Ubicación
+  {
+    question: "¿Dónde está ubicada la peluquería en Luque?",
+    answer: "Estamos en c/ Sportivo Luqueño y Moisés Bertoni, en el corazón de Luque, Paraguay. Tenemos fácil acceso en transporte público. Podés ver la ubicación exacta en el mapa de nuestra página o en Google Maps.",
+    category: "ubicacion"
+  },
+  {
+    question: "¿Cómo llegar al salón en transporte público?",
+    answer: "Tenemos acceso en varias líneas de colectivo que pasan por Luque centro. Para indicaciones precisas desde tu barrio, escribinos por WhatsApp y te orientamos sin problema.",
+    category: "ubicacion"
+  },
+
+  // Productos
+  {
+    question: "¿Qué productos usan en el salón?",
+    answer: "Trabajamos exclusivamente con productos profesionales de marcas reconocidas internacionalmente. Son seguros, certificados y formulados para cuidar la salud de tu cabello, piel y uñas con los mejores resultados.",
     category: "productos"
   },
   {
-    question: "¿Cómo llegar al salón?",
-    answer: "Transporte público o auto. Consulta ruta específica por WhatsApp.",
-    category: "ubicacion"
+    question: "¿Atienden personas con cabello teñido o tratado químicamente?",
+    answer: "Sí. Antes de cualquier tratamiento realizamos un diagnóstico del estado capilar para recomendarte el servicio más adecuado. La salud de tu cabello es nuestra prioridad.",
+    category: "productos"
   }
 ];
 
@@ -109,10 +131,10 @@ export default function FAQSection() {
         {/* Título compacto */}
         <div className="text-center mb-8 md:mb-10">
           <h2 className="font-playfair text-2xl md:text-4xl font-bold text-gray-900 mb-2">
-            Preguntas frecuentes
+            Preguntas frecuentes sobre nuestra peluquería en Luque
           </h2>
           <p className="text-sm md:text-lg text-gray-600">
-            Respuestas rápidas sobre turnos y servicios
+            Todo lo que necesitás saber antes de tu visita
           </p>
         </div>
 

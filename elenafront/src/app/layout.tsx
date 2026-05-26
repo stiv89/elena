@@ -16,8 +16,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "🥇 Peluquería Luque | Elena Benítez - Mejor Salón de Belleza Paraguay",
-  description: "⭐ Mejor peluquería en Luque Paraguay ✨ Más de 10 años transformando tu belleza. Maquillaje profesional, tratamientos capilares, cejas perfectas, manicura y pedicura. ¡Reservá ahora! ☎️ +595 991 743889",
+  title: "Peluquería en Luque | Elena Benítez - Salón de Belleza Profesional Paraguay",
+  description: "Peluquería y salón de belleza en Luque, Paraguay. Corte, color, alisado, maquillaje, cejas y uñas con más de 10 años de experiencia. +1.000 clientas satisfechas. ¡Reservá tu turno por WhatsApp!",
   keywords: "peluquería Luque, salón de belleza Luque, peluquería Paraguay, mejor peluquería Luque, Elena Benítez peluquería, maquillaje Luque, tratamientos capilares Paraguay, cejas Luque, manicura Luque, pedicura Luque, alisado Paraguay, color de cabello Luque, depilación Luque, belleza integral Paraguay, estilista profesional Luque, salón de belleza profesional Paraguay, peluquería cerca de mí, maquillaje para novias Luque, tratamientos faciales Paraguay, extensiones de cabello Luque, diseño de cejas Luque, lifting de pestañas Paraguay, uñas acrílicas Luque, servicio a domicilio Paraguay, centro de belleza Luque",
   authors: [{ name: "Elena Benítez - Estilista Profesional" }],
   creator: "Elena Benítez - Peluquería Profesional Luque",
@@ -38,8 +38,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "🥇 Peluquería Luque | Elena Benítez - Mejor Salón de Belleza Paraguay",
-    description: "⭐ Mejor peluquería en Luque Paraguay ✨ Más de 10 años transformando tu belleza. Servicios profesionales: maquillaje, tratamientos capilares, cejas perfectas. ¡Reservá ahora!",
+    title: "Peluquería en Luque | Elena Benítez - Salón de Belleza Profesional Paraguay",
+    description: "Peluquería y salón de belleza en Luque, Paraguay. Corte, color, alisado, maquillaje, cejas y uñas con más de 10 años de experiencia. +1.000 clientas satisfechas. ¡Reservá tu turno!",
     url: 'https://elenabenitez.com',
     siteName: 'Elena Benítez - Peluquería Profesional Luque',
     images: [
@@ -64,8 +64,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "🥇 Peluquería Luque | Elena Benítez - Mejor Salón Paraguay",
-    description: "⭐ Mejor peluquería en Luque Paraguay ✨ +10 años transformando tu belleza. Maquillaje, tratamientos capilares, cejas perfectas. ¡Reservá ahora! ☎️ +595 991 743889",
+    title: "Peluquería en Luque | Elena Benítez - Salón de Belleza Paraguay",
+    description: "Peluquería profesional en Luque, Paraguay. Corte, color, maquillaje, cejas y uñas. +10 años de experiencia. ¡Reservá tu turno hoy! ☎️ +595 991 743889",
     images: [
       {
         url: '/logoheader.png',
